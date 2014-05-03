@@ -5,7 +5,9 @@ import Reddit.API.Types.Subreddit (SubredditName(..))
 import Reddit.API.Types.Thing
 
 import APIBuilder.Routes
+import Data.Char (toLower)
 import Data.Text (Text)
+import qualified Data.Text as T
 
 postsListing :: Maybe SubredditName -> Text -> Route
 postsListing r t = Route (endpoint r)
@@ -51,3 +53,9 @@ getComments :: PostID -> Route
 getComments (PostID p) = Route [ "comments", p ]
                                [ ]
                                GET
+
+sendReplies :: Bool -> PostID -> Route
+sendReplies setting p = Route [ "api", "sendreplies" ]
+                              [ "id" =. Just (fullName p)
+                              , "state" =. Just (T.pack $ map toLower $ show setting) ]
+                              POST

@@ -45,3 +45,9 @@ getComments :: PostID -> Reddit [Comment]
 getComments p = do
   PostComments _ c <- runRoute $ Route.getComments p
   return c
+
+enableReplies :: PostID -> Reddit ()
+enableReplies = nothing . runRoute . Route.sendReplies True
+
+disableReplies :: PostID -> Reddit ()
+disableReplies = nothing . runRoute . Route.sendReplies False
