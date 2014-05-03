@@ -1,0 +1,79 @@
+name:                reddit
+version:             0.1.0.0
+build-type:          Simple
+cabal-version:       >= 1.10
+
+library
+  exposed-modules:
+    Reddit.API
+    Reddit.API.Actions
+    Reddit.API.Actions.Message
+    Reddit.API.Actions.Post
+    Reddit.API.Actions.Subreddit
+    Reddit.API.Actions.Thing
+    Reddit.API.Actions.User
+    Reddit.API.Actions.Voting
+    Reddit.API.Login
+    Reddit.API.Types
+    Reddit.API.Types.Comment
+    Reddit.API.Types.Error
+    Reddit.API.Types.Listing
+    Reddit.API.Types.Message
+    Reddit.API.Types.Post
+    Reddit.API.Types.Reddit
+    Reddit.API.Types.Subreddit
+    Reddit.API.Types.SubredditSettings
+    Reddit.API.Types.Thing
+    Reddit.API.Types.User
+    Reddit.Bot
+  other-modules:
+    Reddit.API.Parser
+    Reddit.API.Routes
+    Reddit.API.Routes.Comment
+    Reddit.API.Routes.Message
+    Reddit.API.Routes.Post
+    Reddit.API.Routes.Subreddit
+    Reddit.API.Routes.Thing
+    Reddit.API.Routes.User
+    Reddit.API.Routes.Vote
+    Reddit.API.Types.Empty
+  default-extensions: OverloadedStrings, FlexibleInstances
+  default-language: Haskell2010
+  hs-source-dirs: src/
+  build-depends: 
+    base == 4.*,
+    aeson,
+    api-builder,
+    data-default,
+    datetime,
+    either,
+    http-conduit,
+    network,
+    text,
+    transformers,
+    unordered-containers,
+    vector
+  GHC-options: -Wall
+
+executable reddit-bot
+  main-is: Main.hs
+  default-extensions: OverloadedStrings
+  default-language: Haskell2010
+  build-depends:
+    base == 4.*,
+    reddit,
+    transformers
+  GHC-options: -Wall
+
+test-suite Tests
+  hs-source-dirs: Tests
+  main-is: Main.hs
+  type: exitcode-stdio-1.0
+  build-depends:
+    base == 4.*,
+    Cabal >= 1.16.0,
+    reddit,
+    HUnit,
+    test-framework,
+    test-framework-hunit
+  GHC-options: -Wall -Werror
