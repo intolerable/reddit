@@ -18,3 +18,8 @@ instance FromJSON a => FromJSON (Listing a) where
     Listing <$> (o .: "data" >>= (.: "children"))
   parseJSON (String "") = return $ Listing []
   parseJSON _ = mempty
+
+data ListingOptions a = ListingOptions { before :: Maybe a
+                                       , after :: Maybe a
+                                       , count :: Integer }
+  deriving (Show, Read, Eq)
