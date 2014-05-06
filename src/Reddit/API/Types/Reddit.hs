@@ -34,23 +34,6 @@ data LoginDetails = LoginDetails Modhash CookieJar
 data POSTWrapped a = POSTWrapped a
   deriving (Show, Read, Eq)
 
---instance FromJSON a => FromJSON (POSTWrapped a) where
---  parseJSON (Object o) = do
---    d <- (o .: "json") >>= (.: "data")
---    i <- d .:? "id"
---    case i of
---      Just v -> POSTWrapped <$> parseJSON v
---      Nothing -> do
---        things <- d .: "things"
---        case traceShow things things of 
---          Array ts -> case ts !? 0 of
---            Just h -> do 
---              commentid <- h .: "id"
---              return $ POSTWrapped $ commentid 
---            Nothing -> mempty
---          _ -> mempty
---  parseJSON _ = mempty 
-
 builder :: Builder
 builder = Builder "Reddit API"
                   mainBaseURL
