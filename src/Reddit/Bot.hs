@@ -40,11 +40,11 @@ rateLimitWith onLimit act = do
   res <- nest act
   case res of 
     Left (APIError (RateLimitError msg)) -> do
-      liftIO $ print msg
+      Reddit $ liftIO $ print msg
       onLimit
-      rateLimit act
-    Left x -> EitherT . return $ Left x
-    Right x -> return x
+      rateLimitWith onLimit act
+    Left x -> Reddit . EitherT . return $ Left x
+    Right x -> Reddit $ return x
 
 -- | Wait @n@ seconds. Essentially @threadDelay@ in the @Reddit@ type using seconds
 --   instead of microseconds.

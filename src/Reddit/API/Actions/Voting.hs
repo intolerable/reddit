@@ -6,6 +6,7 @@ module Reddit.API.Actions.Voting
 
 import Reddit.API.Types
 import Reddit.API.Types.Empty
+import Reddit.API.Types.Reddit
 import qualified Reddit.API.Routes as Route
 
 import APIBuilder
@@ -13,7 +14,7 @@ import APIBuilder
 -- Voting on posts
 
 voteOnPost :: Int -> PostID -> Reddit ()
-voteOnPost dir = nothing . runRoute . Route.vote dir
+voteOnPost dir = nothing . Reddit . runRoute . Route.vote dir
 
 upvotePost :: PostID -> Reddit ()
 upvotePost = voteOnPost 1
@@ -27,5 +28,4 @@ downvotePost = voteOnPost (-1)
 -- Voting on comments
 
 voteOnComment :: Int -> CommentID -> Reddit ()
-voteOnComment dir = nothing . runRoute . Route.vote dir
-
+voteOnComment dir = nothing . Reddit . runRoute . Route.vote dir

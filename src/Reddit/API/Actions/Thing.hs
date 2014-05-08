@@ -10,8 +10,8 @@ import Data.Text (Text)
 
 reply :: Thing a => a -> Text -> Reddit CommentID
 reply t b = do
-  POSTWrapped res <- runRoute $ Route.reply t b
+  POSTWrapped res <- Reddit $ runRoute $ Route.reply t b
   return $ res
 
 delete :: Thing a => a -> Reddit ()
-delete = nothing . runRoute . Route.delete
+delete = nothing . Reddit . runRoute . Route.delete

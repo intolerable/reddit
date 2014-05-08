@@ -19,18 +19,18 @@ loginRoute user pass = Route [ "api", "login" ]
 
 getLoginDetails :: Text -> Text -> Reddit LoginDetails
 getLoginDetails user pass = do
-  b <- liftBuilder get
-  req <- EitherT . return $ case routeRequest b (loginRoute user pass) of
+  b <- Reddit $ liftBuilder get
+  req <- Reddit . EitherT . return $ case routeRequest b (loginRoute user pass) of
     Just url -> Right url
     Nothing -> Left InvalidURLError
   resp <- liftIO $ withManager $ httpLbs req 
   let cj = responseCookieJar resp
-  mh <- EitherT . return . decode $ responseBody resp
+  mh <- Reddit . EitherT . return . decode $ responseBody resp
   return $ LoginDetails mh cj
 
 login :: Text -> Text -> Reddit LoginDetails
 login user pass = do
-  baseURL loginBaseURL
+  Reddit $ baseURL loginBaseURL
   d <- getLoginDetails user pass
-  baseURL mainBaseURL
+  Reddit $ baseURL mainBaseURL
   return d
