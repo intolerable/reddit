@@ -15,7 +15,7 @@ loginRoute user pass = Route [ "api", "login" ]
                              [ "rem" =. Just "true"
                              , "user" =. Just user
                              , "passwd" =. Just pass ]
-                             POST
+                             "POST"
 
 getLoginDetails :: Text -> Text -> Reddit LoginDetails
 getLoginDetails user pass = do
