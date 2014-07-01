@@ -9,4 +9,4 @@ vote :: Thing a => Int -> a -> Route
 vote direction tID = Route [ "api", "vote" ]
                            [ "id" =. Just (fullName tID)
                            , "dir" =. Just (T.pack $ show direction) ]
-                           POST
+                           "POST"

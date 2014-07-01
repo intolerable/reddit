@@ -7,9 +7,9 @@ import APIBuilder.Routes
 aboutSubreddit :: SubredditName -> Route
 aboutSubreddit (R sub) = Route ["r", sub, "about"]
                                []
-                               GET
+                               "GET"
 
 subredditSettings :: SubredditName -> Route
 subredditSettings (R sub) = Route ["r", sub, "about", "edit"]
                                   []
-                                  GET
+                                  "GET"

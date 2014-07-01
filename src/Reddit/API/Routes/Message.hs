@@ -9,17 +9,17 @@ import Data.Text (Text)
 inbox :: Route
 inbox = Route [ "message", "inbox" ]
               []
-              GET
+              "GET"
 
 unread :: Route
 unread = Route [ "message", "unread" ]
                []
-               GET
+               "GET"
 
 readMessage :: Thing a => a -> Route
 readMessage m = Route [ "api", "read_message" ]
                       [ "id" =. Just (fullName m) ]
-                      POST 
+                      "POST" 
 
 sendMessage :: Username -> Text -> Text -> Maybe Text -> Maybe Text -> Route
 sendMessage (Username u) subject body iden captcha =
@@ -29,4 +29,4 @@ sendMessage (Username u) subject body iden captcha =
         , "text" =. Just body
         , "iden" =. iden
         , "captcha" =. captcha ]
-        POST
+        "POST"
