@@ -1,5 +1,6 @@
 module Reddit.API.Types.Reddit
-  ( Reddit(..)
+  ( Reddit
+  , RedditT(..)
   , Modhash(..)
   , LoginDetails(..)
   , POSTWrapped(..)
@@ -22,21 +23,23 @@ import Data.Text (Text)
 import Network.HTTP.Types
 import Network.HTTP.Conduit hiding (path)
 
-newtype Reddit a = Reddit { unReddit :: API () RedditError a }
+type Reddit a = RedditT IO a
 
-instance Functor Reddit where
-  fmap f (Reddit a) = Reddit (fmap f a)
+newtype RedditT m a = RedditT { unRedditT :: APIT () RedditError m a }
 
-instance Applicative Reddit where
-  pure a = Reddit (pure a)
-  (Reddit f) <*> (Reddit a) = Reddit (f <*> a)
+instance Monad m => Functor (RedditT m) where
+  fmap f (RedditT a) = RedditT (fmap f a)
 
-instance Monad Reddit where
-  return a = Reddit (return a)
-  (Reddit a) >>= f = Reddit (a >>= unReddit . f)
+instance Monad m => Applicative (RedditT m) where
+  pure a = RedditT (pure a)
+  (RedditT f) <*> (RedditT a) = RedditT (f <*> a)
 
-instance MonadIO Reddit where
-  liftIO a = Reddit (liftIO a)
+instance Monad m => Monad (RedditT m) where
+  return a = RedditT (return a)
+  (RedditT a) >>= f = RedditT (a >>= unRedditT . f)
+
+instance MonadIO m => MonadIO (RedditT m) where
+  liftIO a = RedditT (liftIO a)
 
 newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)

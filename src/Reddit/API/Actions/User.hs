@@ -7,10 +7,10 @@ import Reddit.API.Types.Reddit
 import APIBuilder
 
 getUserInfo :: Username -> Reddit User
-getUserInfo = Reddit . runRoute . Route.aboutUser
+getUserInfo = RedditT . runRoute . Route.aboutUser
 
 isUsernameAvailable :: Username -> Reddit Bool
-isUsernameAvailable = Reddit . runRoute . Route.usernameAvailable
+isUsernameAvailable = RedditT . runRoute . Route.usernameAvailable
 
 aboutMe :: Reddit User
-aboutMe = Reddit $ runRoute Route.aboutMe
+aboutMe = RedditT $ runRoute Route.aboutMe

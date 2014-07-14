@@ -12,10 +12,10 @@ import qualified Reddit.API.Routes as Route
 import APIBuilder
 
 getSubredditInfo :: SubredditName -> Reddit Subreddit
-getSubredditInfo = Reddit . runRoute . Route.aboutSubreddit
+getSubredditInfo = RedditT . runRoute . Route.aboutSubreddit
 
 getSubredditSettings :: SubredditName -> Reddit SubredditSettings
-getSubredditSettings = Reddit . runRoute . Route.subredditSettings
+getSubredditSettings = RedditT . runRoute . Route.subredditSettings
 
 setSubredditSettings :: SubredditID -> SubredditSettings -> Reddit ()
-setSubredditSettings r s = nothing $ Reddit $ runRoute (Route.setSubredditSettings r s)
+setSubredditSettings r s = nothing $ RedditT $ runRoute (Route.setSubredditSettings r s)

@@ -18,21 +18,21 @@ import Data.Text.Encoding (encodeUtf8)
 import Network.HTTP.Conduit
 
 runReddit :: Text -> Text -> Reddit a -> IO (Either (APIError RedditError) a)
-runReddit user pass (Reddit reddit) =
+runReddit user pass (RedditT reddit) =
   runAPI builder () $ do
     customizeRequest addHeader
-    LoginDetails (Modhash mh) cj <- unReddit $ login user pass
+    LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
     customizeRequest $ \r ->
       addHeader r { cookieJar = Just cj
                   , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
     reddit
 
 nest :: Reddit a -> Reddit (Either (APIError RedditError) a)
-nest (Reddit a) = do
-  b <- Reddit $ liftBuilder get
+nest (RedditT a) = do
+  b <- RedditT $ liftBuilder get
   liftIO $ runAPI b () a
 
 makeIO :: Reddit a -> Reddit (IO (Either (APIError RedditError) a))
-makeIO (Reddit a) = do
-  b <- Reddit $ liftBuilder get
+makeIO (RedditT a) = do
+  b <- RedditT $ liftBuilder get
   return $ runAPI b () a

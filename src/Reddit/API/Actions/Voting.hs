@@ -14,7 +14,7 @@ import APIBuilder
 -- Voting on posts
 
 voteOnPost :: Int -> PostID -> Reddit ()
-voteOnPost dir = nothing . Reddit . runRoute . Route.vote dir
+voteOnPost dir = nothing . RedditT . runRoute . Route.vote dir
 
 upvotePost :: PostID -> Reddit ()
 upvotePost = voteOnPost 1
@@ -28,4 +28,4 @@ downvotePost = voteOnPost (-1)
 -- Voting on comments
 
 voteOnComment :: Int -> CommentID -> Reddit ()
-voteOnComment dir = nothing . Reddit . runRoute . Route.vote dir
+voteOnComment dir = nothing . RedditT . runRoute . Route.vote dir
