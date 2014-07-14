@@ -8,14 +8,17 @@ import Data.Text (Text)
 import Data.Vector ((!?))
 import qualified Data.Vector as V
 
-data RedditError = RedditError
+data RedditError = RedditError Object
                  | CaptchaError Text
                  | CredentialsError
                  | RateLimitError Text
-                 | NoSubredditSpecified     
-                 | NoURLSpecified     
-                 | AlreadySubmitted     
-                 | CommentDeleted  
+                 | NoSubredditSpecified
+                 | NoURLSpecified
+                 | NoName
+                 | NoText Text
+                 | AlreadySubmitted
+                 | CommentDeleted
+                 | BadSubredditName
                  deriving (Show)
 
 instance FromJSON RedditError where
@@ -29,8 +32,11 @@ instance FromJSON RedditError where
         String "SUBREDDIT_REQUIRED" : _ -> return NoSubredditSpecified
         String "ALREADY_SUB" : _ -> return AlreadySubmitted
         String "NO_URL" : _ -> return NoURLSpecified
+        String "NO_NAME" : _ -> return NoName
+        String "NO_TEXT" : _ : String f : _ -> return $ NoText f
         String "COMMENT_DELETED" : _ -> return CommentDeleted
+        String "BAD_SR_NAME" : _ -> return BadSubredditName
         String "BAD_CAPTCHA" : _ -> CaptchaError <$> (o .: "json" >>= (.: "captcha"))
-        _ -> return RedditError
+        _ -> return $ RedditError o
       _ -> mempty
   parseJSON _ = mempty

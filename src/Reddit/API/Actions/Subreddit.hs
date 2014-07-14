@@ -1,9 +1,12 @@
 module Reddit.API.Actions.Subreddit
   ( getSubredditInfo
-  , getSubredditSettings ) where
+  , getSubredditSettings
+  , setSubredditSettings ) where
 
 import Reddit.API.Types
 import Reddit.API.Types.Reddit
+import Reddit.API.Types.Subreddit
+import Reddit.API.Types.Empty
 import qualified Reddit.API.Routes as Route
 
 import APIBuilder
@@ -13,3 +16,6 @@ getSubredditInfo = Reddit . runRoute . Route.aboutSubreddit
 
 getSubredditSettings :: SubredditName -> Reddit SubredditSettings
 getSubredditSettings = Reddit . runRoute . Route.subredditSettings
+
+setSubredditSettings :: SubredditID -> SubredditSettings -> Reddit ()
+setSubredditSettings r s = nothing $ Reddit $ runRoute (Route.setSubredditSettings r s)

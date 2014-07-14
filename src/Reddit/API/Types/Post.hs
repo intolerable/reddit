@@ -5,6 +5,7 @@ import Reddit.API.Types.Reddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
+import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime as DateTime
@@ -73,6 +74,9 @@ instance Thing Post where
 
 instance Thing PostID where
   fullName (PostID pID) = T.concat [postPrefix , "_", pID]
+
+instance ToQuery PostID where
+  toQuery = toQuery . fullName
 
 postPrefix :: Text
 postPrefix = "t3"

@@ -3,6 +3,7 @@ module Reddit.API.Routes.Message where
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
+import APIBuilder.Query
 import APIBuilder.Routes
 import Data.Text (Text)
 
@@ -18,15 +19,15 @@ unread = Route [ "message", "unread" ]
 
 readMessage :: Thing a => a -> Route
 readMessage m = Route [ "api", "read_message" ]
-                      [ "id" =. Just (fullName m) ]
-                      "POST" 
+                      [ "id" =. fullName m ]
+                      "POST"
 
 sendMessage :: Username -> Text -> Text -> Maybe Text -> Maybe Text -> Route
 sendMessage (Username u) subject body iden captcha =
   Route [ "api", "compose" ]
-        [ "to" =. Just u
-        , "subject" =. Just subject
-        , "text" =. Just body
+        [ "to" =. u
+        , "subject" =. subject
+        , "text" =. body
         , "iden" =. iden
         , "captcha" =. captcha ]
         "POST"

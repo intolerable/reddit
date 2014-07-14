@@ -7,6 +7,7 @@ import Reddit.API.Types.User
 import Reddit.API.Types.Post
 import Reddit.API.Types.Reddit
 
+import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime as DateTime
@@ -84,6 +85,9 @@ instance FromJSON PostComments where
 
 instance Thing CommentID where
   fullName (CommentID cID) = T.concat [commentPrefix, "_", cID]
+
+instance ToQuery CommentID where
+  toQuery = toQuery . fullName
 
 commentPrefix :: Text
 commentPrefix = "t1"

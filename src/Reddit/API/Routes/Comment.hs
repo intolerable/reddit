@@ -9,5 +9,5 @@ import Data.Text (Text)
 
 aboutComment :: CommentID -> Route
 aboutComment pID = Route [ "api", "info" ]
-                         [ "id" =. Just (fullName pID) ]
+                         [ "id" =. pID ]
                          "GET"

@@ -25,6 +25,7 @@ library
     Reddit.API.Types.SubredditSettings
     Reddit.API.Types.Thing
     Reddit.API.Types.User
+    Reddit.API.Types.Wiki
     Reddit.Bot
   other-modules:
     Reddit.API.Parser
@@ -32,17 +33,19 @@ library
     Reddit.API.Routes.Comment
     Reddit.API.Routes.Message
     Reddit.API.Routes.Post
+    Reddit.API.Routes.Run
     Reddit.API.Routes.Subreddit
     Reddit.API.Routes.Thing
     Reddit.API.Routes.User
     Reddit.API.Routes.Vote
     Reddit.API.Types.Empty
   default-extensions:
-    OverloadedStrings,
-    FlexibleInstances
+    ExtendedDefaultRules,
+    FlexibleInstances,
+    OverloadedStrings
   default-language: Haskell2010
   hs-source-dirs: src/
-  build-depends: 
+  build-depends:
     base == 4.*,
     aeson,
     api-builder,

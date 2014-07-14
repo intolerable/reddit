@@ -9,6 +9,7 @@ import Reddit.API.Types.User
 import qualified Reddit.API.Routes.Message as Route
 
 import APIBuilder
+import APIBuilder.Query
 import Data.Text (Text)
 
 getInbox :: Reddit (Listing Message)
@@ -17,7 +18,7 @@ getInbox = Reddit $ runRoute $ Route.inbox
 getUnread :: Reddit (Listing Message)
 getUnread = Reddit $ runRoute $ Route.unread
 
-readMessage :: Thing a => a -> Reddit ()
+readMessage :: (ToQuery a, Thing a) => a -> Reddit ()
 readMessage = nothing . Reddit . runRoute . Route.readMessage
 
 sendMessage :: Username -> Text -> Text -> Reddit ()

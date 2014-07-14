@@ -11,42 +11,42 @@ import qualified Data.Text as T
 
 postsListing :: Maybe SubredditName -> Text -> Route
 postsListing r t = Route (endpoint r)
-                         ["limit" =. Just "50"]
+                         ["limit" =. 50]
                          "GET"
   where endpoint Nothing = [ t ]
         endpoint (Just (R name)) = [ "r", name, t ]
 
 aboutPost :: PostID -> Route
 aboutPost p = Route [ "api", "info" ]
-                    [ "id" =. (Just $ fullName p) ]
-                    "GET" 
+                    [ "id" =. p ]
+                    "GET"
 
 savePost :: PostID -> Route
 savePost p = Route [ "api", "save" ]
-                   [ "id" =. (Just $ fullName p) ] 
+                   [ "id" =. p ]
                    "POST"
 
 unsavePost :: PostID -> Route
 unsavePost p = Route [ "api", "unsave" ]
-                     [ "id" =. (Just $ fullName p) ]
+                     [ "id" =. p ]
                      "POST"
 
 submitLink :: SubredditName -> Text -> Text -> Route
 submitLink (R name) title url = Route [ "api", "submit" ]
-                                      [ "extension" =. Just "json"
-                                      , "kind" =. Just "link"
-                                      , "save" =. Just "false"
-                                      , "resubmit" =. Just "false"
-                                      , "sendreplies" =. Just "true"
-                                      , "then" =. Just "tb"
-                                      , "title" =. Just title
-                                      , "url" =. Just url
-                                      , "sr" =. Just name]
+                                      [ "extension" =. ("json" :: Text)
+                                      , "kind" =. ("link" :: Text)
+                                      , "save" =. True
+                                      , "resubmit" =. False
+                                      , "sendreplies" =. True
+                                      , "then" =. ("tb" :: Text)
+                                      , "title" =. title
+                                      , "url" =. url
+                                      , "sr" =. name]
                                       "POST"
 
 deletePost :: PostID -> Route
 deletePost p = Route [ "api", "del" ]
-                     [ "id" =. Just (fullName p) ]
+                     [ "id" =. p ]
                      "POST"
 
 getComments :: PostID -> Route
@@ -56,6 +56,6 @@ getComments (PostID p) = Route [ "comments", p ]
 
 sendReplies :: Bool -> PostID -> Route
 sendReplies setting p = Route [ "api", "sendreplies" ]
-                              [ "id" =. Just (fullName p)
-                              , "state" =. Just (T.pack $ map toLower $ show setting) ]
+                              [ "id" =. p
+                              , "state" =. setting ]
                               "POST"

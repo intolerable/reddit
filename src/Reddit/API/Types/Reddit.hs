@@ -42,7 +42,7 @@ newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)
 
 instance FromJSON Modhash where
-  parseJSON (Object o) = 
+  parseJSON (Object o) =
     Modhash <$> ((o .: "json") >>= (.: "data") >>= (.: "modhash"))
   parseJSON _ = mempty
 
@@ -70,7 +70,7 @@ addHeader :: Request -> Request
 addHeader req = req { requestHeaders = ("User-Agent","reddit-haskell") : requestHeaders req }
 
 addAPIType :: Route -> Route
-addAPIType (Route fs ps m) = Route fs ("api_type" =. Just "json" : ps) m 
+addAPIType (Route fs ps m) = Route fs ("api_type" =. ("json" :: Text) : ps) m
 
 mainBaseURL :: Text
 mainBaseURL = "http://api.reddit.com"

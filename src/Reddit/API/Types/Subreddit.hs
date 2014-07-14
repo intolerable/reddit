@@ -15,6 +15,9 @@ newtype SubredditName = R T.Text
 newtype SubredditID = SubredditID T.Text
   deriving (Show, Read, Eq)
 
+instance Thing SubredditID where
+  fullName (SubredditID i) = T.concat [subredditPrefix, "_", i]
+
 data Subreddit = Subreddit { subredditID :: T.Text
                            , name :: SubredditName
                            , title :: T.Text

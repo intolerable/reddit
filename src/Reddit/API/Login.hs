@@ -12,9 +12,9 @@ import Network.HTTP.Conduit
 
 loginRoute :: Text -> Text -> Route
 loginRoute user pass = Route [ "api", "login" ]
-                             [ "rem" =. Just "true"
-                             , "user" =. Just user
-                             , "passwd" =. Just pass ]
+                             [ "rem" =. ("true" :: Text)
+                             , "user" =. user
+                             , "passwd" =. pass ]
                              "POST"
 
 getLoginDetails :: Text -> Text -> Reddit LoginDetails
@@ -23,7 +23,7 @@ getLoginDetails user pass = do
   req <- Reddit . EitherT . return $ case routeRequest b (loginRoute user pass) of
     Just url -> Right url
     Nothing -> Left InvalidURLError
-  resp <- liftIO $ withManager $ httpLbs req 
+  resp <- liftIO $ withManager $ httpLbs req
   let cj = responseCookieJar resp
   mh <- Reddit . EitherT . return . decode $ responseBody resp
   return $ LoginDetails mh cj
