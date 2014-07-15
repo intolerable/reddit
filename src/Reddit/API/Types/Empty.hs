@@ -13,7 +13,7 @@ data Empty = Empty
   deriving (Show, Read, Eq)
 
 instance FromJSON Empty where
-  parseJSON (Object o) = 
+  parseJSON (Object o) =
     if Hash.null o
       then return Empty
       else do

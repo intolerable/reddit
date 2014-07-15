@@ -21,8 +21,8 @@ import Data.Aeson
 import Data.DateTime
 import Data.Monoid (mempty)
 import Data.Text (Text)
-import Network.HTTP.Types
 import Network.HTTP.Conduit hiding (path)
+import Network.HTTP.Types
 
 type Reddit a = RedditT IO a
 

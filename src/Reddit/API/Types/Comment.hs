@@ -2,10 +2,10 @@ module Reddit.API.Types.Comment where
 
 import Reddit.API.Parser
 import Reddit.API.Types.Listing
-import Reddit.API.Types.Thing
-import Reddit.API.Types.User
 import Reddit.API.Types.Post
 import Reddit.API.Types.Reddit
+import Reddit.API.Types.Thing
+import Reddit.API.Types.User
 
 import APIBuilder.Query
 import Control.Applicative

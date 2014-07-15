@@ -1,12 +1,12 @@
 module Reddit.API.Actions.Post where
 
 import Reddit.API.Routes as Route
+import Reddit.API.Routes.Run
 import Reddit.API.Types
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Empty
 import Reddit.API.Types.Listing
 import Reddit.API.Types.Reddit
-import Reddit.API.Routes.Run
 
 import Control.Monad.IO.Class
 import Data.Text (Text)

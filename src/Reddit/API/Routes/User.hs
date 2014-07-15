@@ -1,6 +1,7 @@
 module Reddit.API.Routes.User where
 
 import Reddit.API.Types.User
+
 import APIBuilder.Routes
 
 aboutUser :: Username -> Route

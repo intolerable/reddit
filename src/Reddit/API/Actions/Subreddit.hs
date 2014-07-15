@@ -3,12 +3,12 @@ module Reddit.API.Actions.Subreddit
   , getSubredditSettings
   , setSubredditSettings ) where
 
+import Reddit.API.Routes.Run
 import Reddit.API.Types
+import Reddit.API.Types.Empty
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Subreddit
-import Reddit.API.Types.Empty
 import qualified Reddit.API.Routes as Route
-import Reddit.API.Routes.Run
 
 import Control.Monad.IO.Class
 

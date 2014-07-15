@@ -4,11 +4,11 @@ module Reddit.API.Actions.Voting
   , unvotePost
   , voteOnComment ) where
 
+import Reddit.API.Routes.Run
 import Reddit.API.Types
 import Reddit.API.Types.Empty
 import Reddit.API.Types.Reddit
 import qualified Reddit.API.Routes as Route
-import Reddit.API.Routes.Run
 
 import Control.Monad.IO.Class
 

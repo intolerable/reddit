@@ -25,7 +25,7 @@ instance FromJSON RedditError where
   parseJSON (Object o) = do
     Array errors <- o .: "json" >>= (.: "errors")
     case errors !? 0 of
-      Just (Array e) -> case V.toList e of 
+      Just (Array e) -> case V.toList e of
         String "WRONG_PASSWORD" : _ -> return CredentialsError
         String "USER_REQUIRED" : _ -> return CredentialsError
         String "RATELIMIT" : String d : _ -> return $ RateLimitError d

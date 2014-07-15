@@ -7,15 +7,16 @@ import Reddit.API.Types.User
 
 import Control.Applicative
 import Data.Aeson
+import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
 
 data Message = Message { messageID :: MessageKind
                        , new :: Bool
                        , to :: Username
-                       , from :: Username 
+                       , from :: Username
                        , body :: Text
-                       , bodyHTML :: Text 
+                       , bodyHTML :: Text
                        , replies :: Listing Message }
   deriving (Show, Read, Eq)
 
@@ -28,7 +29,7 @@ instance FromJSON Message where
             <*> d .: "author"
             <*> d .: "body"
             <*> d .: "body_html"
-            <*> (maybe (Listing []) id <$> d .:? "replies")
+            <*> (fromMaybe (Listing []) <$> d .:? "replies")
   parseJSON _ = mempty
 
 instance Thing Message where
@@ -52,7 +53,7 @@ instance FromJSON MessageKind where
   parseJSON (Object o) = do
     kind <- o .: "kind"
     d <- o .: "data"
-    case kind of 
+    case kind of
       String "t1" -> CommentMessage <$> d .: "id"
       String "t4" -> PrivateMessage <$> d .: "id"
       String _ -> error "Unrecognized message type"

@@ -4,8 +4,8 @@ import Reddit.API.Parser
 
 import APIBuilder.Query
 import Control.Applicative
-import Data.Default
 import Data.Aeson
+import Data.Default
 import Data.Monoid (mempty)
 import Data.Text (Text)
 

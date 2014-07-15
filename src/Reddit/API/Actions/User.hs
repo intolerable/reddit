@@ -1,9 +1,9 @@
 module Reddit.API.Actions.User where
 
-import qualified Reddit.API.Routes.User as Route
+import Reddit.API.Routes.Run
 import Reddit.API.Types
 import Reddit.API.Types.Reddit
-import Reddit.API.Routes.Run
+import qualified Reddit.API.Routes.User as Route
 
 import Control.Monad.IO.Class
 
