@@ -1,8 +1,7 @@
 module Reddit.API
   ( module Export
   , runReddit
-  , nest
-  , makeIO ) where
+  , nest ) where
 
 import Reddit.API.Actions as Export
 import Reddit.API.Login
@@ -12,12 +11,13 @@ import Reddit.API.Types.Error as Export
 import APIBuilder
 import APIBuilder as Export (APIError(..))
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.HTTP.Conduit
 
-runReddit :: Text -> Text -> Reddit a -> IO (Either (APIError RedditError) a)
+runReddit :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
 runReddit user pass (RedditT reddit) =
   runAPI builder () $ do
     customizeRequest addHeader
@@ -27,12 +27,7 @@ runReddit user pass (RedditT reddit) =
                   , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
     reddit
 
-nest :: Reddit a -> Reddit (Either (APIError RedditError) a)
+nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
 nest (RedditT a) = do
   b <- RedditT $ liftBuilder get
-  liftIO $ runAPI b () a
-
-makeIO :: Reddit a -> Reddit (IO (Either (APIError RedditError) a))
-makeIO (RedditT a) = do
-  b <- RedditT $ liftBuilder get
-  return $ runAPI b () a
+  lift $ runAPI b () a

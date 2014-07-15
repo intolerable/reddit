@@ -16,6 +16,7 @@ import Reddit.API.Types.Error
 import APIBuilder
 import Control.Applicative
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Class
 import Data.Aeson
 import Data.DateTime
 import Data.Monoid (mempty)
@@ -40,6 +41,9 @@ instance Monad m => Monad (RedditT m) where
 
 instance MonadIO m => MonadIO (RedditT m) where
   liftIO a = RedditT (liftIO a)
+
+instance MonadTrans RedditT where
+  lift a = RedditT (lift . lift . lift $ a)
 
 newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)

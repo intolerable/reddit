@@ -6,23 +6,24 @@ import Reddit.API.Types.Message
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
+import Reddit.API.Routes.Run
 import qualified Reddit.API.Routes.Message as Route
 
-import APIBuilder
 import APIBuilder.Query
+import Control.Monad.IO.Class
 import Data.Text (Text)
 
-getInbox :: Reddit (Listing Message)
-getInbox = RedditT $ runRoute $ Route.inbox
+getInbox :: MonadIO m => RedditT m (Listing Message)
+getInbox = runRoute $ Route.inbox
 
-getUnread :: Reddit (Listing Message)
-getUnread = RedditT $ runRoute $ Route.unread
+getUnread :: MonadIO m => RedditT m (Listing Message)
+getUnread = runRoute $ Route.unread
 
-readMessage :: (ToQuery a, Thing a) => a -> Reddit ()
-readMessage = nothing . RedditT . runRoute . Route.readMessage
+readMessage :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
+readMessage = nothing . runRoute . Route.readMessage
 
-sendMessage :: Username -> Text -> Text -> Reddit ()
-sendMessage u s b = nothing $ RedditT $ runRoute $ Route.sendMessage u s b Nothing Nothing
+sendMessage :: MonadIO m => Username -> Text -> Text -> RedditT m ()
+sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b Nothing Nothing
 
-sendMessageWithCaptcha :: Username -> Text -> Text -> Text -> Text -> Reddit ()
-sendMessageWithCaptcha u s b i c = nothing $ RedditT $ runRoute $ Route.sendMessage u s b (Just i) (Just c)
+sendMessageWithCaptcha :: MonadIO m => Username -> Text -> Text -> Text -> Text -> RedditT m ()
+sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b (Just i) (Just c)

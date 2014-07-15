@@ -18,24 +18,19 @@ instance Monoid Bot where
 runBots :: [Bot] -> Text -> Text -> IO ()
 runBots bs user pass = void $ runReddit user pass $ unBot $ mconcat bs
 
-every :: Int -> Reddit a -> Reddit ()
+every :: MonadIO m => Int -> RedditT m a -> RedditT m ()
 every n act = forever $ void act >> wait n
 
 -- | Rate limit a @Reddit@ action, waiting for 60 seconds if the rate limit is reached.
 --
 -- > rateLimit = rateLimitWith (wait 60)
-rateLimit :: Reddit a -> Reddit a
+rateLimit :: MonadIO m => RedditT m a -> RedditT m a
 rateLimit = rateLimitWith (wait 60)
-
-forkReddit :: Reddit a -> Reddit ()
-forkReddit a = do
-  io <- makeIO a
-  void $ liftIO $ forkIO $ void io
 
 -- | Rate limit an action using a specified action. If the rate limit is reached when
 --   running the second action, the first action is executed, then the first action is run
 --   again.
-rateLimitWith :: Reddit () -> Reddit a -> Reddit a
+rateLimitWith :: MonadIO m => RedditT m () -> RedditT m a -> RedditT m a
 rateLimitWith onLimit act = do
   res <- nest act
   case res of
@@ -48,5 +43,5 @@ rateLimitWith onLimit act = do
 
 -- | Wait @n@ seconds. Essentially @threadDelay@ in the @Reddit@ type using seconds
 --   instead of microseconds.
-wait :: Int -> Reddit ()
+wait :: MonadIO m => Int -> RedditT m ()
 wait = liftIO . threadDelay . (* 1000000)
