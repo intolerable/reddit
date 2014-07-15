@@ -2,12 +2,9 @@ module Reddit.API.Routes.Post where
 
 import Reddit.API.Types.Post (PostID(..))
 import Reddit.API.Types.Subreddit (SubredditName(..))
-import Reddit.API.Types.Thing
 
 import APIBuilder.Routes
-import Data.Char (toLower)
 import Data.Text (Text)
-import qualified Data.Text as T
 
 postsListing :: Maybe SubredditName -> Text -> Route
 postsListing r t = Route (endpoint r)

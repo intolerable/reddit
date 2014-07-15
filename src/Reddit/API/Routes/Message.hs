@@ -3,7 +3,6 @@ module Reddit.API.Routes.Message where
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
-import APIBuilder.Query
 import APIBuilder.Routes
 import Data.Text (Text)
 
