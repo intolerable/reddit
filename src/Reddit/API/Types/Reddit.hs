@@ -68,12 +68,12 @@ data RateLimitInfo = RateLimitInfo { used :: Integer
                                    , resetTime :: DateTime }
   deriving (Show, Read, Eq)
 
-headersToRateLimitInfo :: ResponseHeaders -> DateTime -> (Maybe RateLimitInfo)
-headersToRateLimitInfo hs now = do
+headersToRateLimitInfo :: ResponseHeaders -> DateTime -> Maybe RateLimitInfo
+headersToRateLimitInfo hs now =
   RateLimitInfo <$> rlUsed <*> rlRemaining <*> rlResetTime'
   where (rlUsed, rlRemaining, rlResetTime) =
           trimap extract ("x-ratelimit-used", "x-ratelimit-remaining", "x-ratelimit-reset")
-        rlResetTime' = fmap (\t -> DateTime.addSeconds t now) rlResetTime
+        rlResetTime' = fmap (`DateTime.addSeconds` now) rlResetTime
         extract s = lookup s hs >>= readMaybe . BS.unpack
         trimap f (a, b, c) = (f a, f b, f c)
 

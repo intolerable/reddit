@@ -13,7 +13,6 @@ import Data.Aeson (FromJSON)
 import Data.DateTime (DateTime)
 import Network.HTTP.Conduit
 import qualified APIBuilder as API
-import qualified APIBuilder.API as API
 import qualified Data.DateTime as DateTime
 
 runRoute :: (MonadIO m, FromJSON a) => Route -> RedditT m a
@@ -21,14 +20,14 @@ runRoute route = do
   (limiting, rli) <- RedditT $ API.liftState get
   whenJust rli $ \r -> when (needsReset r && limiting) $ waitForReset (resetTime r)
   resp <- RedditT $ API.routeResponse route
-  time <- liftIO $ DateTime.getCurrentTime
-  whenJust (headersToRateLimitInfo (responseHeaders resp) time) $ \r -> do
-    RedditT $ API.liftState $ put $ (limiting, Just r)
+  time <- liftIO DateTime.getCurrentTime
+  whenJust (headersToRateLimitInfo (responseHeaders resp) time) $ \r ->
+    RedditT $ API.liftState $ put (limiting, Just r)
   RedditT $ hoistEither $ API.decode $ responseBody resp
 
 waitForReset :: MonadIO m => DateTime -> RedditT m ()
 waitForReset dt = do
-  time <- liftIO $ DateTime.getCurrentTime
+  time <- liftIO DateTime.getCurrentTime
   let wait = fromIntegral $ DateTime.diffSeconds dt time
   liftIO $ threadDelay $ (wait + 5) * 1000000 -- wait five extra seconds to account for timing differences
 

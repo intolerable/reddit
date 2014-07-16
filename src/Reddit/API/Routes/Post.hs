@@ -8,7 +8,7 @@ import Data.Text (Text)
 
 postsListing :: Maybe SubredditName -> Text -> Route
 postsListing r t = Route (endpoint r)
-                         ["limit" =. 50]
+                         ["limit" =. (50 :: Integer)]
                          "GET"
   where endpoint Nothing = [ t ]
         endpoint (Just (R name)) = [ "r", name, t ]

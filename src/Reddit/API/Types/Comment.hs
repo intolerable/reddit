@@ -55,7 +55,7 @@ data Comment = Comment { commentID :: CommentID
                        , authorFlairText :: Maybe Text
                        , body :: Text
                        , bodyHTML :: Text
-                       , replies :: Listing (CommentReference)
+                       , replies :: Listing CommentReference
                        , created :: DateTime
                        , edited :: Maybe DateTime
                        , scoreHidden :: Bool }
