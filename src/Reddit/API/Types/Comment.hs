@@ -32,6 +32,19 @@ instance FromJSON (POSTWrapped CommentID) where
       Nothing -> mempty
   parseJSON _ = mempty
 
+data CommentReference = Reference CommentID
+                      | Actual Comment
+  deriving (Show, Read, Eq)
+
+instance FromJSON CommentReference where
+  parseJSON a@(Object o) = do
+    k <- o .: "kind"
+    case k of
+      String "t1" -> Actual <$> parseJSON a
+      String "more" -> Reference <$> ((o .: "data") >>= (.: "id"))
+      _ -> mempty
+  parseJSON _ = mempty
+
 data Comment = Comment { commentID :: CommentID
                        , ups :: Maybe Integer
                        , downs :: Maybe Integer
@@ -42,7 +55,7 @@ data Comment = Comment { commentID :: CommentID
                        , authorFlairText :: Maybe Text
                        , body :: Text
                        , bodyHTML :: Text
-                       , replies :: Listing Comment
+                       , replies :: Listing (CommentReference)
                        , created :: DateTime
                        , edited :: Maybe DateTime
                        , scoreHidden :: Bool }

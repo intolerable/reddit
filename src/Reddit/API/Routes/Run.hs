@@ -24,9 +24,7 @@ runRoute route = do
   time <- liftIO $ DateTime.getCurrentTime
   whenJust (headersToRateLimitInfo (responseHeaders resp) time) $ \r -> do
     RedditT $ API.liftState $ put $ (limiting, Just r)
-  liftIO $ print $ responseBody resp
-  r <- RedditT $ hoistEither $ API.decode $ responseBody resp
-  return r
+  RedditT $ hoistEither $ API.decode $ responseBody resp
 
 waitForReset :: MonadIO m => DateTime -> RedditT m ()
 waitForReset dt = do
