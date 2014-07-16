@@ -36,6 +36,14 @@ data CommentReference = Reference CommentID
                       | Actual Comment
   deriving (Show, Read, Eq)
 
+isActual :: CommentReference -> Bool
+isActual (Actual _) = True
+isActual _ = False
+
+isReference :: CommentReference -> Bool
+isReference (Reference _) = True
+isReference _ = False
+
 instance FromJSON CommentReference where
   parseJSON a@(Object o) = do
     k <- o .: "kind"
@@ -82,6 +90,10 @@ instance FromJSON Comment where
     where getDate (Number i) = Just $ DateTime.fromSeconds $ round i
           getDate _ = Nothing
   parseJSON _ = mempty
+
+flattenComments :: CommentReference -> [CommentReference]
+flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing cs) -> cs) $ replies c)
+flattenComments (Reference c) = [Reference c]
 
 data PostComments = PostComments Post [CommentReference]
   deriving (Show, Read, Eq)
