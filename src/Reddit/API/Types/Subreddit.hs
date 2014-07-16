@@ -31,7 +31,7 @@ instance FromJSON Subreddit where
     Subreddit <$> d .: "id"
               <*> (R <$> d .: "display_name")
               <*> d .: "title"
-              <*> d .: "subscribers" 
+              <*> d .: "subscribers"
               <*> d .: "user_is_banned"
   parseJSON _ = mempty
 

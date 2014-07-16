@@ -42,7 +42,7 @@ submitLink r title url = do
 deletePost :: MonadIO m => PostID -> RedditT m ()
 deletePost = nothing . runRoute . Route.deletePost
 
-getComments :: MonadIO m => PostID -> RedditT m [Comment]
+getComments :: MonadIO m => PostID -> RedditT m [CommentReference]
 getComments p = do
   PostComments _ c <- runRoute $ Route.getComments p
   return c

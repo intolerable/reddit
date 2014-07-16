@@ -83,7 +83,7 @@ instance FromJSON Comment where
           getDate _ = Nothing
   parseJSON _ = mempty
 
-data PostComments = PostComments Post [Comment]
+data PostComments = PostComments Post [CommentReference]
   deriving (Show, Read, Eq)
 
 instance FromJSON PostComments where
