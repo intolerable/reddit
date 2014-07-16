@@ -5,6 +5,7 @@ module Reddit.API.Types.Reddit
   , LoginDetails(..)
   , POSTWrapped(..)
   , RateLimitInfo(..)
+  , headersToRateLimitInfo
   , builder
   , mainBaseURL
   , loginBaseURL
@@ -18,15 +19,18 @@ import Control.Applicative
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
 import Data.Aeson
-import Data.DateTime
+import Data.DateTime (DateTime)
 import Data.Monoid (mempty)
 import Data.Text (Text)
 import Network.HTTP.Conduit hiding (path)
 import Network.HTTP.Types
+import Text.Read (readMaybe)
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.DateTime as DateTime
 
 type Reddit a = RedditT IO a
 
-newtype RedditT m a = RedditT { unRedditT :: APIT () RedditError m a }
+newtype RedditT m a = RedditT { unRedditT :: APIT (Bool, Maybe RateLimitInfo) RedditError m a }
 
 instance Monad m => Functor (RedditT m) where
   fmap f (RedditT a) = RedditT (fmap f a)
@@ -64,8 +68,14 @@ data RateLimitInfo = RateLimitInfo { used :: Integer
                                    , resetTime :: DateTime }
   deriving (Show, Read, Eq)
 
-headersToRateLimitInfo :: ResponseHeaders -> Maybe RateLimitInfo
-headersToRateLimitInfo = undefined
+headersToRateLimitInfo :: ResponseHeaders -> DateTime -> (Maybe RateLimitInfo)
+headersToRateLimitInfo hs now = do
+  RateLimitInfo <$> rlUsed <*> rlRemaining <*> rlResetTime'
+  where (rlUsed, rlRemaining, rlResetTime) =
+          trimap extract ("x-ratelimit-used", "x-ratelimit-remaining", "x-ratelimit-reset")
+        rlResetTime' = fmap (\t -> DateTime.addSeconds t now) rlResetTime
+        extract s = lookup s hs >>= readMaybe . BS.unpack
+        trimap f (a, b, c) = (f a, f b, f c)
 
 builder :: Builder
 builder = Builder "Reddit API"

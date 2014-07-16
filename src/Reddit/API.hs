@@ -19,7 +19,7 @@ import Network.HTTP.Conduit
 
 runReddit :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
 runReddit user pass (RedditT reddit) =
-  runAPI builder () $ do
+  runAPI builder (True, Nothing) $ do
     customizeRequest addHeader
     LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
     customizeRequest $ \r ->
@@ -30,4 +30,5 @@ runReddit user pass (RedditT reddit) =
 nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
 nest (RedditT a) = do
   b <- RedditT $ liftBuilder get
-  lift $ runAPI b () a
+  rl <- RedditT $ liftState get
+  lift $ runAPI b rl a

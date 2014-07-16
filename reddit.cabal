@@ -49,6 +49,7 @@ library
     base == 4.*,
     aeson,
     api-builder,
+    bytestring,
     data-default,
     datetime,
     either,
