@@ -54,8 +54,7 @@ instance FromJSON CommentReference where
   parseJSON _ = mempty
 
 data Comment = Comment { commentID :: CommentID
-                       , ups :: Maybe Integer
-                       , downs :: Maybe Integer
+                       , score :: Maybe Integer
                        , gilded :: Integer
                        , saved :: Bool
                        , author :: Username
@@ -65,8 +64,7 @@ data Comment = Comment { commentID :: CommentID
                        , bodyHTML :: Text
                        , replies :: Listing CommentReference
                        , created :: DateTime
-                       , edited :: Maybe DateTime
-                       , scoreHidden :: Bool }
+                       , edited :: Maybe DateTime }
   deriving (Show, Read, Eq)
 
 instance FromJSON Comment where
@@ -74,8 +72,7 @@ instance FromJSON Comment where
     o `ensureKind` commentPrefix
     d <- o .: "data"
     Comment <$> d .: "id"
-            <*> d .:? "ups"
-            <*> d .:? "downs"
+            <*> d .:? "score"
             <*> d .: "gilded"
             <*> d .: "saved"
             <*> d .: "author"
@@ -86,7 +83,6 @@ instance FromJSON Comment where
             <*> d .: "replies"
             <*> (DateTime.fromSeconds <$> d .: "created")
             <*> (getDate <$> d .: "edited")
-            <*> d .: "score_hidden"
     where getDate (Number i) = Just $ DateTime.fromSeconds $ round i
           getDate _ = Nothing
   parseJSON _ = mempty
