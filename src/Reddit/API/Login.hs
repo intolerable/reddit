@@ -4,6 +4,7 @@ module Reddit.API.Login
 import Reddit.API.Types.Reddit
 
 import APIBuilder
+import Control.Exception (try)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either
 import Control.Monad.Trans.State
@@ -23,9 +24,10 @@ getLoginDetails user pass = do
   req <- RedditT . EitherT . return $ case routeRequest b (loginRoute user pass) of
     Just url -> Right url
     Nothing -> Left InvalidURLError
-  resp <- liftIO $ withManager $ httpLbs req
-  let cj = responseCookieJar resp
-  mh <- RedditT . EitherT . return . decode $ responseBody resp
+  resp <- liftIO $ try $ withManager $ httpLbs req
+  resp' <- RedditT $ hoistEither $ either (Left . HTTPError) Right resp
+  let cj = responseCookieJar resp'
+  mh <- RedditT . EitherT . return . decode $ responseBody resp'
   return $ LoginDetails mh cj
 
 login :: MonadIO m => Text -> Text -> RedditT m LoginDetails
