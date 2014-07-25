@@ -1,6 +1,7 @@
 module Reddit.API
   ( module Export
   , runReddit
+  , runRedditWithRateLimiting
   , nest ) where
 
 import Reddit.API.Actions as Export
@@ -18,14 +19,21 @@ import Data.Text.Encoding (encodeUtf8)
 import Network.HTTP.Conduit
 
 runReddit :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
-runReddit user pass (RedditT reddit) =
-  runAPI builder (True, Nothing) $ do
+runReddit user pass action = run user pass False action
+
+runRedditWithRateLimiting :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
+runRedditWithRateLimiting user pass action = run user pass True action
+
+run :: MonadIO m => Text -> Text -> Bool -> RedditT m a -> m (Either (APIError RedditError) a)
+run user pass shouldRateLimit (RedditT reddit) =
+  runAPI builder (shouldRateLimit, Nothing) $ do
     customizeRequest addHeader
     LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
     customizeRequest $ \r ->
       addHeader r { cookieJar = Just cj
                   , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
     reddit
+
 
 nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
 nest (RedditT a) = do
