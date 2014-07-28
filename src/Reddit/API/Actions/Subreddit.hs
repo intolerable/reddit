@@ -18,5 +18,5 @@ getSubredditInfo = runRoute . Route.aboutSubreddit
 getSubredditSettings :: MonadIO m => SubredditName -> RedditT m SubredditSettings
 getSubredditSettings = runRoute . Route.subredditSettings
 
-setSubredditSettings :: MonadIO m => SubredditID -> SubredditSettings -> RedditT m ()
+setSubredditSettings :: MonadIO m => SubredditName -> SubredditSettings -> RedditT m ()
 setSubredditSettings r s = nothing $ runRoute (Route.setSubredditSettings r s)

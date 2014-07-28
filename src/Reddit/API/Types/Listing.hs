@@ -10,7 +10,7 @@ data Listing a = Listing [a]
   deriving (Show, Read, Eq)
 
 instance Functor Listing where
-  fmap f (Listing a) = Listing (fmap f a) 
+  fmap f (Listing a) = Listing (fmap f a)
 
 instance FromJSON a => FromJSON (Listing a) where
   parseJSON (Object o) = do

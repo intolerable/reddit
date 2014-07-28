@@ -17,8 +17,10 @@ library
     Reddit.API.Types
     Reddit.API.Types.Comment
     Reddit.API.Types.Error
+    Reddit.API.Types.Flair
     Reddit.API.Types.Listing
     Reddit.API.Types.Message
+    Reddit.API.Types.Options
     Reddit.API.Types.Post
     Reddit.API.Types.Reddit
     Reddit.API.Types.Subreddit
@@ -31,6 +33,7 @@ library
     Reddit.API.Parser
     Reddit.API.Routes
     Reddit.API.Routes.Comment
+    Reddit.API.Routes.Flair
     Reddit.API.Routes.Message
     Reddit.API.Routes.Post
     Reddit.API.Routes.Run

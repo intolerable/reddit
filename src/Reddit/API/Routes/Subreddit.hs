@@ -16,14 +16,14 @@ subredditSettings (R sub) = Route ["r", sub, "about", "edit"]
                                   []
                                   "GET"
 
-setSubredditSettings :: SubredditID -> SubredditSettings -> Route
-setSubredditSettings sr settings =
+setSubredditSettings :: SubredditName -> SubredditSettings -> Route
+setSubredditSettings (R sub) settings =
   Route ["api", "site_admin"]
-        ["sr" =. fullName sr
+        [ "name" =. sub
         , "description" =. sidebarText settings
         , "public_description" =. descriptionText settings
         , "title" =. title settings
-        , "content_options" =. linkType settings
+        , "link_type" =. linkType settings
         , "comment_score_hide_mins" =. hideScoreMins settings
         , "submit_link_label" =. submitLinkLabel settings
         , "submit_text_label" =. submitTextLabel settings
@@ -39,5 +39,5 @@ setSubredditSettings sr settings =
         , "spam_selfposts" =. spamSelfposts settings
         , "spam_links" =. spamLinks settings
         , "public_traffic" =. publicTrafficStats settings
-        , "subreddit_type" =. subredditType settings ]
+        , "type" =. subredditType settings ]
         "POST"
