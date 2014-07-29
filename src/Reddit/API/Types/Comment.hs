@@ -32,7 +32,13 @@ instance FromJSON (POSTWrapped CommentID) where
       Nothing -> mempty
   parseJSON _ = mempty
 
-data CommentReference = Reference CommentID
+instance FromJSON (POSTWrapped [CommentReference]) where
+  parseJSON (Object o) = do
+    cs <- (o .: "json") >>= (.: "data") >>= (.: "things")
+    POSTWrapped <$> parseJSON cs
+  parseJSON _ = mempty
+
+data CommentReference = Reference Integer [CommentID]
                       | Actual Comment
   deriving (Show, Read, Eq)
 
@@ -41,7 +47,7 @@ isActual (Actual _) = True
 isActual _ = False
 
 isReference :: CommentReference -> Bool
-isReference (Reference _) = True
+isReference (Reference _ _) = True
 isReference _ = False
 
 instance FromJSON CommentReference where
@@ -49,7 +55,9 @@ instance FromJSON CommentReference where
     k <- o .: "kind"
     case k of
       String "t1" -> Actual <$> parseJSON a
-      String "more" -> Reference <$> ((o .: "data") >>= (.: "id"))
+      String "more" ->
+        Reference <$> ((o .: "data") >>= (.: "count"))
+                  <*> ((o .: "data") >>= (.: "children"))
       _ -> mempty
   parseJSON _ = mempty
 
@@ -89,7 +97,7 @@ instance FromJSON Comment where
 
 flattenComments :: CommentReference -> [CommentReference]
 flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing cs) -> cs) $ replies c)
-flattenComments (Reference c) = [Reference c]
+flattenComments (Reference _ rs) = map (\r -> Reference 1 [r]) rs
 
 data PostComments = PostComments Post [CommentReference]
   deriving (Show, Read, Eq)

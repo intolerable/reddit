@@ -17,6 +17,7 @@ instance FromJSON a => FromJSON (Listing a) where
     o `ensureKind` "Listing"
     Listing <$> (o .: "data" >>= (.: "children"))
   parseJSON (String "") = return $ Listing []
+  parseJSON Null = return $ Listing []
   parseJSON _ = mempty
 
 data ListingOptions a = ListingOptions { before :: Maybe a

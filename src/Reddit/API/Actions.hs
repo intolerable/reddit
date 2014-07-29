@@ -1,6 +1,7 @@
 module Reddit.API.Actions
   ( module Actions) where
 
+import Reddit.API.Actions.Comment as Actions
 import Reddit.API.Actions.Flair as Actions
 import Reddit.API.Actions.Message as Actions
 import Reddit.API.Actions.Post as Actions
