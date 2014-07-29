@@ -1,6 +1,7 @@
 module Reddit.API.Actions.Comment where
 
 import Reddit.API.Types.Comment
+import Reddit.API.Types.Listing
 import Reddit.API.Types.Post
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Subreddit
@@ -18,4 +19,6 @@ getMoreChildren p cs = do
   return $ rs ++ more
 
 getNewSubredditComments :: MonadIO m => SubredditName -> RedditT m [CommentReference]
-getNewSubredditComments = runRoute . Route.newSubredditComments
+getNewSubredditComments r = do
+  Listing cs <- runRoute $ Route.newSubredditComments r
+  return cs
