@@ -14,6 +14,7 @@ library
     Reddit.API.Actions.Thing
     Reddit.API.Actions.User
     Reddit.API.Actions.Voting
+    Reddit.API.Actions.Wiki
     Reddit.API.Login
     Reddit.API.Types
     Reddit.API.Types.Comment
@@ -42,6 +43,7 @@ library
     Reddit.API.Routes.Thing
     Reddit.API.Routes.User
     Reddit.API.Routes.Vote
+    Reddit.API.Routes.Wiki
     Reddit.API.Types.Empty
   default-extensions:
     ExtendedDefaultRules,

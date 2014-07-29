@@ -8,3 +8,4 @@ import Reddit.API.Actions.Subreddit as Actions
 import Reddit.API.Actions.Thing as Actions
 import Reddit.API.Actions.User as Actions
 import Reddit.API.Actions.Voting as Actions
+import Reddit.API.Actions.Wiki as Actions
