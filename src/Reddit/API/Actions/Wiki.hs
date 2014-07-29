@@ -6,7 +6,8 @@ import Reddit.API.Types.Subreddit
 import Reddit.API.Types.Wiki
 import qualified Reddit.API.Routes as Route
 
+import Control.Monad.IO.Class
 import Data.Text (Text)
 
-getWikiPage :: SubredditName -> Text -> Reddit WikiPage
+getWikiPage :: MonadIO m => SubredditName -> Text -> RedditT m WikiPage
 getWikiPage sub page = runRoute $ Route.wikiPage sub page

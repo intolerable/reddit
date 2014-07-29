@@ -7,7 +7,9 @@ import Reddit.API.Types.Subreddit
 import Reddit.API.Routes.Run
 import qualified Reddit.API.Routes as Route
 
-getMoreChildren :: PostID -> [CommentID] -> Reddit [CommentReference]
+import Control.Monad.IO.Class
+
+getMoreChildren :: MonadIO m => PostID -> [CommentID] -> RedditT m [CommentReference]
 getMoreChildren _ [] = return []
 getMoreChildren p cs = do
   let (now, next) = splitAt 20 cs
@@ -15,5 +17,5 @@ getMoreChildren p cs = do
   more <- getMoreChildren p next
   return $ rs ++ more
 
-getNewSubredditComments :: SubredditName -> Reddit [CommentReference]
+getNewSubredditComments :: MonadIO m => SubredditName -> RedditT m [CommentReference]
 getNewSubredditComments = runRoute . Route.newSubredditComments
