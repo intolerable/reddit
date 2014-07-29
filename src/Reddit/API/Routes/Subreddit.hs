@@ -2,7 +2,6 @@ module Reddit.API.Routes.Subreddit where
 
 import Reddit.API.Types.Subreddit hiding (title)
 import Reddit.API.Types.SubredditSettings
-import Reddit.API.Types.Thing
 
 import APIBuilder.Routes
 

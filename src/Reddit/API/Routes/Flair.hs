@@ -1,7 +1,6 @@
 module Reddit.API.Routes.Flair where
 
 import Reddit.API.Types.Subreddit
-import qualified Reddit.API.Types.Flair as Flair
 
 import APIBuilder.Routes
 import Data.Text (Text)

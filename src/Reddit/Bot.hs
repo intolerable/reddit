@@ -5,7 +5,6 @@ import Reddit.API
 import Control.Concurrent
 import Control.Monad
 import Control.Monad.IO.Class
-import Control.Monad.Trans.Either
 import Data.Monoid
 import Data.Text (Text)
 

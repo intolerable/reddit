@@ -19,10 +19,10 @@ import Data.Text.Encoding (encodeUtf8)
 import Network.HTTP.Conduit
 
 runReddit :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
-runReddit user pass action = run user pass False action
+runReddit user pass = run user pass False
 
 runRedditWithRateLimiting :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
-runRedditWithRateLimiting user pass action = run user pass True action
+runRedditWithRateLimiting user pass = run user pass True
 
 run :: MonadIO m => Text -> Text -> Bool -> RedditT m a -> m (Either (APIError RedditError) a)
 run user pass shouldRateLimit (RedditT reddit) =
