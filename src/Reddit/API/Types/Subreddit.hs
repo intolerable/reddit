@@ -3,6 +3,7 @@ module Reddit.API.Types.Subreddit where
 import Reddit.API.Parser
 import Reddit.API.Types.Thing
 
+import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.Monoid (mempty)
@@ -17,6 +18,9 @@ newtype SubredditID = SubredditID T.Text
 
 instance Thing SubredditID where
   fullName (SubredditID i) = T.concat [subredditPrefix, "_", i]
+
+instance ToQuery SubredditID where
+  toQuery = Just . fullName
 
 data Subreddit = Subreddit { subredditID :: T.Text
                            , name :: SubredditName

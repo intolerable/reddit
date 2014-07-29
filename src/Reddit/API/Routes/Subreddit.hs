@@ -16,10 +16,10 @@ subredditSettings (R sub) = Route ["r", sub, "about", "edit"]
                                   []
                                   "GET"
 
-setSubredditSettings :: SubredditName -> SubredditSettings -> Route
-setSubredditSettings (R sub) settings =
+setSubredditSettings :: SubredditID -> SubredditSettings -> Route
+setSubredditSettings sr settings =
   Route ["api", "site_admin"]
-        [ "name" =. sub
+        [ "sr" =. sr
         , "description" =. sidebarText settings
         , "public_description" =. descriptionText settings
         , "title" =. title settings
