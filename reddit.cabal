@@ -47,7 +47,6 @@ library
     Reddit.API.Routes.Wiki
     Reddit.API.Types.Empty
   default-extensions:
-    ExtendedDefaultRules,
     FlexibleInstances,
     OverloadedStrings
   default-language: Haskell2010
