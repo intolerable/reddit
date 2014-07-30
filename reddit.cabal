@@ -79,14 +79,14 @@ executable reddit-bot
   GHC-options: -Wall
 
 test-suite Tests
-  hs-source-dirs: Tests
-  main-is: Main.hs
+  hs-source-dirs: test
+  main-is: Spec.hs
+  default-extensions: OverloadedStrings
+  default-language: Haskell2010
   type: exitcode-stdio-1.0
   build-depends:
     base == 4.*,
     Cabal >= 1.16.0,
     reddit,
-    HUnit,
-    test-framework,
-    test-framework-hunit
+    hspec
   GHC-options: -Wall -Werror
