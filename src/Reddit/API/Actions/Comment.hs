@@ -18,7 +18,7 @@ getMoreChildren p cs = do
   more <- getMoreChildren p next
   return $ rs ++ more
 
-getNewSubredditComments :: MonadIO m => SubredditName -> RedditT m [CommentReference]
+getNewSubredditComments :: MonadIO m => SubredditName -> RedditT m [Comment]
 getNewSubredditComments r = do
   Listing cs <- runRoute $ Route.newSubredditComments r
   return cs
