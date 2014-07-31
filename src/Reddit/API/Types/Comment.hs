@@ -14,10 +14,10 @@ import Data.DateTime as DateTime
 import Data.Monoid
 import Data.Text (Text)
 import Data.Vector ((!?))
-import qualified Data.Text as T
+import qualified Data.Text as Text
 import qualified Data.Vector as V
 
-newtype CommentID = CommentID T.Text
+newtype CommentID = CommentID Text
   deriving (Show, Read, Eq)
 
 instance FromJSON CommentID where
@@ -72,7 +72,9 @@ data Comment = Comment { commentID :: CommentID
                        , bodyHTML :: Text
                        , replies :: Listing CommentReference
                        , created :: DateTime
-                       , edited :: Maybe DateTime }
+                       , edited :: Maybe DateTime
+                       , parentLink :: PostID
+                       , inReplyTo :: Maybe CommentID }
   deriving (Show, Read, Eq)
 
 instance FromJSON Comment where
@@ -91,8 +93,12 @@ instance FromJSON Comment where
             <*> d .: "replies"
             <*> (DateTime.fromSeconds <$> d .: "created")
             <*> (getDate <$> d .: "edited")
-    where getDate (Number i) = Just $ DateTime.fromSeconds $ round i
+            <*> d .: "link_id"
+            <*> ((>>= parseCommentID) <$> d .:? "parent_id")
+    where getDate (Number i) =
+            Just $ DateTime.fromSeconds $ round i
           getDate _ = Nothing
+          parseCommentID s = CommentID <$> Text.stripPrefix (commentPrefix <> "_") s
   parseJSON _ = mempty
 
 flattenComments :: CommentReference -> [CommentReference]
@@ -113,7 +119,7 @@ instance FromJSON PostComments where
   parseJSON _ = mempty
 
 instance Thing CommentID where
-  fullName (CommentID cID) = T.concat [commentPrefix, "_", cID]
+  fullName (CommentID cID) = Text.concat [commentPrefix, "_", cID]
 
 instance ToQuery CommentID where
   toQuery = toQuery . fullName
