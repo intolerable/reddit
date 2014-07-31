@@ -78,7 +78,7 @@ executable reddit-bot
     transformers
   GHC-options: -Wall
 
-test-suite Tests
+test-suite test
   hs-source-dirs: test
   main-is: Spec.hs
   default-extensions: OverloadedStrings
