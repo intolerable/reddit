@@ -93,12 +93,15 @@ instance FromJSON Comment where
             <*> d .: "replies"
             <*> (DateTime.fromSeconds <$> d .: "created")
             <*> (getDate <$> d .: "edited")
-            <*> d .: "link_id"
+            <*> (parsePostID =<< d .: "link_id")
             <*> ((>>= parseCommentID) <$> d .:? "parent_id")
     where getDate (Number i) =
             Just $ DateTime.fromSeconds $ round i
           getDate _ = Nothing
-          parseCommentID s = CommentID <$> Text.stripPrefix (commentPrefix <> "_") s
+          parsePostID s =
+            maybe mempty (return . PostID) $ Text.stripPrefix (postPrefix <> "_") s
+          parseCommentID s =
+            CommentID <$> Text.stripPrefix (commentPrefix <> "_") s
   parseJSON _ = mempty
 
 flattenComments :: CommentReference -> [CommentReference]
