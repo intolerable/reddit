@@ -84,7 +84,8 @@ builder = Builder "Reddit API"
                   addHeader
 
 addHeader :: Request -> Request
-addHeader req = req { requestHeaders = ("User-Agent","reddit-haskell") : requestHeaders req }
+addHeader req = req { requestHeaders =
+  ("User-Agent","reddit-haskell 0.1.0.0 / intolerable") : requestHeaders req }
 
 addAPIType :: Route -> Route
 addAPIType (Route fs ps m) = Route fs ("api_type" =. ("json" :: Text) : ps) m
