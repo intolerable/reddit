@@ -56,3 +56,9 @@ sendReplies setting p = Route [ "api", "sendreplies" ]
                               [ "id" =. p
                               , "state" =. setting ]
                               "POST"
+
+removePost :: Bool -> PostID -> Route
+removePost isSpam p = Route [ "api", "remove" ]
+                            [ "id" =. p
+                            , "spam" =. isSpam ]
+                            "POST"

@@ -52,3 +52,9 @@ enableReplies = nothing . runRoute . Route.sendReplies True
 
 disableReplies :: MonadIO m => PostID -> RedditT m ()
 disableReplies = nothing . runRoute . Route.sendReplies False
+
+removePost :: MonadIO m => PostID -> RedditT m ()
+removePost = nothing . runRoute . Route.removePost False
+
+markPostAsSpam :: MonadIO m => PostID -> RedditT m ()
+markPostAsSpam = nothing . runRoute . Route.removePost True
