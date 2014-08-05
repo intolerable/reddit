@@ -13,7 +13,7 @@ import Network.HTTP.Conduit
 
 loginRoute :: Text -> Text -> Route
 loginRoute user pass = Route [ "api", "login" ]
-                             [ "rem" =. ("true" :: Text)
+                             [ "rem" =. True
                              , "user" =. user
                              , "passwd" =. pass ]
                              "POST"
