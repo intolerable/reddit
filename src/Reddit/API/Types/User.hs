@@ -2,6 +2,7 @@ module Reddit.API.Types.User where
 
 import Reddit.API.Parser
 
+import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime
@@ -14,6 +15,9 @@ newtype Username = Username Text
 instance FromJSON Username where
   parseJSON (String s) = return $ Username s
   parseJSON _ = mempty
+
+instance ToQuery Username where
+  toQuery (Username user) = Just user
 
 newtype UserID = UserID Text
   deriving (Show, Read, Eq)
