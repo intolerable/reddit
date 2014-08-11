@@ -15,6 +15,13 @@ instance FromJSON Username where
   parseJSON (String s) = return $ Username s
   parseJSON _ = mempty
 
+newtype UserID = UserID Text
+  deriving (Show, Read, Eq)
+
+instance FromJSON UserID where
+  parseJSON (String s) = return $ UserID s
+  parseJSON _ = mempty
+
 data User = User { userID :: Text
                  , userName :: Username
                  , userCreated :: DateTime
