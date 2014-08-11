@@ -14,6 +14,12 @@ aboutMe = Route [ "api", "me.json" ]
                 []
                 "GET"
 
+userComments :: Username -> Route
+userComments (Username user) =
+  Route [ "user", user ]
+        [ "limit" =. (100 :: Int) ]
+        "GET"
+
 usernameAvailable :: Username -> Route
 usernameAvailable user = Route [ "api", "username_available.json" ]
                                           [ "user" =. user]

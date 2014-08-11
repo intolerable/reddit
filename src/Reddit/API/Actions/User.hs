@@ -10,6 +10,9 @@ import Control.Monad.IO.Class
 getUserInfo :: MonadIO m => Username -> RedditT m User
 getUserInfo = runRoute . Route.aboutUser
 
+getUserComments :: MonadIO m => Username -> RedditT m (Listing Comment)
+getUserComments = runRoute . Route.userComments
+
 isUsernameAvailable :: MonadIO m => Username -> RedditT m Bool
 isUsernameAvailable = runRoute . Route.usernameAvailable
 
