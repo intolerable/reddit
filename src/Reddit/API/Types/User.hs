@@ -30,7 +30,7 @@ data User = User { userID :: Text
                  , hasMail :: Maybe Bool
                  , hasModMail :: Maybe Bool
                  , isFriend :: Bool
-                 , userIsOver18 :: Bool
+                 , userIsOver18 :: Maybe Bool
                  , isMod :: Bool
                  , hasGold :: Bool
                  , hasVerifiedEmail :: Bool } deriving (Show, Eq)
@@ -47,7 +47,7 @@ instance FromJSON User where
          <*> d .:? "has_mail"
          <*> d .:? "has_mod_mail"
          <*> d .: "is_friend"
-         <*> d .: "over_18"
+         <*> d .:? "over_18"
          <*> d .: "is_mod"
          <*> d .: "is_gold"
          <*> d .: "has_verified_email"
