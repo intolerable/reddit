@@ -15,7 +15,7 @@ aboutMe = Route [ "api", "me.json" ]
                 "GET"
 
 usernameAvailable :: Username -> Route
-usernameAvailable (Username user) = Route [ "api", "username_available.json" ]
-                                          [ "user" =. Just user]
+usernameAvailable user = Route [ "api", "username_available.json" ]
+                                          [ "user" =. user]
                                           "GET"
 
