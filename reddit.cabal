@@ -2,6 +2,9 @@ name:                reddit
 version:             0.1.0.0
 build-type:          Simple
 cabal-version:       >= 1.10
+extra-source-files:
+  test/data/aboutMe_example.json,
+  test/data/getUserInfo_example.json
 
 library
   exposed-modules:
@@ -87,6 +90,9 @@ test-suite test
   build-depends:
     base == 4.*,
     Cabal >= 1.16.0,
+    api-builder,
+    bytestring,
     reddit,
-    hspec
+    hspec,
+    transformers
   GHC-options: -Wall -Werror
