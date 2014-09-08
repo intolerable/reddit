@@ -1,8 +1,10 @@
 module Reddit.API.Routes.Post where
 
+import Reddit.API.Types.Thing
 import Reddit.API.Types.Post (PostID(..))
 import Reddit.API.Types.Subreddit (SubredditName(..))
 
+import APIBuilder.Query
 import APIBuilder.Routes
 import Data.Text (Text)
 
@@ -57,7 +59,7 @@ sendReplies setting p = Route [ "api", "sendreplies" ]
                               , "state" =. setting ]
                               "POST"
 
-removePost :: Bool -> PostID -> Route
+removePost :: (ToQuery a, Thing a) => Bool -> a -> Route
 removePost isSpam p = Route [ "api", "remove" ]
                             [ "id" =. p
                             , "spam" =. isSpam ]
