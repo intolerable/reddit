@@ -17,7 +17,7 @@ data Message = Message { messageID :: MessageKind
                        , from :: Username
                        , body :: Text
                        , bodyHTML :: Text
-                       , replies :: Listing Message }
+                       , replies :: Listing MessageKind Message }
   deriving (Show, Read, Eq)
 
 instance FromJSON Message where
@@ -29,7 +29,7 @@ instance FromJSON Message where
             <*> d .: "author"
             <*> d .: "body"
             <*> d .: "body_html"
-            <*> (fromMaybe (Listing []) <$> d .:? "replies")
+            <*> (fromMaybe (Listing Nothing Nothing []) <$> d .:? "replies")
   parseJSON _ = mempty
 
 instance Thing Message where

@@ -13,10 +13,10 @@ import APIBuilder.Query
 import Control.Monad.IO.Class
 import Data.Text (Text)
 
-getInbox :: MonadIO m => RedditT m (Listing Message)
+getInbox :: MonadIO m => RedditT m (Listing MessageKind Message)
 getInbox = runRoute Route.inbox
 
-getUnread :: MonadIO m => RedditT m (Listing Message)
+getUnread :: MonadIO m => RedditT m (Listing MessageKind Message)
 getUnread = runRoute Route.unread
 
 readMessage :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()

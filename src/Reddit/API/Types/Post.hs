@@ -1,6 +1,7 @@
 module Reddit.API.Types.Post where
 
 import Reddit.API.Parser
+import Reddit.API.Types.Listing
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
@@ -77,6 +78,8 @@ instance Thing PostID where
 
 instance ToQuery PostID where
   toQuery = toQuery . fullName
+
+type PostListing = Listing PostID Post
 
 postPrefix :: Text
 postPrefix = "t3"

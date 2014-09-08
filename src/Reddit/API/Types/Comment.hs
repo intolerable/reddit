@@ -10,6 +10,7 @@ import Reddit.API.Types.User
 import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
+import Data.Aeson.Types (Parser)
 import Data.DateTime as DateTime
 import Data.Monoid
 import Data.Text (Text)
@@ -70,7 +71,7 @@ data Comment = Comment { commentID :: CommentID
                        , authorFlairText :: Maybe Text
                        , body :: Text
                        , bodyHTML :: Text
-                       , replies :: Listing CommentReference
+                       , replies :: Listing CommentID CommentReference
                        , created :: DateTime
                        , edited :: Maybe DateTime
                        , parentLink :: PostID
@@ -105,7 +106,7 @@ instance FromJSON Comment where
   parseJSON _ = mempty
 
 flattenComments :: CommentReference -> [CommentReference]
-flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing cs) -> cs) $ replies c)
+flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing _ _ cs) -> cs) $ replies c)
 flattenComments (Reference _ rs) = map (\r -> Reference 1 [r]) rs
 
 data PostComments = PostComments Post [CommentReference]
@@ -115,8 +116,8 @@ instance FromJSON PostComments where
   parseJSON (Array a) =
     case V.toList a of
       postListing:commentListing:_ -> do
-        Listing (post:[]) <- parseJSON postListing
-        Listing comments <- parseJSON commentListing
+        Listing _ _ (post:[]) <- parseJSON postListing :: Parser (Listing PostID Post)
+        Listing _ _ comments <- parseJSON commentListing :: Parser (Listing CommentID CommentReference)
         return $ PostComments post comments
       _ -> mempty
   parseJSON _ = mempty
@@ -126,6 +127,8 @@ instance Thing CommentID where
 
 instance ToQuery CommentID where
   toQuery = toQuery . fullName
+
+type CommentListing = Listing CommentID Comment
 
 commentPrefix :: Text
 commentPrefix = "t1"

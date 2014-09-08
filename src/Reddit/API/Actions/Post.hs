@@ -13,19 +13,19 @@ import Data.Text (Text)
 
 getPostInfo :: MonadIO m => PostID -> RedditT m Post
 getPostInfo pID = do
-  Listing (p:_) <- runRoute $ Route.aboutPost pID
+  Listing _ _ (p:[]) <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
   return p
 
-getHotPosts :: MonadIO m => RedditT m (Listing Post)
+getHotPosts :: MonadIO m => RedditT m PostListing
 getHotPosts = runRoute $ Route.postsListing Nothing "hot"
 
-getHotSubredditPosts :: MonadIO m => SubredditName -> RedditT m (Listing Post)
+getHotSubredditPosts :: MonadIO m => SubredditName -> RedditT m PostListing
 getHotSubredditPosts r = runRoute $ Route.postsListing (Just r) "hot"
 
-getNewPosts :: MonadIO m => RedditT m (Listing Post)
+getNewPosts :: MonadIO m => RedditT m PostListing
 getNewPosts = runRoute $ Route.postsListing Nothing "new"
 
-getNewSubredditPosts :: MonadIO m => SubredditName -> RedditT m (Listing Post)
+getNewSubredditPosts :: MonadIO m => SubredditName -> RedditT m PostListing
 getNewSubredditPosts r = runRoute $ Route.postsListing (Just r) "new"
 
 savePost :: MonadIO m => PostID -> RedditT m ()
