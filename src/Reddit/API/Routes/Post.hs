@@ -4,9 +4,9 @@ import Reddit.API.Types.Thing
 import Reddit.API.Types.Post (PostID(..))
 import Reddit.API.Types.Subreddit (SubredditName(..))
 
-import APIBuilder.Query
-import APIBuilder.Routes
 import Data.Text (Text)
+import Network.API.Builder.Query
+import Network.API.Builder.Routes
 
 postsListing :: Maybe SubredditName -> Text -> Route
 postsListing r t = Route (endpoint r)

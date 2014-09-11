@@ -3,8 +3,8 @@ module Reddit.API.Routes.Message where
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
-import APIBuilder.Routes
 import Data.Text (Text)
+import Network.API.Builder.Routes
 
 inbox :: Route
 inbox = Route [ "message", "inbox" ]

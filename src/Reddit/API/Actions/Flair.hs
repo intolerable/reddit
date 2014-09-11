@@ -1,7 +1,7 @@
 module Reddit.API.Actions.Flair where
 
-import Reddit.API.Routes.Run
 import Reddit.API.Routes.Flair
+import Reddit.API.Routes.Run
 import Reddit.API.Types.Flair
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Subreddit

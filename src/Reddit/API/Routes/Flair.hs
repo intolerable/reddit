@@ -2,8 +2,8 @@ module Reddit.API.Routes.Flair where
 
 import Reddit.API.Types.Subreddit
 
-import APIBuilder.Routes
 import Data.Text (Text)
+import Network.API.Builder.Routes
 
 flairList :: Maybe Text -> Maybe Text -> Maybe Int -> SubredditName -> Route
 flairList b a l (R r) =

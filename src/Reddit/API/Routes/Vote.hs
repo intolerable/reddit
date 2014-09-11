@@ -2,7 +2,7 @@ module Reddit.API.Routes.Vote where
 
 import Reddit.API.Types.Thing
 
-import APIBuilder.Routes
+import Network.API.Builder.Routes
 import qualified Data.Text as T
 
 vote :: Thing a => Int -> a -> Route

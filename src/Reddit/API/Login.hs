@@ -3,12 +3,12 @@ module Reddit.API.Login
 
 import Reddit.API.Types.Reddit
 
-import APIBuilder
 import Control.Exception (try)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either
 import Control.Monad.Trans.State
 import Data.Text (Text)
+import Network.API.Builder
 import Network.HTTP.Conduit
 
 loginRoute :: Text -> Text -> Route

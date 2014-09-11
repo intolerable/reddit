@@ -3,11 +3,11 @@ module Reddit.API.Types.Subreddit where
 import Reddit.API.Parser
 import Reddit.API.Types.Thing
 
-import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.Monoid (mempty)
 import Data.Text (Text)
+import Network.API.Builder.Query
 import qualified Data.Text as T
 
 newtype SubredditName = R T.Text

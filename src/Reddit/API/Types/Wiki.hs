@@ -11,7 +11,6 @@ import Data.Text (Text)
 import qualified Data.DateTime as DateTime
 import qualified Data.Text as Text
 
-
 newtype RevisionID = RevisionID Text
   deriving (Show, Read, Eq)
 

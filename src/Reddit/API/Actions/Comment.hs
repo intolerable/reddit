@@ -1,12 +1,12 @@
 module Reddit.API.Actions.Comment where
 
+import Reddit.API.Routes.Run
 import Reddit.API.Types.Comment
-import Reddit.API.Types.Listing
 import Reddit.API.Types.Empty
+import Reddit.API.Types.Listing
 import Reddit.API.Types.Post
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Subreddit
-import Reddit.API.Routes.Run
 import qualified Reddit.API.Routes as Route
 
 import Control.Monad.IO.Class
@@ -21,8 +21,7 @@ getMoreChildren p cs = do
 
 -- | Note that none of the comments returned will have any child comments.
 getNewSubredditComments :: MonadIO m => SubredditName -> RedditT m (Listing CommentID Comment)
-getNewSubredditComments r = do
-  runRoute $ Route.newSubredditComments r
+getNewSubredditComments r = runRoute $ Route.newSubredditComments r
 
 removeComment :: MonadIO m => CommentID -> RedditT m ()
 removeComment = nothing . runRoute . Route.removePost False

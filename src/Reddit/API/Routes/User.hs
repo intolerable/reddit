@@ -2,7 +2,7 @@ module Reddit.API.Routes.User where
 
 import Reddit.API.Types.User
 
-import APIBuilder.Routes
+import Network.API.Builder.Routes
 
 aboutUser :: Username -> Route
 aboutUser (Username user) = Route [ "user", user, "about.json" ]

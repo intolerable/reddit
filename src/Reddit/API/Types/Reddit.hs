@@ -14,7 +14,6 @@ module Reddit.API.Types.Reddit
 
 import Reddit.API.Types.Error
 
-import APIBuilder
 import Control.Applicative
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
@@ -22,6 +21,7 @@ import Data.Aeson
 import Data.DateTime (DateTime)
 import Data.Monoid (mempty)
 import Data.Text (Text)
+import Network.API.Builder
 import Network.HTTP.Conduit hiding (path)
 import Network.HTTP.Types
 import Text.Read (readMaybe)

@@ -3,7 +3,6 @@ module Reddit.API.Routes.Run
 
 import Reddit.API.Types.Reddit
 
-import APIBuilder.Routes (Route)
 import Control.Concurrent (threadDelay)
 import Control.Monad (when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
@@ -11,9 +10,10 @@ import Control.Monad.Trans.Either (hoistEither)
 import Control.Monad.Trans.State
 import Data.Aeson (FromJSON)
 import Data.DateTime (DateTime)
+import Network.API.Builder.Routes (Route)
 import Network.HTTP.Conduit
-import qualified APIBuilder as API
 import qualified Data.DateTime as DateTime
+import qualified Network.API.Builder as API
 
 runRoute :: (MonadIO m, FromJSON a) => Route -> RedditT m a
 runRoute route = do

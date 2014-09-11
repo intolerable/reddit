@@ -3,7 +3,7 @@ module Reddit.API.Routes.Subreddit where
 import Reddit.API.Types.Subreddit hiding (title)
 import Reddit.API.Types.SubredditSettings
 
-import APIBuilder.Routes
+import Network.API.Builder.Routes
 
 aboutSubreddit :: SubredditName -> Route
 aboutSubreddit (R sub) = Route ["r", sub, "about"]

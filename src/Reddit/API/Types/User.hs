@@ -2,12 +2,12 @@ module Reddit.API.Types.User where
 
 import Reddit.API.Parser
 
-import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime
 import Data.Monoid (mempty)
 import Data.Text (Text)
+import Network.API.Builder.Query
 
 newtype Username = Username Text
   deriving (Show, Read, Eq)

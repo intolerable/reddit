@@ -2,13 +2,12 @@ module Reddit.API.Types.SubredditSettings where
 
 import Reddit.API.Parser
 
-import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.Default
 import Data.Monoid (mempty)
 import Data.Text (Text)
-
+import Network.API.Builder.Query
 
 data SubredditSettings = SubredditSettings { sidebarText :: Text
                                            , descriptionText :: Text

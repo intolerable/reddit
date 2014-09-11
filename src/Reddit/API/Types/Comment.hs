@@ -7,7 +7,6 @@ import Reddit.API.Types.Reddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
-import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Types (Parser)
@@ -15,6 +14,7 @@ import Data.DateTime as DateTime
 import Data.Monoid
 import Data.Text (Text)
 import Data.Vector ((!?))
+import Network.API.Builder.Query
 import qualified Data.Text as Text
 import qualified Data.Vector as V
 

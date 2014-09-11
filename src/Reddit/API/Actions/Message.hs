@@ -9,9 +9,9 @@ import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 import qualified Reddit.API.Routes.Message as Route
 
-import APIBuilder.Query
 import Control.Monad.IO.Class
 import Data.Text (Text)
+import Network.API.Builder.Query
 
 getInbox :: MonadIO m => RedditT m (Listing MessageKind Message)
 getInbox = runRoute Route.inbox

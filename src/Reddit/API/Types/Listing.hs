@@ -1,7 +1,6 @@
 module Reddit.API.Types.Listing where
 
 import Reddit.API.Parser
-import Reddit.API.Types.Thing
 
 import Control.Applicative
 import Data.Aeson

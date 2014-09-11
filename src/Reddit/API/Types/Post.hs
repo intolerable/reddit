@@ -6,12 +6,12 @@ import Reddit.API.Types.Reddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
-import APIBuilder.Query
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime as DateTime
 import Data.Monoid (mempty)
 import Data.Text (Text)
+import Network.API.Builder.Query
 import qualified Data.Text as T
 
 newtype PostID = PostID T.Text
