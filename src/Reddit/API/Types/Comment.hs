@@ -25,6 +25,12 @@ instance FromJSON CommentID where
   parseJSON (String s) = return $ CommentID s
   parseJSON _ = mempty
 
+instance Thing CommentID where
+  fullName (CommentID cID) = Text.concat [commentPrefix, "_", cID]
+
+instance ToQuery CommentID where
+  toQuery = toQuery . fullName
+
 instance FromJSON (POSTWrapped CommentID) where
   parseJSON (Object o) = do
     ts <- (o .: "json") >>= (.: "data") >>= (.: "things")
@@ -33,23 +39,9 @@ instance FromJSON (POSTWrapped CommentID) where
       Nothing -> mempty
   parseJSON _ = mempty
 
-instance FromJSON (POSTWrapped [CommentReference]) where
-  parseJSON (Object o) = do
-    cs <- (o .: "json") >>= (.: "data") >>= (.: "things")
-    POSTWrapped <$> parseJSON cs
-  parseJSON _ = mempty
-
 data CommentReference = Reference Integer [CommentID]
                       | Actual Comment
   deriving (Show, Read, Eq)
-
-isActual :: CommentReference -> Bool
-isActual (Actual _) = True
-isActual _ = False
-
-isReference :: CommentReference -> Bool
-isReference (Reference _ _) = True
-isReference _ = False
 
 instance FromJSON CommentReference where
   parseJSON a@(Object o) = do
@@ -61,6 +53,20 @@ instance FromJSON CommentReference where
                   <*> ((o .: "data") >>= (.: "children"))
       _ -> mempty
   parseJSON _ = mempty
+
+instance FromJSON (POSTWrapped [CommentReference]) where
+  parseJSON (Object o) = do
+    cs <- (o .: "json") >>= (.: "data") >>= (.: "things")
+    POSTWrapped <$> parseJSON cs
+  parseJSON _ = mempty
+
+isActual :: CommentReference -> Bool
+isActual (Actual _) = True
+isActual _ = False
+
+isReference :: CommentReference -> Bool
+isReference (Reference _ _) = True
+isReference _ = False
 
 data Comment = Comment { commentID :: CommentID
                        , score :: Maybe Integer
@@ -121,12 +127,6 @@ instance FromJSON PostComments where
         return $ PostComments post comments
       _ -> mempty
   parseJSON _ = mempty
-
-instance Thing CommentID where
-  fullName (CommentID cID) = Text.concat [commentPrefix, "_", cID]
-
-instance ToQuery CommentID where
-  toQuery = toQuery . fullName
 
 type CommentListing = Listing CommentID Comment
 
