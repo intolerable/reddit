@@ -1,6 +1,7 @@
 module Reddit.API.Types.Reddit
   ( Reddit
   , RedditT(..)
+  , nest
   , Modhash(..)
   , LoginDetails(..)
   , POSTWrapped(..)
@@ -17,6 +18,7 @@ import Reddit.API.Types.Error
 import Control.Applicative
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
+import Control.Monad.Trans.State (get)
 import Data.Aeson
 import Data.DateTime (DateTime)
 import Data.Monoid (mempty)
@@ -48,6 +50,12 @@ instance MonadIO m => MonadIO (RedditT m) where
 
 instance MonadTrans RedditT where
   lift a = RedditT (lift . lift . lift $ a)
+
+nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
+nest (RedditT a) = do
+  b <- RedditT $ liftBuilder get
+  rl <- RedditT $ liftState get
+  lift $ runAPI b rl a
 
 newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)

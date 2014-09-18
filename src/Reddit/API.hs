@@ -1,8 +1,7 @@
 module Reddit.API
   ( module Export
   , runReddit
-  , runRedditWithRateLimiting
-  , nest ) where
+  , runRedditWithRateLimiting ) where
 
 import Reddit.API.Actions as Export
 import Reddit.API.Login
@@ -10,8 +9,6 @@ import Reddit.API.Types.Error as Export
 import Reddit.API.Types.Reddit as Export
 
 import Control.Monad.IO.Class
-import Control.Monad.Trans.Class
-import Control.Monad.Trans.State
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.API.Builder
@@ -33,9 +30,3 @@ run user pass shouldRateLimit (RedditT reddit) =
       addHeader r { cookieJar = Just cj
                   , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
     reddit
-
-nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
-nest (RedditT a) = do
-  b <- RedditT $ liftBuilder get
-  rl <- RedditT $ liftState get
-  lift $ runAPI b rl a
