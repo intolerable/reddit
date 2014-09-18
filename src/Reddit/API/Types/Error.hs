@@ -11,7 +11,7 @@ import qualified Data.Vector as V
 data RedditError = RedditError Object
                  | CaptchaError Text
                  | CredentialsError
-                 | RateLimitError Text
+                 | RateLimitError Integer Text
                  | NoSubredditSpecified
                  | NoURLSpecified
                  | NoName
@@ -28,7 +28,8 @@ instance FromJSON RedditError where
       Just (Array e) -> case V.toList e of
         String "WRONG_PASSWORD" : _ -> return CredentialsError
         String "USER_REQUIRED" : _ -> return CredentialsError
-        String "RATELIMIT" : String d : _ -> return $ RateLimitError d
+        String "RATELIMIT" : String d : _ ->
+            RateLimitError <$> ((o .: "json") >>= (.: "ratelimit")) <*> pure d
         String "SUBREDDIT_REQUIRED" : _ -> return NoSubredditSpecified
         String "ALREADY_SUB" : _ -> return AlreadySubmitted
         String "NO_URL" : _ -> return NoURLSpecified
