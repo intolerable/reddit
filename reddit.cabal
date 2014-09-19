@@ -58,6 +58,7 @@ library
     base == 4.*,
     aeson,
     api-builder,
+    bifunctors,
     bytestring,
     data-default,
     datetime,
