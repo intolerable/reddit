@@ -23,25 +23,6 @@ loginRoute user pass = Route [ "api", "login" ]
 
 getLoginDetails :: MonadIO m => Text -> Text -> RedditT m LoginDetails
 getLoginDetails user pass = do
-  (limiting, _) <- RedditT $ liftState get
-  if limiting
-    then getLoginDetailsWithLimiting user pass
-    else getLoginDetails' user pass
-
-getLoginDetails' :: MonadIO m => Text -> Text -> RedditT m LoginDetails
-getLoginDetails' user pass = do
-  b <- RedditT $ liftBuilder get
-  req <- RedditT $ hoistEither $ case routeRequest b (loginRoute user pass) of
-    Just url -> Right url
-    Nothing -> Left InvalidURLError
-  resp <- liftIO $ try $ withManager $ httpLbs req
-  resp' <- RedditT $ hoistEither $ first HTTPError resp
-  let cj = responseCookieJar resp'
-  mh <- RedditT $ hoistEither $ decode $ responseBody resp'
-  return $ LoginDetails mh cj
-
-getLoginDetailsWithLimiting :: MonadIO m => Text -> Text -> RedditT m LoginDetails
-getLoginDetailsWithLimiting user pass = do
   b <- RedditT $ liftBuilder get
   req <- RedditT $ hoistEither $ case routeRequest b (loginRoute user pass) of
     Just url -> Right url
@@ -51,9 +32,13 @@ getLoginDetailsWithLimiting user pass = do
   let cj = responseCookieJar resp'
   mh <- nest $ RedditT $ hoistEither $ decode $ responseBody resp'
   case mh of
-    Left (APIError (RateLimitError wait _)) -> do
-      liftIO $ threadDelay $ ((fromIntegral wait) + 5) * 1000000
-      getLoginDetailsWithLimiting user pass
+    Left x@(APIError (RateLimitError wait _)) -> do
+      (limiting, _) <- RedditT $ liftState get
+      if limiting
+        then do
+          liftIO $ threadDelay $ ((fromIntegral wait) + 5) * 1000000
+          getLoginDetails user pass
+        else RedditT $ hoistEither $ Left x
     Left x -> RedditT $ hoistEither $ Left x
     Right modhash -> return $ LoginDetails modhash cj
 
