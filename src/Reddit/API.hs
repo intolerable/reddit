@@ -23,7 +23,7 @@ runRedditWithRateLimiting user pass = run user pass True
 
 run :: MonadIO m => Text -> Text -> Bool -> RedditT m a -> m (Either (APIError RedditError) a)
 run user pass shouldRateLimit (RedditT reddit) =
-  runAPI builder (shouldRateLimit, Nothing) $ do
+  execAPI builder (shouldRateLimit, Nothing) $ do
     customizeRequest addHeader
     LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
     customizeRequest $ \r ->

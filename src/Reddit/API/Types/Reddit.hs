@@ -55,7 +55,7 @@ nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
 nest (RedditT a) = do
   b <- RedditT $ liftBuilder get
   rl <- RedditT $ liftState get
-  lift $ runAPI b rl a
+  lift $ execAPI b rl a
 
 newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)
