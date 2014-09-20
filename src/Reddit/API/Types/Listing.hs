@@ -7,8 +7,8 @@ import Data.Aeson
 import Data.Monoid (mempty)
 import Data.Traversable (traverse)
 
-data Listing t a = Listing { before_ :: Maybe t
-                           , after_ :: Maybe t
+data Listing t a = Listing { before :: Maybe t
+                           , after :: Maybe t
                            , contents :: [a] }
   deriving (Show, Read, Eq)
 
@@ -25,8 +25,3 @@ instance (FromJSON t, FromJSON a) => FromJSON (Listing t a) where
   parseJSON (String "") = return $ Listing Nothing Nothing []
   parseJSON Null = return $ Listing Nothing Nothing []
   parseJSON _ = mempty
-
-data ListingOptions a = ListingOptions { before :: Maybe a
-                                       , after :: Maybe a
-                                       , count :: Integer }
-  deriving (Show, Read, Eq)
