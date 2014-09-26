@@ -1,6 +1,7 @@
 module Reddit.API.Routes.Comment where
 
 import Reddit.API.Types.Comment
+import Reddit.API.Types.Options
 import Reddit.API.Types.Post
 import Reddit.API.Types.Subreddit
 
@@ -17,7 +18,10 @@ moreChildren p cs = Route [ "api", "morechildren" ]
                           , "children" =. map (\(CommentID x) -> x) cs ]
                           "POST"
 
-newSubredditComments :: SubredditName -> Route
-newSubredditComments (R sub) = Route [ "r",  sub, "comments" ]
-                                     [ ]
-                                     "GET"
+newSubredditComments :: Options CommentID -> SubredditName -> Route
+newSubredditComments opts (R sub) =
+  Route [ "r",  sub, "comments" ]
+        [ "before" =. before opts
+        , "after" =. after opts
+        , "limit" =. limit opts ]
+        "GET"
