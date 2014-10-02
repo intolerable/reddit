@@ -1,17 +1,21 @@
 module Reddit.API.Routes.Post where
 
-import Reddit.API.Types.Thing
+import Reddit.API.Types.Options
 import Reddit.API.Types.Post (PostID(..))
 import Reddit.API.Types.Subreddit (SubredditName(..))
+import Reddit.API.Types.Thing
 
 import Data.Text (Text)
 import Network.API.Builder.Query
 import Network.API.Builder.Routes
 
-postsListing :: Maybe SubredditName -> Text -> Route
-postsListing r t = Route (endpoint r)
-                         ["limit" =. (50 :: Integer)]
-                         "GET"
+postsListing :: Options PostID -> Maybe SubredditName -> Text -> Route
+postsListing opts r t =
+  Route (endpoint r)
+        [ "before" =. before opts
+        , "after" =. after opts
+        , "limit" =. limit opts ]
+        "GET"
   where endpoint Nothing = [ t ]
         endpoint (Just (R name)) = [ "r", name, t ]
 

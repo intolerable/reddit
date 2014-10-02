@@ -6,27 +6,41 @@ import Reddit.API.Types
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Empty
 import Reddit.API.Types.Listing
+import Reddit.API.Types.Options
 import Reddit.API.Types.Reddit
 
 import Control.Monad.IO.Class
 import Data.Text (Text)
+import Data.Default
 
 getPostInfo :: MonadIO m => PostID -> RedditT m Post
 getPostInfo pID = do
   Listing _ _ (p:[]) <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
   return p
 
+getHotPosts' :: MonadIO m => Options PostID -> RedditT m PostListing
+getHotPosts' opts = runRoute $ Route.postsListing opts Nothing "hot"
+
 getHotPosts :: MonadIO m => RedditT m PostListing
-getHotPosts = runRoute $ Route.postsListing Nothing "hot"
+getHotPosts = getHotPosts' def
+
+getHotSubredditPosts' :: MonadIO m => Options PostID -> SubredditName -> RedditT m PostListing
+getHotSubredditPosts' opts r = runRoute $ Route.postsListing opts (Just r) "hot"
 
 getHotSubredditPosts :: MonadIO m => SubredditName -> RedditT m PostListing
-getHotSubredditPosts r = runRoute $ Route.postsListing (Just r) "hot"
+getHotSubredditPosts = getHotSubredditPosts' def
+
+getNewPosts' :: MonadIO m => Options PostID -> RedditT m PostListing
+getNewPosts' opts = runRoute $ Route.postsListing opts Nothing "new"
 
 getNewPosts :: MonadIO m => RedditT m PostListing
-getNewPosts = runRoute $ Route.postsListing Nothing "new"
+getNewPosts = getNewPosts' def
+
+getNewSubredditPosts' :: MonadIO m => Options PostID -> SubredditName -> RedditT m PostListing
+getNewSubredditPosts' opts r = runRoute $ Route.postsListing opts (Just r) "new"
 
 getNewSubredditPosts :: MonadIO m => SubredditName -> RedditT m PostListing
-getNewSubredditPosts r = runRoute $ Route.postsListing (Just r) "new"
+getNewSubredditPosts = getNewSubredditPosts' def
 
 savePost :: MonadIO m => PostID -> RedditT m ()
 savePost = nothing . runRoute . Route.savePost
@@ -42,9 +56,12 @@ submitLink r title url = do
 deletePost :: MonadIO m => PostID -> RedditT m ()
 deletePost = nothing . runRoute . Route.deletePost
 
+getPostComments :: MonadIO m => PostID -> RedditT m PostComments
+getPostComments = runRoute . Route.getComments
+
 getComments :: MonadIO m => PostID -> RedditT m [CommentReference]
 getComments p = do
-  PostComments _ c <- runRoute $ Route.getComments p
+  PostComments _ c <- getPostComments p
   return c
 
 enableReplies :: MonadIO m => PostID -> RedditT m ()
