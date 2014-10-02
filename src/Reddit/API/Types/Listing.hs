@@ -6,6 +6,14 @@ import Control.Applicative
 import Data.Aeson
 import Data.Monoid (mempty)
 import Data.Traversable (traverse)
+import Network.API.Builder.Query
+
+data ListingType = Hot
+                 | New
+                 | Rising
+                 | Controversial
+                 | Top
+  deriving (Show, Read, Eq)
 
 data Listing t a = Listing { before :: Maybe t
                            , after :: Maybe t

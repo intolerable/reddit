@@ -10,13 +10,22 @@ import Reddit.API.Types.Options
 import Reddit.API.Types.Reddit
 
 import Control.Monad.IO.Class
-import Data.Text (Text)
 import Data.Default
+import Data.Text (Text)
+import qualified Data.Char as Char
+import qualified Data.Text as Text
 
 getPostInfo :: MonadIO m => PostID -> RedditT m Post
 getPostInfo pID = do
   Listing _ _ (p:[]) <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
   return p
+
+getPosts :: MonadIO m => RedditT m PostListing
+getPosts = getPosts' def Hot Nothing
+
+getPosts' :: MonadIO m => Options PostID -> ListingType -> Maybe SubredditName -> RedditT m PostListing
+getPosts' o l r = runRoute $ Route.postsListing o r (Text.pack $ lower $ show l)
+  where lower = map Char.toLower
 
 getHotPosts' :: MonadIO m => Options PostID -> RedditT m PostListing
 getHotPosts' opts = runRoute $ Route.postsListing opts Nothing "hot"
