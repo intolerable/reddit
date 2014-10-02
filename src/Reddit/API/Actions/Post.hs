@@ -5,20 +5,25 @@ import Reddit.API.Routes.Run
 import Reddit.API.Types
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Empty
+import Reddit.API.Types.Error
 import Reddit.API.Types.Listing
 import Reddit.API.Types.Options
 import Reddit.API.Types.Reddit
 
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Either
 import Data.Default
 import Data.Text (Text)
+import Network.API.Builder.Error (APIError(..))
 import qualified Data.Char as Char
 import qualified Data.Text as Text
 
 getPostInfo :: MonadIO m => PostID -> RedditT m Post
 getPostInfo pID = do
-  Listing _ _ (p:[]) <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
-  return p
+  res <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
+  case res of
+    Listing _ _ (p:[]) -> return p
+    Listing _ _ _ -> RedditT $ EitherT $ return $ Left $ APIError InvalidResponseError
 
 getPosts :: MonadIO m => RedditT m PostListing
 getPosts = getPosts' def Hot Nothing

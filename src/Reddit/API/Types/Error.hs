@@ -9,6 +9,7 @@ import Data.Vector ((!?))
 import qualified Data.Vector as V
 
 data RedditError = RedditError Object
+                 | InvalidResponseError
                  | CaptchaError Text
                  | CredentialsError
                  | RateLimitError Integer Text
