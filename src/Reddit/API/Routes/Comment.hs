@@ -20,7 +20,7 @@ moreChildren p cs = Route [ "api", "morechildren" ]
 
 newSubredditComments :: Options CommentID -> SubredditName -> Route
 newSubredditComments opts (R sub) =
-  Route [ "r",  sub, "comments" ]
+  Route [ "r", sub, "comments" ]
         [ "before" =. before opts
         , "after" =. after opts
         , "limit" =. limit opts ]
