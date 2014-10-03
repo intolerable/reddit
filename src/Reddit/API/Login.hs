@@ -36,7 +36,7 @@ getLoginDetails user pass = do
       (limiting, _) <- RedditT $ liftState get
       if limiting
         then do
-          liftIO $ threadDelay $ ((fromIntegral wait) + 5) * 1000000
+          liftIO $ threadDelay $ (fromIntegral wait + 5) * 1000000
           getLoginDetails user pass
         else RedditT $ hoistEither $ Left x
     Left x -> RedditT $ hoistEither $ Left x

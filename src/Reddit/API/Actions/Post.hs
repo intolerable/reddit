@@ -23,7 +23,7 @@ getPostInfo pID = do
   res <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
   case res of
     Listing _ _ (p:[]) -> return p
-    Listing _ _ _ -> RedditT $ EitherT $ return $ Left $ APIError InvalidResponseError
+    _ -> RedditT $ EitherT $ return $ Left $ APIError InvalidResponseError
 
 getPosts :: MonadIO m => RedditT m PostListing
 getPosts = getPosts' def Hot Nothing
