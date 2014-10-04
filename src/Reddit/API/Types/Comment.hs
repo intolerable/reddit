@@ -19,7 +19,7 @@ import qualified Data.Text as Text
 import qualified Data.Vector as V
 
 newtype CommentID = CommentID Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord)
 
 instance FromJSON CommentID where
   parseJSON (String s) = return $ CommentID s

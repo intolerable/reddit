@@ -15,7 +15,7 @@ import Network.API.Builder.Query
 import qualified Data.Text as T
 
 newtype PostID = PostID T.Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord)
 
 instance FromJSON PostID where
   parseJSON (String s) = return $ PostID s
