@@ -3,7 +3,6 @@ module Reddit.API.Actions.Comment where
 import Reddit.API.Routes.Run
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Empty
-import Reddit.API.Types.Listing
 import Reddit.API.Types.Options
 import Reddit.API.Types.Post
 import Reddit.API.Types.Reddit
