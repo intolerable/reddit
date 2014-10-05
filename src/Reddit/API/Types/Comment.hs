@@ -2,7 +2,7 @@ module Reddit.API.Types.Comment where
 
 import Reddit.API.Parser
 import Reddit.API.Types.Listing
-import Reddit.API.Types.Post
+import Reddit.API.Types.Post hiding (author)
 import Reddit.API.Types.Reddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
@@ -114,6 +114,9 @@ instance FromJSON Comment where
 flattenComments :: CommentReference -> [CommentReference]
 flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing _ _ cs) -> cs) $ replies c)
 flattenComments (Reference _ rs) = map (\r -> Reference 1 [r]) rs
+
+isDeleted :: Comment -> Bool
+isDeleted = (== Username "[deleted]") . author
 
 data PostComments = PostComments Post [CommentReference]
   deriving (Show, Read, Eq)
