@@ -32,30 +32,6 @@ getPosts' :: MonadIO m => Options PostID -> ListingType -> Maybe SubredditName -
 getPosts' o l r = runRoute $ Route.postsListing o r (Text.pack $ lower $ show l)
   where lower = map Char.toLower
 
-getHotPosts' :: MonadIO m => Options PostID -> RedditT m PostListing
-getHotPosts' opts = runRoute $ Route.postsListing opts Nothing "hot"
-
-getHotPosts :: MonadIO m => RedditT m PostListing
-getHotPosts = getHotPosts' def
-
-getHotSubredditPosts' :: MonadIO m => Options PostID -> SubredditName -> RedditT m PostListing
-getHotSubredditPosts' opts r = runRoute $ Route.postsListing opts (Just r) "hot"
-
-getHotSubredditPosts :: MonadIO m => SubredditName -> RedditT m PostListing
-getHotSubredditPosts = getHotSubredditPosts' def
-
-getNewPosts' :: MonadIO m => Options PostID -> RedditT m PostListing
-getNewPosts' opts = runRoute $ Route.postsListing opts Nothing "new"
-
-getNewPosts :: MonadIO m => RedditT m PostListing
-getNewPosts = getNewPosts' def
-
-getNewSubredditPosts' :: MonadIO m => Options PostID -> SubredditName -> RedditT m PostListing
-getNewSubredditPosts' opts r = runRoute $ Route.postsListing opts (Just r) "new"
-
-getNewSubredditPosts :: MonadIO m => SubredditName -> RedditT m PostListing
-getNewSubredditPosts = getNewSubredditPosts' def
-
 savePost :: MonadIO m => PostID -> RedditT m ()
 savePost = nothing . runRoute . Route.savePost
 
