@@ -18,10 +18,14 @@ moreChildren p cs = Route [ "api", "morechildren" ]
                           , "children" =. map (\(CommentID x) -> x) cs ]
                           "POST"
 
-newSubredditComments :: Options CommentID -> SubredditName -> Route
-newSubredditComments opts (R sub) =
-  Route [ "r", sub, "comments" ]
+newComments :: Options CommentID -> Maybe SubredditName -> Route
+newComments opts r =
+  Route url
         [ "before" =. before opts
         , "after" =. after opts
         , "limit" =. limit opts ]
         "GET"
+  where
+    url = case r of
+      Just (R sub) -> [ "r", sub, "comments" ]
+      Nothing -> [ "comments" ]

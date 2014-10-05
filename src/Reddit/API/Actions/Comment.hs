@@ -22,11 +22,11 @@ getMoreChildren p cs = do
   return $ rs ++ more
 
 -- | Note that none of the comments returned will have any child comments.
-getNewSubredditComments :: MonadIO m => SubredditName -> RedditT m (Listing CommentID Comment)
-getNewSubredditComments r = runRoute $ Route.newSubredditComments def r
+getNewComments' :: MonadIO m => Options CommentID -> Maybe SubredditName -> RedditT m CommentListing
+getNewComments' opts r = runRoute $ Route.newComments opts r
 
-getNewSubredditComments' :: MonadIO m => Options CommentID -> SubredditName -> RedditT m CommentListing
-getNewSubredditComments' opts r = runRoute $ Route.newSubredditComments opts r
+getNewComments :: MonadIO m => Maybe SubredditName -> RedditT m CommentListing
+getNewComments = getNewComments' def
 
 removeComment :: MonadIO m => CommentID -> RedditT m ()
 removeComment = nothing . runRoute . Route.removePost False
