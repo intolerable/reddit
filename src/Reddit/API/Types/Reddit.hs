@@ -32,7 +32,7 @@ import qualified Data.DateTime as DateTime
 
 type Reddit a = RedditT IO a
 
-newtype RedditT m a = RedditT { unRedditT :: APIT (Bool, Maybe RateLimitInfo) RedditError m a }
+newtype RedditT m a = RedditT { unRedditT :: APIT (ShouldRateLimit, Maybe RateLimitInfo) RedditError m a }
 
 instance Monad m => Functor (RedditT m) where
   fmap f (RedditT a) = RedditT (fmap f a)
@@ -74,6 +74,8 @@ data LoginDetails = LoginDetails Modhash CookieJar
 
 data POSTWrapped a = POSTWrapped a
   deriving (Show, Read, Eq)
+
+type ShouldRateLimit = Bool
 
 data RateLimitInfo = RateLimitInfo { used :: Integer
                                    , remaining :: Integer
