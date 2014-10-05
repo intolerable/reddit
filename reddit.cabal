@@ -10,6 +10,7 @@ library
   exposed-modules:
     Reddit.API
     Reddit.API.Actions
+    Reddit.API.Actions.Captcha
     Reddit.API.Actions.Comment
     Reddit.API.Actions.Flair
     Reddit.API.Actions.Message
@@ -21,6 +22,7 @@ library
     Reddit.API.Actions.Wiki
     Reddit.API.Login
     Reddit.API.Types
+    Reddit.API.Types.Captcha
     Reddit.API.Types.Comment
     Reddit.API.Types.Error
     Reddit.API.Types.Flair
@@ -38,6 +40,7 @@ library
   other-modules:
     Reddit.API.Parser
     Reddit.API.Routes
+    Reddit.API.Routes.Captcha
     Reddit.API.Routes.Comment
     Reddit.API.Routes.Flair
     Reddit.API.Routes.Message

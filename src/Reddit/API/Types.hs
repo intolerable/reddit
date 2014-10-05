@@ -1,6 +1,7 @@
 module Reddit.API.Types
   ( module Types ) where
 
+import Reddit.API.Types.Captcha as Types (CaptchaID)
 import Reddit.API.Types.Comment as Types (CommentID, Comment, CommentListing)
 import Reddit.API.Types.Error as Types (RedditError)
 import Reddit.API.Types.Listing as Types (Listing)
