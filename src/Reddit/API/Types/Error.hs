@@ -19,6 +19,7 @@ data RedditError = RedditError Object
                  | NoText Text
                  | AlreadySubmitted
                  | CommentDeleted
+                 | LinkDeleted
                  | BadSubredditName
                  deriving (Show)
 
@@ -37,6 +38,7 @@ instance FromJSON RedditError where
         String "NO_NAME" : _ -> return NoName
         String "NO_TEXT" : _ : String f : _ -> return $ NoText f
         String "COMMENT_DELETED" : _ -> return CommentDeleted
+        String "DELETED_LINK" : _ -> return LinkDeleted
         String "BAD_SR_NAME" : _ -> return BadSubredditName
         String "BAD_CAPTCHA" : _ -> CaptchaError <$> (o .: "json" >>= (.: "captcha"))
         _ -> return $ RedditError o
