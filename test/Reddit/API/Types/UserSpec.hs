@@ -2,8 +2,8 @@ module Reddit.API.Types.UserSpec where
 
 import Reddit.API.Types.User
 
-import APIBuilder
 import Data.Either
+import Network.API.Builder
 import Test.Hspec
 import qualified Data.ByteString.Lazy.Char8 as ByteString
 
