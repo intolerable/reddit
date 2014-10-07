@@ -5,6 +5,7 @@ cabal-version:       >= 1.10
 extra-source-files:
   test/data/aboutMe_example.json,
   test/data/getUserInfo_example.json
+  test/data/getUserComments_example.json
 
 library
   exposed-modules:
@@ -96,7 +97,9 @@ test-suite test
     Cabal >= 1.16.0,
     api-builder,
     bytestring,
+    datetime,
     reddit,
     hspec,
+    text,
     transformers
   GHC-options: -Wall -Werror
