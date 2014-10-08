@@ -45,5 +45,3 @@ spec = describe "Reddit.API.Types.Comment" $ do
           bodyHTML c `shouldSatisfy` not . Text.null
           replies c `shouldBe` Listing Nothing Nothing []
           created c `shouldSatisfy` (< time)
-
-
