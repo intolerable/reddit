@@ -13,7 +13,11 @@ Here are some examples of functions that are useful:
 
 ```
 getPostInfo :: PostID -> Reddit Post
-getHotPosts :: SubredditName -> Reddit (Listing Post)
+getPosts :: SubredditName -> Reddit PostListing
 savePost :: PostID -> Reddit ()
 deletePost :: PostID -> Reddit ()
 ```
+
+Most of the functions available have prime (`'`) versions which accept extra options (`before`, `after` and `limit` api params).
+
+For example, `getPosts :: SubredditName -> Reddit PostListing` corresponds to `getPosts' :: Options PostID -> ListingType -> SubredditName -> Reddit PostListing`, and most other functions follow this pattern.
