@@ -50,7 +50,7 @@ instance MonadIO m => MonadIO (RedditT m) where
   liftIO a = RedditT (liftIO a)
 
 instance MonadTrans RedditT where
-  lift a = RedditT (lift . lift . lift $ a)
+  lift = RedditT . lift . lift . lift . lift
 
 nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
 nest (RedditT a) = do
