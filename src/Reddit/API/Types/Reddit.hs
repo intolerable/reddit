@@ -18,6 +18,7 @@ import Reddit.API.Types.Error
 import Control.Applicative
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
+import Control.Monad.Trans.Reader (ask)
 import Control.Monad.Trans.State (get, put)
 import Data.Aeson
 import Data.DateTime (DateTime)
@@ -55,7 +56,8 @@ nest :: MonadIO m => RedditT m a -> RedditT m (Either (APIError RedditError) a)
 nest (RedditT a) = do
   b <- RedditT $ liftBuilder get
   rl <- RedditT $ liftState get
-  (res, b', rl') <- lift $ runAPI b rl a
+  m <- RedditT $ liftManager ask
+  (res, b', rl') <- lift $ runAPI b m rl a
   RedditT $ do
     liftBuilder $ put b'
     liftState $ put rl'
