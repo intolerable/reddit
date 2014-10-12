@@ -13,6 +13,9 @@ import qualified Data.Text as T
 newtype SubredditName = R T.Text
   deriving (Show, Read, Eq)
 
+instance ToQuery SubredditName where
+  toQuery (R sub) = Just sub
+
 newtype SubredditID = SubredditID T.Text
   deriving (Show, Read, Eq)
 
