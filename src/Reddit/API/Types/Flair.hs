@@ -8,13 +8,13 @@ import Data.Monoid
 import Data.Text (Text)
 
 data Flair = Flair { user :: Username
-                   , text :: Maybe  Text
+                   , text :: Maybe Text
                    , cssClass :: Maybe Text }
   deriving (Show, Read, Eq)
 
 instance FromJSON Flair where
   parseJSON (Object o) =
-    Flair <$> (Username <$> o .: "user")
+    Flair <$> o .: "user"
           <*> o .:? "flair_text"
           <*> o .:? "flair_css_class"
   parseJSON _ = mempty

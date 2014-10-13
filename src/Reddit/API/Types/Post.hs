@@ -9,17 +9,15 @@ import Reddit.API.Types.User
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime as DateTime
-import Data.Monoid (mempty)
+import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
-import qualified Data.Text as T
 
-newtype PostID = PostID T.Text
+newtype PostID = PostID Text
   deriving (Show, Read, Eq, Ord)
 
 instance FromJSON PostID where
-  parseJSON (String s) = return $ PostID s
-  parseJSON _ = mempty
+  parseJSON j = PostID <$> parseJSON j
 
 instance FromJSON (POSTWrapped PostID) where
   parseJSON (Object o) =
@@ -70,11 +68,11 @@ buildContent True (Just "") Nothing _ = TitleOnly
 buildContent _ _ _ _ = undefined
 
 instance Thing Post where
-  fullName p = T.concat [postPrefix , "_", pID]
+  fullName p = mconcat [postPrefix , "_", pID]
     where (PostID pID) = postID p
 
 instance Thing PostID where
-  fullName (PostID pID) = T.concat [postPrefix , "_", pID]
+  fullName (PostID pID) = mconcat [postPrefix , "_", pID]
 
 instance ToQuery PostID where
   toQuery = toQuery . fullName

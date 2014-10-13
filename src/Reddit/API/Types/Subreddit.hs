@@ -5,29 +5,28 @@ import Reddit.API.Types.Thing
 
 import Control.Applicative
 import Data.Aeson
-import Data.Monoid (mempty)
+import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
-import qualified Data.Text as T
 
-newtype SubredditName = R T.Text
+newtype SubredditName = R Text
   deriving (Show, Read, Eq)
 
 instance ToQuery SubredditName where
   toQuery (R sub) = Just sub
 
-newtype SubredditID = SubredditID T.Text
+newtype SubredditID = SubredditID Text
   deriving (Show, Read, Eq)
 
 instance Thing SubredditID where
-  fullName (SubredditID i) = T.concat [subredditPrefix, "_", i]
+  fullName (SubredditID i) = mconcat [subredditPrefix, "_", i]
 
 instance ToQuery SubredditID where
   toQuery = Just . fullName
 
-data Subreddit = Subreddit { subredditID :: T.Text
+data Subreddit = Subreddit { subredditID :: Text
                            , name :: SubredditName
-                           , title :: T.Text
+                           , title :: Text
                            , subscribers :: Integer
                            , userIsBanned :: Bool } deriving (Show, Eq)
 
@@ -43,7 +42,7 @@ instance FromJSON Subreddit where
   parseJSON _ = mempty
 
 instance Thing Subreddit where
-  fullName s = T.concat [subredditPrefix, "_", subredditID s]
+  fullName s = mconcat [subredditPrefix, "_", subredditID s]
 
 subredditPrefix :: Text
 subredditPrefix = "t5"

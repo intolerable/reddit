@@ -16,14 +16,13 @@ import Data.Text (Text)
 import Data.Vector ((!?))
 import Network.API.Builder.Query
 import qualified Data.Text as Text
-import qualified Data.Vector as V
+import qualified Data.Vector as Vector
 
 newtype CommentID = CommentID Text
   deriving (Show, Read, Eq, Ord)
 
 instance FromJSON CommentID where
-  parseJSON (String s) = return $ CommentID s
-  parseJSON _ = mempty
+  parseJSON j = CommentID <$> parseJSON j
 
 instance Thing CommentID where
   fullName (CommentID cID) = Text.concat [commentPrefix, "_", cID]
@@ -44,10 +43,10 @@ data CommentReference = Reference Integer [CommentID]
   deriving (Show, Read, Eq)
 
 instance FromJSON CommentReference where
-  parseJSON a@(Object o) = do
+  parseJSON v@(Object o) = do
     k <- o .: "kind"
     case k of
-      String "t1" -> Actual <$> parseJSON a
+      String "t1" -> Actual <$> parseJSON v
       String "more" ->
         Reference <$> ((o .: "data") >>= (.: "count"))
                   <*> ((o .: "data") >>= (.: "children"))
@@ -123,7 +122,7 @@ data PostComments = PostComments Post [CommentReference]
 
 instance FromJSON PostComments where
   parseJSON (Array a) =
-    case V.toList a of
+    case Vector.toList a of
       postListing:commentListing:_ -> do
         Listing _ _ (post:[]) <- parseJSON postListing :: Parser (Listing PostID Post)
         Listing _ _ comments <- parseJSON commentListing :: Parser (Listing CommentID CommentReference)
