@@ -21,7 +21,7 @@ data RedditError = RedditError Object
                  | CommentDeleted
                  | LinkDeleted
                  | BadSubredditName
-                 deriving (Show)
+                 deriving (Show, Eq)
 
 instance FromJSON RedditError where
   parseJSON (Object o) = do
