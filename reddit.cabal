@@ -76,16 +76,6 @@ library
     vector
   GHC-options: -Wall
 
-executable reddit-bot
-  main-is: Main.hs
-  default-extensions: OverloadedStrings
-  default-language: Haskell2010
-  build-depends:
-    base == 4.*,
-    reddit,
-    transformers
-  GHC-options: -Wall
-
 test-suite test
   hs-source-dirs: test
   main-is: Spec.hs
