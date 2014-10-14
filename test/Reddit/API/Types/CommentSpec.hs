@@ -21,7 +21,7 @@ spec = describe "Reddit.API.Types.Comment" $ do
   getUserCommentsExample <- runIO $ ByteString.readFile "test/data/getUserComments_example.json"
   time <- runIO getCurrentTime
 
-  it "can read the example" $ do
+  it "can read the example" $
     getUserCommentsExample `shouldSatisfy` not . ByteString.null
 
   it "can parse a list of comments from json" $ do

@@ -3,6 +3,7 @@ module Reddit.API.Types.ListingSpec where
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Listing
 
+import Control.Monad
 import Data.Either
 import Network.API.Builder
 import Test.Hspec
@@ -15,7 +16,7 @@ spec :: Spec
 spec = describe "Reddit.API.Types.Listing" $ do
   getUserCommentsExample <- runIO $ ByteString.readFile "test/data/getUserComments_example.json"
 
-  it "can read the example" $ do
+  it "can read the example" $
     getUserCommentsExample `shouldSatisfy` not . ByteString.null
 
   it "can parse a listing from json" $ do
@@ -27,7 +28,7 @@ spec = describe "Reddit.API.Types.Listing" $ do
       Right l@(Listing b a cs) -> do
         a `shouldBe` Just (CommentID "t1_cl1royq")
         b `shouldBe` Nothing
-        length cs `shouldBe` length (contents (fmap (const ()) l))
+        length cs `shouldBe` length (contents (void l))
 
   it "can parse listings from empty strings" $ do
     let decoded :: Either (APIError ()) CommentListing
