@@ -2,6 +2,7 @@ module Reddit.API.Types.CommentSpec where
 
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Listing
+import Reddit.API.Types.Subreddit hiding (subredditID)
 import Reddit.API.Types.User
 
 import Control.Monad
@@ -39,6 +40,8 @@ spec = describe "Reddit.API.Types.Comment" $ do
         forM_ cs $ \c -> do
           author c `shouldBe` Username "Intolerable"
           score c `shouldSatisfy` isJust
+          subreddit c `shouldBe` R "DotA2"
+          subredditID c `shouldBe` SubredditID "t5_2s580"
           authorFlairText c `shouldBe` Just "sneep sneep"
           authorFlairCSSClass c `shouldBe` Just "rapier"
           body c `shouldSatisfy` not . Text.null

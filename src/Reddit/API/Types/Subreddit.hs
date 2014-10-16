@@ -15,6 +15,9 @@ newtype SubredditName = R Text
 instance ToQuery SubredditName where
   toQuery (R sub) = Just sub
 
+instance FromJSON SubredditName where
+  parseJSON j = R <$> parseJSON j
+
 newtype SubredditID = SubredditID Text
   deriving (Show, Read, Eq)
 

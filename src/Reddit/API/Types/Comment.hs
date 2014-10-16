@@ -4,6 +4,7 @@ import Reddit.API.Parser
 import Reddit.API.Types.Listing
 import Reddit.API.Types.Post hiding (author)
 import Reddit.API.Types.Reddit
+import Reddit.API.Types.Subreddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
@@ -69,6 +70,8 @@ isReference _ = False
 
 data Comment = Comment { commentID :: CommentID
                        , score :: Maybe Integer
+                       , subredditID :: SubredditID
+                       , subreddit :: SubredditName
                        , gilded :: Integer
                        , saved :: Bool
                        , author :: Username
@@ -89,6 +92,8 @@ instance FromJSON Comment where
     d <- o .: "data"
     Comment <$> d .: "id"
             <*> d .:? "score"
+            <*> d .: "subreddit_id"
+            <*> d .: "subreddit"
             <*> d .: "gilded"
             <*> d .: "saved"
             <*> d .: "author"
