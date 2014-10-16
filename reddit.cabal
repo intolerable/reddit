@@ -93,3 +93,23 @@ test-suite test
     text,
     transformers
   GHC-options: -Wall -Werror
+
+test-suite test-io
+  hs-source-dirs: test-io
+  main-is: Spec.hs
+  default-extensions:
+    OverloadedStrings
+    Rank2Types
+  default-language: Haskell2010
+  type: exitcode-stdio-1.0
+  build-depends:
+    base == 4.*,
+    Cabal >= 1.16.0,
+    api-builder,
+    bytestring,
+    datetime,
+    reddit,
+    hspec,
+    text,
+    transformers
+  GHC-options: -Wall -Werror
