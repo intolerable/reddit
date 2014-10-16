@@ -18,13 +18,16 @@ instance ToQuery SubredditName where
 newtype SubredditID = SubredditID Text
   deriving (Show, Read, Eq)
 
+instance FromJSON SubredditID where
+  parseJSON j = SubredditID <$> parseJSON j
+
 instance Thing SubredditID where
   fullName (SubredditID i) = mconcat [subredditPrefix, "_", i]
 
 instance ToQuery SubredditID where
   toQuery = Just . fullName
 
-data Subreddit = Subreddit { subredditID :: Text
+data Subreddit = Subreddit { subredditID :: SubredditID
                            , name :: SubredditName
                            , title :: Text
                            , subscribers :: Integer
@@ -42,7 +45,8 @@ instance FromJSON Subreddit where
   parseJSON _ = mempty
 
 instance Thing Subreddit where
-  fullName s = mconcat [subredditPrefix, "_", subredditID s]
+  fullName sub = mconcat [subredditPrefix, "_", s]
+    where SubredditID s = subredditID sub
 
 subredditPrefix :: Text
 subredditPrefix = "t5"
