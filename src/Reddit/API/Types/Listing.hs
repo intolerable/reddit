@@ -4,7 +4,7 @@ import Reddit.API.Parser
 
 import Control.Applicative
 import Data.Aeson
-import Data.Monoid (mempty)
+import Data.Monoid
 import Data.Traversable (traverse)
 import Network.API.Builder.Query
 
@@ -30,6 +30,11 @@ data Listing t a = Listing { before :: Maybe t
 
 instance Functor (Listing t) where
   fmap f (Listing b a x) = Listing b a (fmap f x)
+
+instance Ord t => Monoid (Listing t a) where
+  mappend (Listing a b cs) (Listing d e fs) =
+    Listing (max a d) (min b e) (cs <> fs)
+  mempty = Listing Nothing Nothing []
 
 instance (FromJSON t, FromJSON a) => FromJSON (Listing t a) where
   parseJSON (Object o) = do
