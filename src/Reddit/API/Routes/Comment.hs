@@ -29,3 +29,8 @@ newComments opts r =
     url = case r of
       Just (R sub) -> [ "r", sub, "comments" ]
       Nothing -> [ "comments" ]
+
+commentInfo :: CommentID -> Route
+commentInfo c = Route [ "api", "info" ]
+                      [ "id" =. c ]
+                      "GET"

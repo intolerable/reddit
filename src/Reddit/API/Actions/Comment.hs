@@ -3,6 +3,7 @@ module Reddit.API.Actions.Comment where
 import Reddit.API.Routes.Run
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Empty
+import Reddit.API.Types.Listing
 import Reddit.API.Types.Options
 import Reddit.API.Types.Post
 import Reddit.API.Types.Reddit
@@ -29,3 +30,9 @@ getNewComments = getNewComments' def
 
 removeComment :: MonadIO m => CommentID -> RedditT m ()
 removeComment = nothing . runRoute . Route.removePost False
+
+getCommentInfo :: MonadIO m => CommentID -> RedditT m Comment
+getCommentInfo c = do
+  Listing _ _ (comment:[]) <- runRoute $ Route.commentInfo c
+    :: MonadIO m => RedditT m (Listing Empty Comment)
+  return comment
