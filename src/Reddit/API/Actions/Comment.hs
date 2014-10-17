@@ -33,6 +33,9 @@ removeComment = nothing . runRoute . Route.removePost False
 
 getCommentInfo :: MonadIO m => CommentID -> RedditT m Comment
 getCommentInfo c = do
-  Listing _ _ (comment:[]) <- runRoute $ Route.commentInfo c
+  Listing _ _ (comment:[]) <- runRoute $ Route.commentInfo [c]
     :: MonadIO m => RedditT m (Listing Empty Comment)
   return comment
+
+getCommentsInfo :: MonadIO m => [CommentID] -> RedditT m CommentListing
+getCommentsInfo cs = runRoute $ Route.commentInfo cs

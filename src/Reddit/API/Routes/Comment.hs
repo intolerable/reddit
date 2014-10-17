@@ -30,7 +30,7 @@ newComments opts r =
       Just (R sub) -> [ "r", sub, "comments" ]
       Nothing -> [ "comments" ]
 
-commentInfo :: CommentID -> Route
-commentInfo c = Route [ "api", "info" ]
-                      [ "id" =. c ]
-                      "GET"
+commentInfo :: [CommentID] -> Route
+commentInfo cs = Route [ "api", "info" ]
+                       [ "id" =. cs ]
+                       "GET"

@@ -17,3 +17,7 @@ spec = describe "Reddit.API.Actions.Comment" $ do
   it "should be able to get info for a comment" $ do
     res <- run reddit $ getCommentInfo (CommentID "c60o0iw")
     res `shouldSatisfy` isRight
+
+  it "should be able to get info for multiple comments" $ do
+    res <- run reddit $ getCommentsInfo [CommentID "c60o0iw", CommentID "c4zrenn"]
+    res `shouldSatisfy` isRight
