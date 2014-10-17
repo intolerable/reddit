@@ -50,7 +50,7 @@ spec = describe "Reddit.API.Types.Listing" $ do
           decoded = decode "null"
       decoded `shouldBe` Right (Listing Nothing Nothing [])
 
-  describe "ListingType" $ do
+  describe "ListingType" $
 
     it "should have a valid ToQuery instance" $ do
       toQuery Hot `shouldBe` Just "hot"

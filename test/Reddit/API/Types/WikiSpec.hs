@@ -8,7 +8,7 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = describe "Reddit.API.Types.Wiki" $ do
+spec = describe "Reddit.API.Types.Wiki" $
 
   it "should correctly unescape text" $ do
     unescape "&gt;" `shouldBe` ">"

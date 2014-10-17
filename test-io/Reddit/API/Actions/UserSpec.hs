@@ -25,14 +25,14 @@ spec = describe "Reddit.API.Actions.User" $ do
     res `shouldSatisfy` isRight
     case res of
       Left _ -> expectationFailure "something failed"
-      Right (Listing _ _ cs) -> do
+      Right (Listing _ _ cs) ->
         forM_ cs $ \c -> do
           author c `shouldBe` username
           replies c `shouldSatisfy` (\(Listing _ _ x) -> null x)
           created c `shouldSatisfy` (< time)
 
   it "should be able to get the user's about me info" $ do
-    res <- run reddit $ aboutMe
+    res <- run reddit aboutMe
     res `shouldSatisfy` isRight
     case res of
       Left _ -> expectationFailure "something failed"
