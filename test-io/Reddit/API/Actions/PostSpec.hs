@@ -22,7 +22,6 @@ spec = describe "Reddit.API.Actions.Post" $ do
     case res of
       Left _ -> expectationFailure "something failed"
       Right post -> do
-        print post
         author post `shouldBe` Username "PresidentObama"
         title post `shouldBe` "I am Barack Obama, President of the United States -- AMA"
         subredditID post `shouldBe` SubredditID "t5_2qzb6"
