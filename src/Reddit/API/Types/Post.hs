@@ -3,6 +3,7 @@ module Reddit.API.Types.Post where
 import Reddit.API.Parser
 import Reddit.API.Types.Listing
 import Reddit.API.Types.Reddit
+import Reddit.API.Types.Subreddit
 import Reddit.API.Types.Thing
 import Reddit.API.Types.User
 
@@ -33,9 +34,11 @@ data Post = Post { postID :: PostID
                  , content :: PostContent
                  , liked :: Maybe Bool
                  , flairText :: Maybe Text
+                 , flairClass :: Maybe Text
                  , domain :: Text
                  , gilded :: Integer
-                 , nsfw :: Bool }
+                 , nsfw :: Bool
+                 , subredditID :: SubredditID }
   deriving (Show, Read, Eq)
 
 instance FromJSON Post where
@@ -51,9 +54,11 @@ instance FromJSON Post where
          <*> (buildContent <$> d .: "is_self" <*> d .:? "selftext" <*> d .:? "selftext_html" <*> d .: "url")
          <*> d .:? "likes"
          <*> d .:? "link_flair_text"
+         <*> d .:? "link_flair_css_class"
          <*> d .: "domain"
          <*> d .: "gilded"
          <*> d .: "over_18"
+         <*> d .: "subreddit_id"
   parseJSON _ = mempty
 
 data PostContent = SelfPost Text Text
