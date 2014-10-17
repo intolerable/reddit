@@ -20,10 +20,13 @@ import qualified Data.Text as Text
 
 getPostInfo :: MonadIO m => PostID -> RedditT m Post
 getPostInfo pID = do
-  res <- runRoute $ Route.aboutPost pID :: MonadIO m => RedditT m PostListing
+  res <- runRoute $ Route.aboutPosts [pID] :: MonadIO m => RedditT m PostListing
   case res of
     Listing _ _ (p:[]) -> return p
     _ -> RedditT $ EitherT $ return $ Left $ APIError InvalidResponseError
+
+getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
+getPostsInfo ps = runRoute $ Route.aboutPosts ps
 
 getPosts :: MonadIO m => RedditT m PostListing
 getPosts = getPosts' def Hot Nothing

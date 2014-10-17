@@ -19,10 +19,10 @@ postsListing opts r t =
   where endpoint Nothing = [ t ]
         endpoint (Just (R name)) = [ "r", name, t ]
 
-aboutPost :: PostID -> Route
-aboutPost p = Route [ "api", "info" ]
-                    [ "id" =. p ]
-                    "GET"
+aboutPosts :: [PostID] -> Route
+aboutPosts ps = Route [ "api", "info" ]
+                      [ "id" =. ps ]
+                      "GET"
 
 savePost :: PostID -> Route
 savePost p = Route [ "api", "save" ]
