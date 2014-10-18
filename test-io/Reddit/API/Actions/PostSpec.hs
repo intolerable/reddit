@@ -1,6 +1,7 @@
 module Reddit.API.Actions.PostSpec where
 
 import Reddit.API.Actions.Post
+import Reddit.API.Types.Listing
 import Reddit.API.Types.Post
 import Reddit.API.Types.Subreddit (SubredditID(..))
 import Reddit.API.Types.User
@@ -30,3 +31,11 @@ spec = describe "Reddit.API.Actions.Post" $ do
   it "should be able to get info for multiple posts" $ do
     res <- run reddit $ getPostsInfo [PostID "z1c9z", PostID "t0ynr"]
     res `shouldSatisfy` isRight
+
+  it "should cope with getting info for no posts" $ do
+    res <- run reddit $ getPostsInfo []
+    res `shouldSatisfy` isRight
+    case res of
+      Left _ -> expectationFailure "something failed"
+      Right (Listing _ _ ps) -> do
+        ps `shouldBe` []
