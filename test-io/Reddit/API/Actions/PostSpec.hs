@@ -25,7 +25,7 @@ spec = describe "Reddit.API.Actions.Post" $ do
       Right post -> do
         author post `shouldBe` Username "PresidentObama"
         title post `shouldBe` "I am Barack Obama, President of the United States -- AMA"
-        subredditID post `shouldBe` SubredditID "t5_2qzb6"
+        subredditID post `shouldBe` SubredditID "2qzb6"
         nsfw post `shouldBe` False
 
   it "should be able to get info for multiple posts" $ do
