@@ -3,6 +3,7 @@ module Reddit.API.Actions.UserSpec where
 import Reddit.API.Actions.User
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Listing
+import Reddit.API.Types.Options
 import Reddit.API.Types.User
 
 import ConfigLoad
@@ -30,6 +31,19 @@ spec = describe "Reddit.API.Actions.User" $ do
           author c `shouldBe` username
           replies c `shouldSatisfy` (\(Listing _ _ x) -> null x)
           created c `shouldSatisfy` (< time)
+
+  it "should be able to get multiple pages of user comments" $ do
+    res <- run reddit $ getUserComments' (Options Nothing (Just 1)) username
+    res `shouldSatisfy` isRight
+    case res of
+      Right (Listing _ (Just a) (c:[])) -> do
+        next <- run reddit $ getUserComments' (Options (Just $ After a) (Just 1)) username
+        next `shouldSatisfy` isRight
+        case next of
+          Right (Listing _ _ (d:[])) -> do
+            c `shouldSatisfy` (/= d)
+          _ -> expectationFailure "something failed"
+      _ -> expectationFailure "something failed"
 
   it "should be able to get the user's about me info" $ do
     res <- run reddit aboutMe

@@ -23,7 +23,9 @@ newtype CommentID = CommentID Text
   deriving (Show, Read, Eq, Ord)
 
 instance FromJSON CommentID where
-  parseJSON j = CommentID <$> parseJSON j
+  parseJSON (String s) =
+    CommentID <$> stripPrefix commentPrefix s
+  parseJSON _ = mempty
 
 instance Thing CommentID where
   fullName (CommentID cID) = Text.concat [commentPrefix, "_", cID]

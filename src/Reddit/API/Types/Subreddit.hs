@@ -8,7 +8,6 @@ import Data.Aeson
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
-import qualified Data.Text as Text
 
 newtype SubredditName = R Text
   deriving (Show, Read, Eq)
@@ -24,13 +23,7 @@ newtype SubredditID = SubredditID Text
 
 instance FromJSON SubredditID where
   parseJSON (String s) =
-    case Text.breakOn "_" s of
-      ("t5", i) ->
-        case Text.stripPrefix "_" i of
-          Just rest -> return $ SubredditID rest
-          Nothing -> mempty
-      (i, "") -> return $ SubredditID i
-      _ -> mempty
+    SubredditID <$> stripPrefix subredditPrefix s
   parseJSON _ = mempty
 
 instance Thing SubredditID where

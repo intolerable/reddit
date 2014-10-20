@@ -28,7 +28,7 @@ spec = describe "Reddit.API.Types.Listing" $ do
       case decoded of
         Left _ -> expectationFailure "json parse failed"
         Right (Listing b a _) -> do
-          a `shouldBe` Just (CommentID "t1_cl1royq")
+          a `shouldBe` Just (CommentID "cl1royq")
           b `shouldBe` Nothing
 
     describe "has a valid Functor instance" $ do
