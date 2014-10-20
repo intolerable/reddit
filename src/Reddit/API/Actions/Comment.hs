@@ -3,6 +3,7 @@ module Reddit.API.Actions.Comment where
 import Reddit.API.Routes.Run
 import Reddit.API.Types.Comment
 import Reddit.API.Types.Empty
+import Reddit.API.Types.Error
 import Reddit.API.Types.Listing
 import Reddit.API.Types.Options
 import Reddit.API.Types.Post
@@ -12,6 +13,7 @@ import qualified Reddit.API.Routes as Route
 
 import Control.Monad.IO.Class
 import Data.Default
+import Network.API.Builder (APIError(..))
 
 getMoreChildren :: MonadIO m => PostID -> [CommentID] -> RedditT m [CommentReference]
 getMoreChildren _ [] = return []
@@ -33,9 +35,11 @@ removeComment = nothing . runRoute . Route.removePost False
 
 getCommentInfo :: MonadIO m => CommentID -> RedditT m Comment
 getCommentInfo c = do
-  Listing _ _ (comment:[]) <- runRoute $ Route.commentInfo [c]
-    :: MonadIO m => RedditT m (Listing Empty Comment)
-  return comment
+  res <- getCommentsInfo [c]
+  case res of
+    Listing _ _ (comment:[]) ->
+      return comment
+    _ -> failWith $ APIError InvalidResponseError
 
 getCommentsInfo :: MonadIO m => [CommentID] -> RedditT m CommentListing
 getCommentsInfo cs = runRoute $ Route.commentInfo cs
