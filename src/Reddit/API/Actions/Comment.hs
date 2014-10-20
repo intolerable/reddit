@@ -11,6 +11,7 @@ import Reddit.API.Types.Reddit
 import Reddit.API.Types.Subreddit
 import qualified Reddit.API.Routes as Route
 
+import Control.Monad (when)
 import Control.Monad.IO.Class
 import Data.Default
 import Network.API.Builder (APIError(..))
@@ -47,4 +48,8 @@ getCommentsInfo :: MonadIO m => [CommentID] -> RedditT m CommentListing
 getCommentsInfo = getCommentsInfo' def
 
 getCommentsInfo' :: MonadIO m => Options CommentID -> [CommentID] -> RedditT m CommentListing
-getCommentsInfo' opts cs = runRoute $ Route.commentsInfo opts cs
+getCommentsInfo' opts cs = do
+  res <- runRoute $ Route.commentsInfo opts cs
+  let Listing _ _ cs' = res
+  when (null cs' && not (null cs)) $ failWith $ APIError InvalidResponseError
+  return res

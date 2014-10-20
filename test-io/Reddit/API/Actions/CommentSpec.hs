@@ -2,7 +2,6 @@ module Reddit.API.Actions.CommentSpec where
 
 import Reddit.API.Actions.Comment
 import Reddit.API.Types.Comment
-import Reddit.API.Types.Listing
 
 import ConfigLoad
 import Data.Either
@@ -27,10 +26,6 @@ spec = describe "Reddit.API.Actions.Comment" $ do
     res <- run reddit $ getCommentInfo (CommentID "garbage")
     res `shouldSatisfy` isLeft
 
-  it "should be able to get a list of comment IDs where some are invalid" $ do
+  it "shouldn't be able to get a list of comment IDs where some are invalid" $ do
     res <- run reddit $ getCommentsInfo [CommentID "c60o0iw", CommentID "garbage"]
-    res `shouldSatisfy` isRight
-    case res of
-      Left _ -> expectationFailure "something failed"
-      Right (Listing _ _ cs) -> do
-        length cs `shouldBe` 1
+    res `shouldSatisfy` isLeft
