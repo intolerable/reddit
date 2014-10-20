@@ -37,5 +37,5 @@ spec = describe "Reddit.API.Actions.Post" $ do
     res `shouldSatisfy` isRight
     case res of
       Left _ -> expectationFailure "something failed"
-      Right (Listing _ _ ps) -> do
+      Right (Listing _ _ ps) ->
         ps `shouldBe` []

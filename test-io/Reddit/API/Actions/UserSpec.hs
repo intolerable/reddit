@@ -40,7 +40,7 @@ spec = describe "Reddit.API.Actions.User" $ do
         next <- run reddit $ getUserComments' (Options (Just $ After a) (Just 1)) username
         next `shouldSatisfy` isRight
         case next of
-          Right (Listing _ _ (d:[])) -> do
+          Right (Listing _ _ (d:[])) ->
             c `shouldSatisfy` (/= d)
           _ -> expectationFailure "something failed"
       _ -> expectationFailure "something failed"
