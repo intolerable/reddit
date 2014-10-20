@@ -26,6 +26,6 @@ userComments opts (Username user) =
 
 usernameAvailable :: Username -> Route
 usernameAvailable user = Route [ "api", "username_available.json" ]
-                                          [ "user" =. user]
-                                          "GET"
+                               [ "user" =. user]
+                               "GET"
 
