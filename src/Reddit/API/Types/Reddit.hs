@@ -2,6 +2,7 @@ module Reddit.API.Types.Reddit
   ( Reddit
   , RedditT(..)
   , nest
+  , failWith
   , Modhash(..)
   , LoginDetails(..)
   , POSTWrapped(..)
@@ -18,6 +19,7 @@ import Reddit.API.Types.Error
 import Control.Applicative
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
+import Control.Monad.Trans.Either
 import Control.Monad.Trans.Reader (ask)
 import Control.Monad.Trans.State (get, put)
 import Data.Aeson
@@ -62,6 +64,9 @@ nest (RedditT a) = do
     liftBuilder $ put b'
     liftState $ put rl'
   return res
+
+failWith :: MonadIO m => APIError RedditError -> RedditT m a
+failWith = RedditT . EitherT . return . Left
 
 newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)

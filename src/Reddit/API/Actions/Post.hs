@@ -26,7 +26,7 @@ getPostInfo' opts pID = do
   res <- getPostsInfo' opts [pID]
   case res of
     Listing _ _ (p:[]) -> return p
-    _ -> RedditT $ EitherT $ return $ Left $ APIError InvalidResponseError
+    _ -> failWith $ APIError InvalidResponseError
 
 getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
 getPostsInfo = getPostsInfo' def
