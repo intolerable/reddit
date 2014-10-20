@@ -11,7 +11,6 @@ import Reddit.API.Types.Options
 import Reddit.API.Types.Reddit
 
 import Control.Monad.IO.Class
-import Control.Monad.Trans.Either
 import Data.Default
 import Data.Text (Text)
 import Network.API.Builder.Error (APIError(..))
