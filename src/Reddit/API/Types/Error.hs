@@ -21,6 +21,7 @@ data RedditError = RedditError Object
                  | CommentDeleted
                  | LinkDeleted
                  | BadSubredditName
+                 | TooManyRequests
                  deriving (Show, Eq)
 
 instance FromJSON RedditError where

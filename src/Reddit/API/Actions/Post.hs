@@ -31,7 +31,10 @@ getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
 getPostsInfo = getPostsInfo' def
 
 getPostsInfo' :: MonadIO m => Options PostID -> [PostID] -> RedditT m PostListing
-getPostsInfo' opts ps = runRoute $ Route.aboutPosts opts ps
+getPostsInfo' opts ps = do
+  if null $ drop 100 ps
+    then runRoute $ Route.aboutPosts opts ps
+    else failWith $ APIError TooManyRequests
 
 getPosts :: MonadIO m => RedditT m PostListing
 getPosts = getPosts' def Hot Nothing
