@@ -6,6 +6,7 @@ import Reddit.API.Types.Subreddit hiding (subredditID)
 import Reddit.API.Types.User
 
 import Control.Monad
+import Data.ByteString.Lazy (ByteString)
 import Data.DateTime
 import Data.Either
 import Data.Maybe
@@ -19,6 +20,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.API.Types.Comment" $ do
+  let decode' = decode :: ByteString -> Either (APIError ()) CommentID
   getUserCommentsExample <- runIO $ ByteString.readFile "test/data/getUserComments_example.json"
   time <- runIO getCurrentTime
 
@@ -48,3 +50,8 @@ spec = describe "Reddit.API.Types.Comment" $ do
           bodyHTML c `shouldSatisfy` not . Text.null
           replies c `shouldBe` Listing Nothing Nothing []
           created c `shouldSatisfy` (< time)
+
+  it "can parse a CommentID" $ do
+    decode' "\"t1_cl1royq\"" `shouldBe` Right (CommentID "cl1royq")
+    decode' "\"cl1royq\"" `shouldBe` Right (CommentID "cl1royq")
+    decode' "\"t5_2s580\"" `shouldSatisfy` isLeft
