@@ -11,4 +11,6 @@ needsCaptcha :: MonadIO m => RedditT m Bool
 needsCaptcha = runRoute Route.needsCaptcha
 
 newCaptcha :: MonadIO m => RedditT m CaptchaID
-newCaptcha = runRoute Route.newCaptcha
+newCaptcha = do
+  POSTWrapped c <- runRoute Route.newCaptcha
+  return c
