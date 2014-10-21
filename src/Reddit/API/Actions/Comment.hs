@@ -34,23 +34,17 @@ removeComment :: MonadIO m => CommentID -> RedditT m ()
 removeComment = nothing . runRoute . Route.removePost False
 
 getCommentInfo :: MonadIO m => CommentID -> RedditT m Comment
-getCommentInfo = getCommentInfo' def
-
-getCommentInfo' :: MonadIO m => Options CommentID -> CommentID -> RedditT m Comment
-getCommentInfo' opts c = do
-  res <- getCommentsInfo' opts [c]
+getCommentInfo c = do
+  res <- getCommentsInfo [c]
   case res of
     Listing _ _ (comment:[]) -> return comment
     _ -> failWith $ APIError InvalidResponseError
 
 getCommentsInfo :: MonadIO m => [CommentID] -> RedditT m CommentListing
-getCommentsInfo = getCommentsInfo' def
-
-getCommentsInfo' :: MonadIO m => Options CommentID -> [CommentID] -> RedditT m CommentListing
-getCommentsInfo' opts cs =
+getCommentsInfo cs =
   if null $ drop 100 cs
     then do
-      res <- runRoute $ Route.commentsInfo opts cs
+      res <- runRoute $ Route.commentsInfo cs
       case res of
         Listing _ _ comments | sameLength comments cs ->
           return res

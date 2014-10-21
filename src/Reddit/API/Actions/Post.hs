@@ -18,23 +18,17 @@ import qualified Data.Char as Char
 import qualified Data.Text as Text
 
 getPostInfo :: MonadIO m => PostID -> RedditT m Post
-getPostInfo = getPostInfo' def
-
-getPostInfo' :: MonadIO m => Options PostID -> PostID -> RedditT m Post
-getPostInfo' opts pID = do
-  res <- getPostsInfo' opts [pID]
+getPostInfo p = do
+  res <- getPostsInfo [p]
   case res of
-    Listing _ _ (p:[]) -> return p
+    Listing _ _ (post:[]) -> return post
     _ -> failWith $ APIError InvalidResponseError
 
 getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
-getPostsInfo = getPostsInfo' def
-
-getPostsInfo' :: MonadIO m => Options PostID -> [PostID] -> RedditT m PostListing
-getPostsInfo' opts ps =
+getPostsInfo ps =
   if null $ drop 100 ps
     then do
-      res <- runRoute $ Route.aboutPosts opts ps
+      res <- runRoute $ Route.aboutPosts ps
       case res of
         Listing _ _ posts | sameLength posts ps ->
           return res
