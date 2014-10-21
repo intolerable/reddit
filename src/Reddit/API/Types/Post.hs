@@ -18,7 +18,9 @@ newtype PostID = PostID Text
   deriving (Show, Read, Eq, Ord)
 
 instance FromJSON PostID where
-  parseJSON j = PostID <$> parseJSON j
+  parseJSON (String s) =
+    PostID <$> stripPrefix postPrefix s
+  parseJSON _ = mempty
 
 instance FromJSON (POSTWrapped PostID) where
   parseJSON (Object o) =
