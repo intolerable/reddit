@@ -79,7 +79,7 @@ instance FromJSON Modhash where
 data LoginDetails = LoginDetails Modhash CookieJar
   deriving (Show, Eq)
 
-data POSTWrapped a = POSTWrapped a
+newtype POSTWrapped a = POSTWrapped a
   deriving (Show, Read, Eq)
 
 type ShouldRateLimit = Bool
