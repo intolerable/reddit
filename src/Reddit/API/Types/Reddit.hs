@@ -82,6 +82,9 @@ data LoginDetails = LoginDetails Modhash CookieJar
 newtype POSTWrapped a = POSTWrapped a
   deriving (Show, Read, Eq)
 
+instance Functor POSTWrapped where
+  fmap f (POSTWrapped a) = POSTWrapped (f a)
+
 type ShouldRateLimit = Bool
 
 data RateLimitInfo = RateLimitInfo { used :: Integer
