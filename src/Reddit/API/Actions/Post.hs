@@ -31,10 +31,19 @@ getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
 getPostsInfo = getPostsInfo' def
 
 getPostsInfo' :: MonadIO m => Options PostID -> [PostID] -> RedditT m PostListing
-getPostsInfo' opts ps = do
+getPostsInfo' opts ps =
   if null $ drop 100 ps
-    then runRoute $ Route.aboutPosts opts ps
+    then do
+      res <- runRoute $ Route.aboutPosts opts ps
+      case res of
+        Listing _ _ posts | sameLength posts ps ->
+          return res
+        _ -> failWith $ APIError InvalidResponseError
     else failWith $ APIError TooManyRequests
+  where
+    sameLength (_:xs) (_:ys) = sameLength xs ys
+    sameLength [] [] = True
+    sameLength _ _ = False
 
 getPosts :: MonadIO m => RedditT m PostListing
 getPosts = getPosts' def Hot Nothing
