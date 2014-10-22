@@ -50,7 +50,7 @@ spec = describe "Reddit.API.Actions.Post" $ do
     res `shouldSatisfy` isRight
     case res of
       Left _ -> expectationFailure "something failed"
-      Right (Listing _ _ ps) -> do
+      Right (Listing _ _ ps) ->
         length ps `shouldBe` length a
 
   it "should fail if it tries to get TOO many PostIDs" $ do
