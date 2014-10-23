@@ -61,7 +61,7 @@ library
   build-depends:
     base == 4.*,
     aeson,
-    api-builder,
+    api-builder == 0.2.*,
     bifunctors,
     bytestring,
     data-default,
