@@ -2,11 +2,11 @@ module Reddit.API.Routes.Flair where
 
 import Reddit.API.Types.Options
 import Reddit.API.Types.Subreddit
+import Reddit.API.Types.User
 
-import Data.Text (Text)
 import Network.API.Builder.Routes
 
-flairList :: Options Text -> SubredditName -> Route
+flairList :: Options UserID -> SubredditName -> Route
 flairList opts (R r) =
   Route [ "r", r, "api", "flairlist" ]
         [ "after" =. after opts

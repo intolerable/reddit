@@ -20,8 +20,8 @@ instance FromJSON Flair where
   parseJSON _ = mempty
 
 data FlairList = FlairList { flairs :: [Flair]
-                           , next :: Maybe Text
-                           , previous :: Maybe Text }
+                           , next :: Maybe UserID
+                           , previous :: Maybe UserID }
   deriving (Show, Read, Eq)
 
 instance FromJSON FlairList where
