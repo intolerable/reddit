@@ -23,7 +23,8 @@ newtype UserID = UserID Text
   deriving (Show, Read, Eq)
 
 instance FromJSON UserID where
-  parseJSON (String s) = return $ UserID s
+  parseJSON (String s) =
+    UserID <$> stripPrefix userPrefix s
   parseJSON _ = mempty
 
 data User = User { userID :: Text
