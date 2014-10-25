@@ -1,11 +1,12 @@
 module Reddit.API.Types.User where
 
 import Reddit.API.Parser
+import Reddit.API.Types.Thing
 
 import Control.Applicative
 import Data.Aeson
 import Data.DateTime
-import Data.Monoid (mempty)
+import Data.Monoid (mconcat, mempty)
 import Data.Text (Text)
 import Network.API.Builder.Query
 
@@ -26,6 +27,12 @@ instance FromJSON UserID where
   parseJSON (String s) =
     UserID <$> stripPrefix userPrefix s
   parseJSON _ = mempty
+
+instance Thing UserID where
+  fullName (UserID u) = mconcat [userPrefix, "_", u]
+
+instance ToQuery UserID where
+  toQuery = toQuery . fullName
 
 data User = User { userID :: Text
                  , userName :: Username
