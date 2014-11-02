@@ -1,4 +1,8 @@
-module Reddit.API.Actions.Message where
+module Reddit.API.Actions.Message
+  ( getInbox
+  , getUnread
+  , markRead
+  , sendMessage ) where
 
 import Reddit.API.Routes.Run
 import Reddit.API.Types.Empty
@@ -19,8 +23,8 @@ getInbox = runRoute Route.inbox
 getUnread :: MonadIO m => RedditT m (Listing MessageKind Message)
 getUnread = runRoute Route.unread
 
-readMessage :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
-readMessage = nothing . runRoute . Route.readMessage
+markRead :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
+markRead = nothing . runRoute . Route.readMessage
 
 sendMessage :: MonadIO m => Username -> Text -> Text -> RedditT m ()
 sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b Nothing Nothing

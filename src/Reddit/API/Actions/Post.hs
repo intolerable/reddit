@@ -1,4 +1,18 @@
-module Reddit.API.Actions.Post where
+module Reddit.API.Actions.Post
+  ( getPosts
+  , getPosts'
+  , getPostComments
+  , Reddit.API.Actions.Post.getComments
+  , getPostInfo
+  , getPostsInfo
+  , Reddit.API.Actions.Post.submitLink
+  , enableReplies
+  , disableReplies
+  , Reddit.API.Actions.Post.savePost
+  , Reddit.API.Actions.Post.unsavePost
+  , deletePost
+  , Reddit.API.Actions.Post.removePost
+  , markPostSpam ) where
 
 import Reddit.API.Routes as Route
 import Reddit.API.Routes.Run
@@ -77,5 +91,5 @@ disableReplies = nothing . runRoute . Route.sendReplies False
 removePost :: MonadIO m => PostID -> RedditT m ()
 removePost = nothing . runRoute . Route.removePost False
 
-markPostAsSpam :: MonadIO m => PostID -> RedditT m ()
-markPostAsSpam = nothing . runRoute . Route.removePost True
+markPostSpam :: MonadIO m => PostID -> RedditT m ()
+markPostSpam = nothing . runRoute . Route.removePost True

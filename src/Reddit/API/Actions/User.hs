@@ -1,4 +1,9 @@
-module Reddit.API.Actions.User where
+module Reddit.API.Actions.User
+  ( getUserInfo
+  , aboutMe
+  , getUserComments
+  , getUserComments'
+  , isUsernameAvailable ) where
 
 import Reddit.API.Routes.Run
 import Reddit.API.Types.User

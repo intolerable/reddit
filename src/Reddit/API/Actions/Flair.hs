@@ -1,4 +1,6 @@
-module Reddit.API.Actions.Flair where
+module Reddit.API.Actions.Flair
+  ( getFlairList
+  , getFlairList' ) where
 
 import Reddit.API.Routes.Flair
 import Reddit.API.Routes.Run

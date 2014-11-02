@@ -1,4 +1,5 @@
-module Reddit.API.Actions.Wiki where
+module Reddit.API.Actions.Wiki
+  ( getWikiPage ) where
 
 import Reddit.API.Routes.Run
 import Reddit.API.Types.Reddit

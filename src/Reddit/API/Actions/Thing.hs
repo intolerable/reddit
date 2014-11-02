@@ -1,4 +1,6 @@
-module Reddit.API.Actions.Thing where
+module Reddit.API.Actions.Thing
+  ( Reddit.API.Actions.Thing.reply
+  , Reddit.API.Actions.Thing.delete ) where
 
 import Reddit.API.Routes.Run
 import Reddit.API.Types
