@@ -7,11 +7,11 @@ import Network.API.Builder.Routes
 
 reply :: Thing a => a -> Text -> Route
 reply thingID body = Route [ "api", "comment" ]
-                           [ "parent" =. Just (fullName thingID)
-                           , "text" =. Just body ]
+                           [ "parent" =. fullName thingID
+                           , "text" =. body ]
                            "POST"
 
 delete :: Thing a => a -> Route
 delete t = Route [ "api", "del" ]
-                 [ "id" =. Just (fullName t) ]
+                 [ "id" =. fullName t ]
                  "POST"
