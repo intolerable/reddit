@@ -72,7 +72,7 @@ submitLink r title url = do
   return res
 
 deletePost :: MonadIO m => PostID -> RedditT m ()
-deletePost = nothing . runRoute . Route.deletePost
+deletePost = nothing . runRoute . Route.delete
 
 getPostComments :: MonadIO m => PostID -> RedditT m PostComments
 getPostComments = runRoute . Route.getComments

@@ -48,11 +48,6 @@ submitLink (R name) title url = Route [ "api", "submit" ]
                                       , "sr" =. name]
                                       "POST"
 
-deletePost :: PostID -> Route
-deletePost p = Route [ "api", "del" ]
-                     [ "id" =. p ]
-                     "POST"
-
 getComments :: PostID -> Route
 getComments (PostID p) = Route [ "comments", p ]
                                [ ]
