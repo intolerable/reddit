@@ -18,6 +18,7 @@ module Reddit.API.Types.Reddit
 import Reddit.API.Types.Error
 
 import Control.Applicative
+import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Either
@@ -36,7 +37,7 @@ import qualified Data.DateTime as DateTime
 
 type Reddit a = RedditT IO a
 
-newtype RedditT m a = RedditT { unRedditT :: APIT RateLimits RedditError m a }
+newtype RedditT m a = RedditT { unRedditT :: APIT (TVar RateLimits) RedditError m a }
 
 instance Monad m => Functor (RedditT m) where
   fmap f (RedditT a) = RedditT (fmap f a)

@@ -5,6 +5,7 @@ import Reddit.API.Types.Error
 import Reddit.API.Types.Reddit
 
 import Control.Concurrent (threadDelay)
+import Control.Concurrent.STM.TVar
 import Control.Exception (try)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either
@@ -33,7 +34,7 @@ getLoginDetails user pass = do
   mh <- nest $ RedditT $ hoistEither $ decode $ responseBody resp'
   case mh of
     Left x@(APIError (RateLimitError wait _)) -> do
-      RateLimits limiting _ <- RedditT $ liftState get
+      RateLimits limiting _ <- RedditT $ liftState get >>= liftIO . readTVarIO
       if limiting
         then do
           liftIO $ threadDelay $ (fromIntegral wait + 5) * 1000000

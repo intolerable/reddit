@@ -5,6 +5,8 @@ import Reddit.API.Types.Error
 import Reddit.API.Types.Reddit
 
 import Control.Concurrent (threadDelay)
+import Control.Concurrent.STM
+import Control.Concurrent.STM.TVar
 import Control.Monad (when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either (hoistEither)
@@ -20,14 +22,14 @@ import qualified Network.API.Builder as API
 
 runRoute :: (MonadIO m, FromJSON a) => Route -> RedditT m a
 runRoute route = do
-  RateLimits limiting _ <- RedditT $ API.liftState get
+  RateLimits limiting _ <- RedditT $ API.liftState get >>= liftIO . readTVarIO
   if limiting
     then runRouteWithLimiting route
     else RedditT $ API.runRoute route
 
 runRouteWithLimiting :: (MonadIO m, FromJSON a) => Route -> RedditT m a
 runRouteWithLimiting route = do
-  RateLimits _ rli <- RedditT $ API.liftState get
+  RateLimits _ rli <- RedditT $ API.liftState get >>= liftIO . readTVarIO
   case rli of
     Just r -> do
       when (needsReset r) $ waitForReset $ resetTime r
@@ -53,16 +55,18 @@ updateRateLimitInfo hs = do
   time <- liftIO DateTime.getCurrentTime
   case headersToRateLimitInfo hs time of
     Just rli ->
-      RedditT $ API.liftState $
-        modify (\(RateLimits b _) -> RateLimits b $ Just rli)
+      RedditT $ do
+        r <- API.liftState get
+        liftIO $ atomically $ modifyTVar r (\(RateLimits b _) -> RateLimits b $ Just rli)
     Nothing -> return ()
 
 updateFromZero :: MonadIO m => Integer -> RedditT m ()
 updateFromZero resetIn = do
   time <- liftIO DateTime.getCurrentTime
   let resetAt = DateTime.addSeconds resetIn time
-  RedditT $ API.liftState $
-    modify (\(RateLimits b _) -> RateLimits b $ Just $ RateLimitInfo 0 0 resetAt)
+  RedditT $ do
+    r <- API.liftState get
+    liftIO $ atomically $ modifyTVar r (\(RateLimits b _) -> RateLimits b $ Just $ RateLimitInfo 0 0 resetAt)
 
 waitForReset :: MonadIO m => DateTime -> RedditT m ()
 waitForReset dt = do

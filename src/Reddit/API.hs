@@ -8,6 +8,7 @@ import Reddit.API.Login
 import Reddit.API.Types.Error as Export
 import Reddit.API.Types.Reddit as Export
 
+import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
@@ -22,8 +23,9 @@ runRedditWithRateLimiting :: MonadIO m => Text -> Text -> RedditT m a -> m (Eith
 runRedditWithRateLimiting user pass = run user pass True
 
 run :: MonadIO m => Text -> Text -> Bool -> RedditT m a -> m (Either (APIError RedditError) a)
-run user pass shouldRateLimit (RedditT reddit) =
-  execAPI builder (RateLimits shouldRateLimit Nothing) $ do
+run user pass shouldRateLimit (RedditT reddit) = do
+  rli <- liftIO $ newTVarIO $ RateLimits shouldRateLimit Nothing
+  execAPI builder rli $ do
     customizeRequest addHeader
     LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
     customizeRequest $ \r ->

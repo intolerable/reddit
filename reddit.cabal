@@ -70,6 +70,7 @@ library
     http-conduit,
     http-types,
     network,
+    stm,
     text,
     transformers,
     unordered-containers,
