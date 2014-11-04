@@ -17,15 +17,19 @@ import Control.Monad.IO.Class
 import Data.Text (Text)
 import Network.API.Builder.Query
 
+-- | Get the message inbox for the current user.
 getInbox :: MonadIO m => RedditT m (Listing MessageKind Message)
 getInbox = runRoute Route.inbox
 
+-- | Get any unread messages for the current user.
 getUnread :: MonadIO m => RedditT m (Listing MessageKind Message)
 getUnread = runRoute Route.unread
 
+-- | Mark a message as read.
 markRead :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
 markRead = nothing . runRoute . Route.readMessage
 
+-- | Send a privatemessage to another user.
 sendMessage :: MonadIO m => Username -> Text -> Text -> RedditT m ()
 sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b Nothing Nothing
 

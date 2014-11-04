@@ -10,5 +10,6 @@ import qualified Reddit.API.Routes as Route
 import Control.Monad.IO.Class
 import Data.Text (Text)
 
+-- | Get the specified wiki page on a subreddit.
 getWikiPage :: MonadIO m => SubredditName -> Text -> RedditT m WikiPage
 getWikiPage sub page = runRoute $ Route.wikiPage sub page

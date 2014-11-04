@@ -53,9 +53,12 @@ getPostsInfo ps =
     sameLength [] [] = True
     sameLength _ _ = False
 
+-- | Get a 'PostListing' for the 'Hot' posts on the site overall.
+--   This maps to <http://reddit.com>.
 getPosts :: MonadIO m => RedditT m PostListing
 getPosts = getPosts' def Hot Nothing
 
+-- | Get a 'PostListing' for a specified listing.
 getPosts' :: MonadIO m => Options PostID -> ListingType -> Maybe SubredditName -> RedditT m PostListing
 getPosts' o l r = runRoute $ Route.postsListing o r (Text.pack $ lower $ show l)
   where lower = map Char.toLower

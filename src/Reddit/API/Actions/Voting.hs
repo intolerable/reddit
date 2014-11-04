@@ -2,7 +2,9 @@ module Reddit.API.Actions.Voting
   ( upvotePost
   , downvotePost
   , unvotePost
-  , voteOnComment ) where
+  , upvoteComment
+  , downvoteComment
+  , unvoteComment ) where
 
 import Reddit.API.Routes.Run
 import Reddit.API.Types
@@ -12,21 +14,29 @@ import qualified Reddit.API.Routes as Route
 
 import Control.Monad.IO.Class
 
--- Voting on posts
+vote :: (MonadIO m, Thing a) => Int -> a -> RedditT m ()
+vote dir = nothing . runRoute . Route.vote dir
 
-voteOnPost :: MonadIO m => Int -> PostID -> RedditT m ()
-voteOnPost dir = nothing . runRoute . Route.vote dir
-
+-- | Upvote a post.
 upvotePost :: MonadIO m => PostID -> RedditT m ()
-upvotePost = voteOnPost 1
+upvotePost = vote 1
 
-unvotePost :: MonadIO m => PostID -> RedditT m ()
-unvotePost = voteOnPost 0
-
+-- | Downvote a post.
 downvotePost :: MonadIO m => PostID -> RedditT m ()
-downvotePost = voteOnPost (-1)
+downvotePost = vote (-1)
 
--- Voting on comments
+-- | Remove a vote from a post.
+unvotePost :: MonadIO m => PostID -> RedditT m ()
+unvotePost = vote 0
 
-voteOnComment :: MonadIO m => Int -> CommentID -> RedditT m ()
-voteOnComment dir = nothing . runRoute . Route.vote dir
+-- | Upvote a comment.
+upvoteComment :: MonadIO m => CommentID -> RedditT m ()
+upvoteComment = vote 1
+
+-- | Downvote a comment.
+downvoteComment :: MonadIO m => CommentID -> RedditT m ()
+downvoteComment = vote 0
+
+-- | Remove a previously-cast vote from a comment.
+unvoteComment :: MonadIO m => CommentID -> RedditT m ()
+unvoteComment = vote (-1)

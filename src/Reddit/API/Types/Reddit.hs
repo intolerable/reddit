@@ -6,6 +6,7 @@ module Reddit.API.Types.Reddit
   , Modhash(..)
   , LoginDetails(..)
   , POSTWrapped(..)
+  , RateLimits(RateLimits, should, info)
   , RateLimitInfo(..)
   , headersToRateLimitInfo
   , builder
@@ -35,7 +36,7 @@ import qualified Data.DateTime as DateTime
 
 type Reddit a = RedditT IO a
 
-newtype RedditT m a = RedditT { unRedditT :: APIT (ShouldRateLimit, Maybe RateLimitInfo) RedditError m a }
+newtype RedditT m a = RedditT { unRedditT :: APIT RateLimits RedditError m a }
 
 instance Monad m => Functor (RedditT m) where
   fmap f (RedditT a) = RedditT (fmap f a)
@@ -84,6 +85,11 @@ newtype POSTWrapped a = POSTWrapped a
 
 instance Functor POSTWrapped where
   fmap f (POSTWrapped a) = POSTWrapped (f a)
+
+data RateLimits =
+  RateLimits { should :: ShouldRateLimit
+             , info :: Maybe RateLimitInfo }
+  deriving (Show, Read, Eq)
 
 type ShouldRateLimit = Bool
 

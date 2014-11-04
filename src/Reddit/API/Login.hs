@@ -33,7 +33,7 @@ getLoginDetails user pass = do
   mh <- nest $ RedditT $ hoistEither $ decode $ responseBody resp'
   case mh of
     Left x@(APIError (RateLimitError wait _)) -> do
-      (limiting, _) <- RedditT $ liftState get
+      RateLimits limiting _ <- RedditT $ liftState get
       if limiting
         then do
           liftIO $ threadDelay $ (fromIntegral wait + 5) * 1000000
