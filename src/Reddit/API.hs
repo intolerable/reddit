@@ -6,7 +6,7 @@ module Reddit.API
 import Reddit.API.Actions as Export
 import Reddit.API.Login
 import Reddit.API.Types.Error as Export
-import Reddit.API.Types.Reddit as Export
+import Reddit.API.Types.Reddit as Export hiding (info, should)
 
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
