@@ -64,3 +64,9 @@ removePost isSpam p = Route [ "api", "remove" ]
                             [ "id" =. p
                             , "spam" =. isSpam ]
                             "POST"
+
+stickyPost :: Bool -> PostID -> Route
+stickyPost on p = Route [ "api", "set_subreddit_sticky" ]
+                        [ "id" =. p
+                        , "state" =. on ]
+                        "POST"

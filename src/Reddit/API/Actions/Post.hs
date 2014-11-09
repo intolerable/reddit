@@ -12,7 +12,9 @@ module Reddit.API.Actions.Post
   , Reddit.API.Actions.Post.unsavePost
   , deletePost
   , Reddit.API.Actions.Post.removePost
-  , markPostSpam ) where
+  , markPostSpam
+  , Reddit.API.Actions.Post.stickyPost
+  , unstickyPost ) where
 
 import Reddit.API.Routes as Route
 import Reddit.API.Routes.Run
@@ -96,3 +98,10 @@ removePost = nothing . runRoute . Route.removePost False
 
 markPostSpam :: MonadIO m => PostID -> RedditT m ()
 markPostSpam = nothing . runRoute . Route.removePost True
+
+stickyPost :: MonadIO m => PostID -> RedditT m ()
+stickyPost = nothing . runRoute . Route.stickyPost True
+
+unstickyPost :: MonadIO m => PostID -> RedditT m ()
+unstickyPost = nothing . runRoute . Route.stickyPost False
+
