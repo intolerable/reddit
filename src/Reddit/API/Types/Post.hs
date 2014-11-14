@@ -13,6 +13,7 @@ import Data.DateTime as DateTime
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
+import qualified Data.Text as Text
 
 newtype PostID = PostID Text
   deriving (Show, Read, Eq, Ord)
@@ -70,7 +71,7 @@ data PostContent = SelfPost Text Text
 
 buildContent :: Bool -> Maybe Text -> Maybe Text -> Maybe Text -> PostContent
 buildContent False _ _ (Just url) = Link url
-buildContent True (Just s) (Just sHTML) _ = SelfPost s sHTML
+buildContent True (Just s) (Just sHTML) _ = SelfPost (unescape s) sHTML
 buildContent True (Just "") Nothing _ = TitleOnly
 buildContent _ _ _ _ = undefined
 
@@ -88,3 +89,7 @@ type PostListing = Listing PostID Post
 
 postPrefix :: Text
 postPrefix = "t3"
+
+unescape :: Text -> Text
+unescape = replace "&gt;" ">" . replace "&lt;" "<" . replace "&amp;" "&"
+  where replace s r = Text.intercalate r . Text.splitOn s
