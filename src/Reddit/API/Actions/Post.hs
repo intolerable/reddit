@@ -11,6 +11,7 @@ module Reddit.API.Actions.Post
   , disableReplies
   , Reddit.API.Actions.Post.savePost
   , Reddit.API.Actions.Post.unsavePost
+  , Reddit.API.Actions.Post.editPost
   , deletePost
   , Reddit.API.Actions.Post.removePost
   , markPostSpam
@@ -84,6 +85,9 @@ submitSelfPost r title body = do
 
 deletePost :: MonadIO m => PostID -> RedditT m ()
 deletePost = nothing . runRoute . Route.delete
+
+editPost :: MonadIO m => PostID -> Text -> RedditT m ()
+editPost thing text = nothing $ runRoute $ Route.edit thing text
 
 getPostComments :: MonadIO m => PostID -> RedditT m PostComments
 getPostComments = runRoute . Route.getComments

@@ -15,3 +15,9 @@ delete :: Thing a => a -> Route
 delete t = Route [ "api", "del" ]
                  [ "id" =. fullName t ]
                  "POST"
+
+edit :: Thing a => a -> Text -> Route
+edit t newText = Route [ "api", "editusertext" ]
+                       [ "thing_id" =. fullName t
+                       , "text" =. newText ]
+                       "POST"
