@@ -52,7 +52,7 @@ instance FromJSON Post where
          <*> d .: "permalink"
          <*> d .: "author"
          <*> d .: "score"
-         <*> (DateTime.fromSeconds <$> d .: "created")
+         <*> (DateTime.fromSeconds <$> d .: "created_utc")
          <*> (buildContent <$> d .: "is_self" <*> d .:? "selftext" <*> d .:? "selftext_html" <*> d .: "url")
          <*> d .:? "likes"
          <*> d .:? "link_flair_text"
