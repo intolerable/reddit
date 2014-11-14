@@ -52,6 +52,9 @@ submitSelfPost :: SubredditName -> Text -> Text -> Route
 submitSelfPost (R name) title text = Route [ "api", "submit" ]
                                            [ "extension" =. ("json" :: Text)
                                            , "kind" =. ("self" :: Text)
+                                           , "save" =. True
+                                           , "resubmit" =. False
+                                           , "sendreplies" =. True
                                            , "then" =. ("tb" :: Text)
                                            , "title" =. title
                                            , "text" =. text
