@@ -6,6 +6,7 @@ module Reddit.API.Actions.Post
   , getPostInfo
   , getPostsInfo
   , Reddit.API.Actions.Post.submitLink
+  , Reddit.API.Actions.Post.submitSelfPost
   , enableReplies
   , disableReplies
   , Reddit.API.Actions.Post.savePost
@@ -74,6 +75,11 @@ unsavePost = nothing . runRoute . Route.unsavePost
 submitLink :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
 submitLink r title url = do
   POSTWrapped res <- runRoute $ Route.submitLink r title url
+  return res
+
+submitSelfPost :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
+submitSelfPost r title body = do
+  POSTWrapped res <- runRoute $ Route.submitSelfPost r title body
   return res
 
 deletePost :: MonadIO m => PostID -> RedditT m ()

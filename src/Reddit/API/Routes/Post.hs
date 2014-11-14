@@ -48,6 +48,16 @@ submitLink (R name) title url = Route [ "api", "submit" ]
                                       , "sr" =. name]
                                       "POST"
 
+submitSelfPost :: SubredditName -> Text -> Text -> Route
+submitSelfPost (R name) title text = Route [ "api", "submit" ]
+                                           [ "extension" =. ("json" :: Text)
+                                           , "kind" =. ("self" :: Text)
+                                           , "then" =. ("tb" :: Text)
+                                           , "title" =. title
+                                           , "text" =. text
+                                           , "sr" =. name]
+                                           "POST"
+
 getComments :: PostID -> Route
 getComments (PostID p) = Route [ "comments", p ]
                                [ ]
