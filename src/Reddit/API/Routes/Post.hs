@@ -83,3 +83,11 @@ stickyPost on p = Route [ "api", "set_subreddit_sticky" ]
                         [ "id" =. p
                         , "state" =. on ]
                         "POST"
+
+postFlair :: SubredditName -> PostID -> Text -> Text -> Route
+postFlair (R sub) p text css =
+  Route [ "r", sub, "api", "flair" ]
+        [ "link" =. fullName p
+        , "text" =. text
+        , "css_class" =. css ]
+        "POST"

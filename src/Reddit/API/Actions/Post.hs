@@ -13,6 +13,7 @@ module Reddit.API.Actions.Post
   , Reddit.API.Actions.Post.unsavePost
   , Reddit.API.Actions.Post.editPost
   , deletePost
+  , setPostFlair
   , Reddit.API.Actions.Post.removePost
   , markPostSpam
   , Reddit.API.Actions.Post.stickyPost
@@ -85,6 +86,9 @@ submitSelfPost r title postBody = do
 
 deletePost :: MonadIO m => PostID -> RedditT m ()
 deletePost = nothing . runRoute . Route.delete
+
+setPostFlair :: MonadIO m => SubredditName -> PostID -> Text -> Text -> RedditT m ()
+setPostFlair r p text css = nothing $ runRoute $ Route.postFlair r p text css
 
 editPost :: MonadIO m => PostID -> Text -> RedditT m ()
 editPost thing text = nothing $ runRoute $ Route.edit thing text
