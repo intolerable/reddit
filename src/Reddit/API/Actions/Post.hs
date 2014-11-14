@@ -79,8 +79,8 @@ submitLink r title url = do
   return res
 
 submitSelfPost :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
-submitSelfPost r title body = do
-  POSTWrapped res <- runRoute $ Route.submitSelfPost r title body
+submitSelfPost r title postBody = do
+  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody
   return res
 
 deletePost :: MonadIO m => PostID -> RedditT m ()
