@@ -1,4 +1,3 @@
-{-# LANGUAGE ImpredicativeTypes #-}
 module ConfigLoad where
 
 import Reddit.API
@@ -16,7 +15,7 @@ loadConfig = do
   file <- Text.readFile "test.cfg"
   case Text.lines file of
     user : pass : sub : [] ->
-      return (RunReddit $ runRedditWithRateLimiting user pass
+      return ( RunReddit $ runRedditWithRateLimiting user pass
              , Username user
              , R sub)
     _ -> do
