@@ -21,3 +21,14 @@ deletePost :: PostID -> Reddit ()
 Most of the functions available have prime (`'`) versions which accept extra options (`before`, `after` and `limit` api params).
 
 For example, `getPosts :: SubredditName -> Reddit PostListing` corresponds to `getPosts' :: Options PostID -> ListingType -> SubredditName -> Reddit PostListing`, and most other functions follow this pattern.
+
+Testing
+===
+
+The `test` test suite will run the tests that don't rely on doing any IO, but the `test-io` should be used too to ensure that IO functions do what they're supposed to do. If you want to run the IO suite, add a file `test.cfg` to the `reddit/` directory, containing (one field per line):
+
+- a reddit username
+- a reddit password
+- a subreddit name (the user should be a moderator for the subredit)
+
+Run `cabal test test-io` and the tests should pass.
