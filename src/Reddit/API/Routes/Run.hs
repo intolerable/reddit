@@ -6,7 +6,6 @@ import Reddit.API.Types.Reddit
 
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM
-import Control.Concurrent.STM.TVar
 import Control.Monad (when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either (hoistEither)
