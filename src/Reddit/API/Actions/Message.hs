@@ -2,7 +2,8 @@ module Reddit.API.Actions.Message
   ( getInbox
   , getUnread
   , markRead
-  , sendMessage ) where
+  , sendMessage
+  , sendMessageWithCaptcha ) where
 
 import Reddit.API.Routes.Run
 import Reddit.API.Types.Empty

@@ -35,31 +35,37 @@ unsavePost p = Route [ "api", "unsave" ]
                      [ "id" =. p ]
                      "POST"
 
-submitLink :: SubredditName -> Text -> Text -> Route
-submitLink (R name) title url = Route [ "api", "submit" ]
-                                      [ "extension" =. ("json" :: Text)
-                                      , "kind" =. ("link" :: Text)
-                                      , "save" =. True
-                                      , "resubmit" =. False
-                                      , "sendreplies" =. True
-                                      , "then" =. ("tb" :: Text)
-                                      , "title" =. title
-                                      , "url" =. url
-                                      , "sr" =. name]
-                                      "POST"
+submitLink :: SubredditName -> Text -> Text -> Maybe Text -> Maybe Text -> Route
+submitLink (R name) title url iden captcha =
+  Route [ "api", "submit" ]
+        [ "extension" =. ("json" :: Text)
+        , "kind" =. ("link" :: Text)
+        , "save" =. True
+        , "resubmit" =. False
+        , "sendreplies" =. True
+        , "then" =. ("tb" :: Text)
+        , "title" =. title
+        , "url" =. url
+        , "sr" =. name
+        , "iden" =. iden
+        , "captcha" =. captcha]
+        "POST"
 
-submitSelfPost :: SubredditName -> Text -> Text -> Route
-submitSelfPost (R name) title text = Route [ "api", "submit" ]
-                                           [ "extension" =. ("json" :: Text)
-                                           , "kind" =. ("self" :: Text)
-                                           , "save" =. True
-                                           , "resubmit" =. False
-                                           , "sendreplies" =. True
-                                           , "then" =. ("tb" :: Text)
-                                           , "title" =. title
-                                           , "text" =. text
-                                           , "sr" =. name]
-                                           "POST"
+submitSelfPost :: SubredditName -> Text -> Text -> Maybe Text -> Maybe Text -> Route
+submitSelfPost (R name) title text iden captcha =
+  Route [ "api", "submit" ]
+        [ "extension" =. ("json" :: Text)
+        , "kind" =. ("self" :: Text)
+        , "save" =. True
+        , "resubmit" =. False
+        , "sendreplies" =. True
+        , "then" =. ("tb" :: Text)
+        , "title" =. title
+        , "text" =. text
+        , "sr" =. name
+        , "iden" =. iden
+        , "captcha" =. captcha]
+        "POST"
 
 getComments :: PostID -> Route
 getComments (PostID p) = Route [ "comments", p ]

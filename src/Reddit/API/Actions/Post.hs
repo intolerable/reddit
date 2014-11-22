@@ -6,7 +6,9 @@ module Reddit.API.Actions.Post
   , getPostInfo
   , getPostsInfo
   , Reddit.API.Actions.Post.submitLink
+  , Reddit.API.Actions.Post.submitLinkWithCaptcha
   , Reddit.API.Actions.Post.submitSelfPost
+  , Reddit.API.Actions.Post.submitSelfPostWithCaptcha
   , enableReplies
   , disableReplies
   , Reddit.API.Actions.Post.savePost
@@ -76,12 +78,22 @@ unsavePost = nothing . runRoute . Route.unsavePost
 
 submitLink :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
 submitLink r title url = do
-  POSTWrapped res <- runRoute $ Route.submitLink r title url
+  POSTWrapped res <- runRoute $ Route.submitLink r title url Nothing Nothing
+  return res
+
+submitLinkWithCaptcha :: MonadIO m => SubredditName -> Text -> Text -> Text -> Text -> RedditT m PostID
+submitLinkWithCaptcha r title url iden captcha = do
+  POSTWrapped res <- runRoute $ Route.submitLink r title url (Just iden) (Just captcha)
   return res
 
 submitSelfPost :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
 submitSelfPost r title postBody = do
-  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody
+  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody Nothing Nothing
+  return res
+
+submitSelfPostWithCaptcha :: MonadIO m => SubredditName -> Text -> Text -> Text -> Text -> RedditT m PostID
+submitSelfPostWithCaptcha r title postBody iden captcha = do
+  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody (Just iden) (Just captcha)
   return res
 
 deletePost :: MonadIO m => PostID -> RedditT m ()
