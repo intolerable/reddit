@@ -9,6 +9,7 @@ import Data.Aeson
 import Data.DateTime (DateTime)
 import Data.Monoid
 import Data.Text (Text)
+import Network.API.Builder.Query
 import qualified Data.DateTime as DateTime
 
 newtype BanID = BanID Text
@@ -18,6 +19,9 @@ instance FromJSON BanID where
   parseJSON (String s) =
     BanID <$> stripPrefix banPrefix s
   parseJSON _ = mempty
+
+instance ToQuery BanID where
+  toQuery = toQuery . fullName
 
 instance Thing BanID where
   fullName (BanID b) = mconcat [banPrefix, "_", b]
