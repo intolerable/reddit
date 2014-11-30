@@ -1,8 +1,8 @@
 module ConfigLoad where
 
-import Reddit.API
-import Reddit.API.Types.Subreddit
-import Reddit.API.Types.User
+import Reddit
+import Reddit.Types.Subreddit
+import Reddit.Types.User
 import System.Exit
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
