@@ -46,6 +46,7 @@ library
     Reddit.Routes.Comment
     Reddit.Routes.Flair
     Reddit.Routes.Message
+    Reddit.Routes.Moderation
     Reddit.Routes.Post
     Reddit.Routes.Run
     Reddit.Routes.Subreddit
