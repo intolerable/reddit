@@ -1,5 +1,5 @@
 module Reddit.Actions
-  ( module Actions) where
+  ( module Actions ) where
 
 import Reddit.Actions.Captcha as Actions
 import Reddit.Actions.Comment as Actions
