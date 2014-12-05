@@ -6,6 +6,7 @@ import Data.Aeson
 import Data.Monoid (mempty)
 import Data.Text (Text)
 import Data.Vector ((!?))
+import Network.API.Builder.Receive
 import qualified Data.Vector as V
 
 data RedditError = RedditError Object
@@ -45,3 +46,6 @@ instance FromJSON RedditError where
         _ -> return $ RedditError o
       _ -> mempty
   parseJSON _ = mempty
+
+instance ErrorReceivable RedditError where
+  receiveError = useErrorFromJSON

@@ -21,7 +21,7 @@ spec =
       getUserInfoExample `shouldSatisfy` not . ByteString.null
 
     it "can parse a reddit user from json" $ do
-      let decoded = decode aboutMeExample :: Either (APIError ()) User
+      let decoded = eitherDecode aboutMeExample :: Either String User
       decoded `shouldSatisfy` isRight
 
       case decoded of
@@ -40,7 +40,7 @@ spec =
           hasVerifiedEmail user `shouldBe` True
 
     it "can parse another reddit user from json" $ do
-      let decoded = decode getUserInfoExample :: Either (APIError ()) User
+      let decoded = eitherDecode getUserInfoExample :: Either String User
       decoded `shouldSatisfy` isRight
 
       case decoded of

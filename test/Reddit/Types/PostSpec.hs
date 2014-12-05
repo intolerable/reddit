@@ -12,7 +12,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Types.Post" $ do
-  let decode' = decode :: ByteString -> Either (APIError ()) PostID
+  let decode' = eitherDecode :: ByteString -> Either String PostID
 
   it "can parse a PostID" $ do
     decode' "\"t3_1n1qrg\"" `shouldBe` Right (PostID "1n1qrg")

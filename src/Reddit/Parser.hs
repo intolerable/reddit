@@ -1,13 +1,11 @@
 module Reddit.Parser
-  ( decode
-  , ensureKind
+  ( ensureKind
   , stripPrefix ) where
 
 import Control.Monad (guard)
 import Data.Aeson.Types (Parser, Object, (.:))
 import Data.Monoid
 import Data.Text (Text)
-import Network.API.Builder (decode)
 import qualified Data.Text as Text
 
 ensureKind :: Object -> Text -> Parser ()

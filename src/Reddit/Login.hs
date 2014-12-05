@@ -31,8 +31,7 @@ getLoginDetails user pass = do
   resp <- liftIO $ try $ withManager $ httpLbs req
   resp' <- RedditT $ hoistEither $ first HTTPError resp
   let cj = responseCookieJar resp'
-  mh <- nest $ RedditT $ hoistEither $ decode $ responseBody resp'
-  case mh of
+  case unwrapJSON `fmap` receive resp' of
     Left x@(APIError (RateLimitError wait _)) -> do
       RateLimits limiting _ <- RedditT $ liftState get >>= liftIO . readTVarIO
       if limiting

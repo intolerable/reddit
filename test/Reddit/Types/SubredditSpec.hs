@@ -12,7 +12,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Types.Subreddit" $ do
-  let decode' = decode :: ByteString -> Either (APIError ()) SubredditID
+  let decode' = eitherDecode :: ByteString -> Either String SubredditID
 
   it "can parse a SubredditID" $ do
     decode' "\"t5_2s580\"" `shouldBe` Right (SubredditID "2s580")

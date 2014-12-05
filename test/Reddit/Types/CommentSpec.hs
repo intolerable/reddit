@@ -20,7 +20,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Types.Comment" $ do
-  let decode' = decode :: ByteString -> Either (APIError ()) CommentID
+  let decode' = eitherDecode :: ByteString -> Either String CommentID
   getUserCommentsExample <- runIO $ ByteString.readFile "test/data/getUserComments_example.json"
   time <- runIO getCurrentTime
 
@@ -28,7 +28,7 @@ spec = describe "Reddit.Types.Comment" $ do
     getUserCommentsExample `shouldSatisfy` not . ByteString.null
 
   it "can parse a list of comments from json" $ do
-    let decoded = decode getUserCommentsExample :: Either (APIError ()) CommentListing
+    let decoded = eitherDecode getUserCommentsExample :: Either String CommentListing
     decoded `shouldSatisfy` isRight
 
     case decoded of

@@ -22,7 +22,7 @@ spec = describe "Reddit.Types.Listing" $ do
       getUserCommentsExample `shouldSatisfy` not . ByteString.null
 
     it "can parse a listing from json" $ do
-      let decoded = decode getUserCommentsExample :: Either (APIError ()) CommentListing
+      let decoded = eitherDecode getUserCommentsExample :: Either String CommentListing
       decoded `shouldSatisfy` isRight
 
       case decoded of
@@ -41,13 +41,13 @@ spec = describe "Reddit.Types.Listing" $ do
         fmap id l == (l :: Listing () String)
 
     it "can parse listings from empty strings" $ do
-      let decoded :: Either (APIError ()) CommentListing
-          decoded = decode "\"\""
+      let decoded :: Either String CommentListing
+          decoded = eitherDecode "\"\""
       decoded `shouldBe` Right (Listing Nothing Nothing [])
 
     it "can parse listings from null" $ do
-      let decoded :: Either (APIError ()) CommentListing
-          decoded = decode "null"
+      let decoded :: Either String CommentListing
+          decoded = eitherDecode "null"
       decoded `shouldBe` Right (Listing Nothing Nothing [])
 
   describe "ListingType" $

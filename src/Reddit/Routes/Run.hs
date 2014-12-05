@@ -10,7 +10,7 @@ import Control.Monad (when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either (hoistEither)
 import Control.Monad.Trans.State
-import Data.Aeson (FromJSON)
+import Data.Aeson (FromJSON(..))
 import Data.ByteString.Lazy (ByteString)
 import Data.DateTime (DateTime)
 import Network.API.Builder.Routes (Route)
@@ -24,7 +24,7 @@ runRoute route = do
   RateLimits limiting _ <- RedditT $ API.liftState get >>= liftIO . readTVarIO
   if limiting
     then runRouteWithLimiting route
-    else RedditT $ API.runRoute route
+    else RedditT $ API.unwrapJSON `fmap` API.runRoute route
 
 runRouteWithLimiting :: (MonadIO m, FromJSON a) => Route -> RedditT m a
 runRouteWithLimiting route = do
@@ -47,7 +47,7 @@ runRouteWithLimiting route = do
           decodeFromResponse x
 
 decodeFromResponse :: (Monad m, FromJSON a) => Response ByteString -> RedditT m a
-decodeFromResponse = RedditT . hoistEither . API.decode . responseBody
+decodeFromResponse = RedditT . hoistEither . fmap API.unwrapJSON . API.receive
 
 updateRateLimitInfo :: MonadIO m => ResponseHeaders -> RedditT m ()
 updateRateLimitInfo hs = do
