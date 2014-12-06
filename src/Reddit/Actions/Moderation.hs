@@ -20,5 +20,5 @@ lookupBan u r = do
   Listing _ _ bs <- runRoute $ banLookup u r :: Reddit (Listing BanID Ban)
   case bs of
     b : [] -> return $ Just b
-    [] -> return $ Nothing
+    [] -> return Nothing
     _-> failWith (APIError InvalidResponseError)
