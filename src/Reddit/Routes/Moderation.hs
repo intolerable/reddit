@@ -5,7 +5,6 @@ import Reddit.Types.Options
 import Reddit.Types.Subreddit
 import Reddit.Types.User
 
-import Data.Text (Text)
 import Network.API.Builder.Routes
 
 bansListing :: Options BanID -> SubredditName -> Route
