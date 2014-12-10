@@ -1,5 +1,6 @@
 module Reddit.Types.Message where
 
+import Reddit.Parser
 import Reddit.Types.Comment
 import Reddit.Types.Listing
 import Reddit.Types.Thing
@@ -23,7 +24,7 @@ data Message = Message { messageID :: MessageKind
 instance FromJSON Message where
   parseJSON (Object o) = do
     d <- o .: "data"
-    Message <$> parseJSON (Object o)
+    Message <$> d .: "name"
             <*> d .: "new"
             <*> d .: "dest"
             <*> d .: "author"
@@ -39,26 +40,24 @@ data MessageID = MessageID Text
   deriving (Show, Read, Eq)
 
 instance FromJSON MessageID where
-  parseJSON (String s) = return $ MessageID s
+  parseJSON (String s) =
+    MessageID <$> stripPrefix messagePrefix s
   parseJSON _ = mempty
 
 instance Thing MessageID where
-  fullName (MessageID m) = mconcat ["t4_", m]
+  fullName (MessageID m) = mconcat [messagePrefix, "_", m]
+
+messagePrefix :: Text
+messagePrefix = "t4"
 
 data MessageKind = CommentMessage CommentID
                  | PrivateMessage MessageID
   deriving (Show, Read, Eq)
 
 instance FromJSON MessageKind where
-  parseJSON (Object o) = do
-    kind <- o .: "kind"
-    d <- o .: "data"
-    case kind of
-      String "t1" -> CommentMessage <$> d .: "id"
-      String "t4" -> PrivateMessage <$> d .: "id"
-      String _ -> error "Unrecognized message type"
-      _ -> mempty
-  parseJSON _ = mempty
+  parseJSON s =
+    (CommentMessage <$> parseJSON s) <|>
+    (PrivateMessage <$> parseJSON s)
 
 instance Thing MessageKind where
   fullName (CommentMessage c) = fullName c
