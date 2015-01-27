@@ -55,6 +55,7 @@ library
     Reddit.Routes.Vote
     Reddit.Routes.Wiki
     Reddit.Types.Empty
+    Reddit.Utilities
   default-extensions:
     FlexibleInstances,
     OverloadedStrings

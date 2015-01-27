@@ -1,6 +1,7 @@
 module Reddit.Types.SubredditSettings where
 
 import Reddit.Parser
+import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
@@ -35,7 +36,7 @@ instance FromJSON SubredditSettings where
   parseJSON (Object o) = do
     o `ensureKind` subredditSettingsPrefix
     d <- o .: "data"
-    SubredditSettings <$> d .: "description"
+    SubredditSettings <$> (unescape <$> d .: "description")
                       <*> d .: "public_description"
                       <*> d .: "title"
                       <*> d .: "content_options"

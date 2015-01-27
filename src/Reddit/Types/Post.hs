@@ -6,6 +6,7 @@ import Reddit.Types.Reddit
 import Reddit.Types.Subreddit
 import Reddit.Types.Thing
 import Reddit.Types.User
+import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
@@ -13,7 +14,6 @@ import Data.DateTime as DateTime
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
-import qualified Data.Text as Text
 
 newtype PostID = PostID Text
   deriving (Show, Read, Eq, Ord)
@@ -89,7 +89,3 @@ type PostListing = Listing PostID Post
 
 postPrefix :: Text
 postPrefix = "t3"
-
-unescape :: Text -> Text
-unescape = replace "&gt;" ">" . replace "&lt;" "<" . replace "&amp;" "&"
-  where replace s r = Text.intercalate r . Text.splitOn s
