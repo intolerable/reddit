@@ -14,8 +14,8 @@ library
     Reddit.Actions.Captcha
     Reddit.Actions.Comment
     Reddit.Actions.Flair
-    Reddit.Actions.Moderation
     Reddit.Actions.Message
+    Reddit.Actions.Moderation
     Reddit.Actions.Post
     Reddit.Actions.Subreddit
     Reddit.Actions.Thing
@@ -29,8 +29,8 @@ library
     Reddit.Types.Error
     Reddit.Types.Flair
     Reddit.Types.Listing
-    Reddit.Types.Moderation
     Reddit.Types.Message
+    Reddit.Types.Moderation
     Reddit.Types.Options
     Reddit.Types.Post
     Reddit.Types.Reddit
