@@ -7,6 +7,7 @@ import Reddit.Actions.Flair as Actions
 import Reddit.Actions.Message as Actions
 import Reddit.Actions.Moderation as Actions
 import Reddit.Actions.Post as Actions
+import Reddit.Actions.Search as Actions
 import Reddit.Actions.Subreddit as Actions
 import Reddit.Actions.Thing as Actions
 import Reddit.Actions.User as Actions

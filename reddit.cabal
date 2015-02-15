@@ -17,6 +17,7 @@ library
     Reddit.Actions.Message
     Reddit.Actions.Moderation
     Reddit.Actions.Post
+    Reddit.Actions.Search
     Reddit.Actions.Subreddit
     Reddit.Actions.Thing
     Reddit.Actions.User
@@ -34,6 +35,7 @@ library
     Reddit.Types.Options
     Reddit.Types.Post
     Reddit.Types.Reddit
+    Reddit.Types.SearchOptions
     Reddit.Types.Subreddit
     Reddit.Types.SubredditSettings
     Reddit.Types.Thing
@@ -49,6 +51,7 @@ library
     Reddit.Routes.Moderation
     Reddit.Routes.Post
     Reddit.Routes.Run
+    Reddit.Routes.Search
     Reddit.Routes.Subreddit
     Reddit.Routes.Thing
     Reddit.Routes.User

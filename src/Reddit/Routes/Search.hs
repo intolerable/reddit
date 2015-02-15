@@ -1,0 +1,24 @@
+module Reddit.Routes.Search where
+
+import Reddit.Types.Options
+import Reddit.Types.Post
+import Reddit.Types.Subreddit
+import qualified Reddit.Types.SearchOptions as Search
+
+import Data.Maybe
+import Data.Text (Text)
+import Network.API.Builder.Routes
+
+searchRoute :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Route
+searchRoute r opts sorder q =
+  Route (path r)
+        [ "after" =. after opts
+        , "before" =. before opts
+        , "restrict_sr" =. isJust r
+        , "sort" =. sorder
+        , "syntax" =. ("cloudsearch" :: Text)
+        , "q" =. Just q ]
+        "GET"
+  where
+    path (Just (R sub)) = [ "r", sub, "search" ]
+    path Nothing = [ "search" ]
