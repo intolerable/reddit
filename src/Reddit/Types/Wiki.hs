@@ -2,6 +2,7 @@ module Reddit.Types.Wiki where
 
 import Reddit.Parser
 import Reddit.Types.User
+import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
@@ -20,10 +21,6 @@ data WikiPage = WikiPage { contentHTML :: Text
                          , revisedBy :: Username
                          , canRevise :: Bool }
   deriving (Show, Read, Eq)
-
-unescape :: Text -> Text
-unescape = replace "&gt;" ">" . replace "&lt;" "<" . replace "&amp;" "&"
-  where replace s r = Text.intercalate r . Text.splitOn s
 
 instance FromJSON WikiPage where
   parseJSON (Object o) = do
