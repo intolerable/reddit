@@ -24,14 +24,9 @@ loginRoute user pass = Route [ "api", "login" ]
 
 getLoginDetails :: MonadIO m => Text -> Text -> RedditT m LoginDetails
 getLoginDetails user pass = do
-  b <- RedditT $ liftBuilder get
-  req <- RedditT $ hoistEither $ case routeRequest b (loginRoute user pass) of
-    Just url -> Right url
-    Nothing -> Left InvalidURLError
-  resp <- liftIO $ try $ withManager $ httpLbs req
-  resp' <- RedditT $ hoistEither $ first HTTPError resp
-  let cj = responseCookieJar resp'
-  case unwrapJSON `fmap` receive resp' of
+  resp <- RedditT $ sendRoute () $ loginRoute user pass
+  let cj = responseCookieJar resp
+  case unwrapJSON `fmap` receive resp of
     Left x@(APIError (RateLimitError wait _)) -> do
       RateLimits limiting _ <- RedditT $ liftState get >>= liftIO . readTVarIO
       if limiting
