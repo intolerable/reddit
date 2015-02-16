@@ -1,7 +1,6 @@
 module Reddit.Routes.Wiki where
 
 import Reddit.Types.Subreddit
-import Reddit.Types.Wiki
 
 import Data.Text (Text)
 import Network.API.Builder.Routes

@@ -6,11 +6,9 @@ import Reddit.Types.Reddit
 
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM.TVar
-import Control.Exception (try)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Either
 import Control.Monad.Trans.State
-import Data.Bifunctor (first)
 import Data.Text (Text)
 import Network.API.Builder
 import Network.HTTP.Conduit

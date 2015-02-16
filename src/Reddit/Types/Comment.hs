@@ -131,7 +131,7 @@ instance FromJSON PostComments where
   parseJSON (Array a) =
     case Vector.toList a of
       postListing:commentListing:_ -> do
-        Listing _ _ (post:[]) <- parseJSON postListing :: Parser (Listing PostID Post)
+        Listing _ _ [post] <- parseJSON postListing :: Parser (Listing PostID Post)
         Listing _ _ comments <- parseJSON commentListing :: Parser (Listing CommentID CommentReference)
         return $ PostComments post comments
       _ -> mempty

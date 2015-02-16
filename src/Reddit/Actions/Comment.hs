@@ -48,7 +48,7 @@ getCommentInfo :: MonadIO m => CommentID -> RedditT m Comment
 getCommentInfo c = do
   res <- getCommentsInfo [c]
   case res of
-    Listing _ _ (comment:[]) -> return comment
+    Listing _ _ [comment] -> return comment
     _ -> failWith $ APIError InvalidResponseError
 
 -- | Given a list of 'CommentID's, 'getCommentsInfo' will return another list containing

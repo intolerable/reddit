@@ -42,7 +42,7 @@ getPostInfo :: MonadIO m => PostID -> RedditT m Post
 getPostInfo p = do
   res <- getPostsInfo [p]
   case res of
-    Listing _ _ (post:[]) -> return post
+    Listing _ _ [post] -> return post
     _ -> failWith $ APIError InvalidResponseError
 
 getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
