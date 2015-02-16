@@ -15,7 +15,7 @@ import qualified Data.Text as Text
 newtype RevisionID = RevisionID Text
   deriving (Show, Read, Eq)
 
-data WikiPage = WikiPage { contentHTML :: Text
+data WikiPage = WikiPage { contentHTML :: Maybe Text
                          , contentMarkdown :: Text
                          , revisionDate :: DateTime
                          , revisedBy :: Username
@@ -26,7 +26,7 @@ instance FromJSON WikiPage where
   parseJSON (Object o) = do
     o `ensureKind` "wikipage"
     d <- o .: "data"
-    WikiPage <$> (unescape <$> d .: "content_html")
+    WikiPage <$> (fmap unescape <$> d .:? "content_html")
              <*> (unescape <$> d .: "content_md")
              <*> (DateTime.fromSeconds <$> d .: "revision_date")
              <*> ((d .: "revision_by") >>= (.: "data") >>= (.: "name"))
