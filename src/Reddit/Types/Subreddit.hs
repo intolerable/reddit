@@ -8,9 +8,13 @@ import Data.Aeson
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
+import qualified Data.Text as Text
 
 newtype SubredditName = R Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read)
+
+instance Eq SubredditName where
+  R x == R y = Text.toLower x == Text.toLower y
 
 instance ToQuery SubredditName where
   toQuery k (R sub) = [(k, sub)]

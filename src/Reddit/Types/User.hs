@@ -9,9 +9,13 @@ import Data.DateTime
 import Data.Monoid (mconcat, mempty)
 import Data.Text (Text)
 import Network.API.Builder.Query
+import qualified Data.Text as Text
 
 newtype Username = Username Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read)
+
+instance Eq Username where
+  Username x == Username y = Text.toLower x == Text.toLower y
 
 instance FromJSON Username where
   parseJSON (String s) = return $ Username s
