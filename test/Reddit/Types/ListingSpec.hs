@@ -53,8 +53,8 @@ spec = describe "Reddit.Types.Listing" $ do
   describe "ListingType" $
 
     it "should have a valid ToQuery instance" $ do
-      toQuery Hot `shouldBe` Just "hot"
-      toQuery New `shouldBe` Just "new"
-      toQuery Rising `shouldBe` Just "rising"
-      toQuery Controversial `shouldBe` Just "controversial"
-      toQuery Top `shouldBe` Just "top"
+      toQuery "type" Hot `shouldBe` [("type", "hot")]
+      toQuery "type" New `shouldBe` [("type", "new")]
+      toQuery "type" Rising `shouldBe` [("type", "rising")]
+      toQuery "type" Controversial `shouldBe` [("type", "controversial")]
+      toQuery "type" Top `shouldBe` [("type", "top")]
