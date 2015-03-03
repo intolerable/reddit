@@ -13,7 +13,7 @@ newtype SubredditName = R Text
   deriving (Show, Read, Eq)
 
 instance ToQuery SubredditName where
-  toQuery (R sub) = Just sub
+  toQuery k (R sub) = [(k, sub)]
 
 instance FromJSON SubredditName where
   parseJSON j = R <$> parseJSON j
@@ -30,7 +30,7 @@ instance Thing SubredditID where
   fullName (SubredditID i) = mconcat [subredditPrefix, "_", i]
 
 instance ToQuery SubredditID where
-  toQuery = Just . fullName
+  toQuery k (SubredditID v) = [(k, v)]
 
 data Subreddit = Subreddit { subredditID :: SubredditID
                            , name :: SubredditName

@@ -18,7 +18,7 @@ instance FromJSON Username where
   parseJSON _ = mempty
 
 instance ToQuery Username where
-  toQuery (Username user) = Just user
+  toQuery k (Username user) = [(k, user)]
 
 newtype UserID = UserID Text
   deriving (Show, Read, Eq)
@@ -32,7 +32,7 @@ instance Thing UserID where
   fullName (UserID u) = mconcat [userPrefix, "_", u]
 
 instance ToQuery UserID where
-  toQuery = toQuery . fullName
+  toQuery k v = [(k, fullName v)]
 
 data User = User { userID :: Text
                  , userName :: Username

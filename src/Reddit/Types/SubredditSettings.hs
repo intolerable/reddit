@@ -113,7 +113,7 @@ instance Default SubredditType where
   def = Public
 
 instance ToQuery SubredditType where
-  toQuery = Just . subredditTypeText
+  toQuery k v = [(k, subredditTypeText v)]
 
 data ContentOptions = Any
                     | Link
@@ -138,7 +138,7 @@ instance ToJSON ContentOptions where
   toJSON = String . contentOptionsText
 
 instance ToQuery ContentOptions where
-  toQuery = Just . contentOptionsText
+  toQuery k v = [(k, contentOptionsText v)]
 
 instance Default ContentOptions where
   def = Any
@@ -166,7 +166,7 @@ instance ToJSON SpamFilterStrength where
   toJSON = String . spamFilterStrengthText
 
 instance ToQuery SpamFilterStrength where
-  toQuery = Just . spamFilterStrengthText
+  toQuery k v = [(k, spamFilterStrengthText v)]
 
 data WikiEditMode = Anyone
                   | ApprovedOnly
@@ -191,7 +191,7 @@ instance ToJSON WikiEditMode where
   toJSON = String . wikiEditModeText
 
 instance ToQuery WikiEditMode where
-  toQuery = Just . wikiEditModeText
+  toQuery k v = [(k, wikiEditModeText v)]
 
 instance Default WikiEditMode where
   def = Anyone

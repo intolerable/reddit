@@ -10,7 +10,7 @@ data Order = Relevance
   deriving (Show, Read, Eq)
 
 instance ToQuery Order where
-  toQuery t = Just $ case t of
+  toQuery k t = return $ (,) k $ case t of
     Relevance -> "relevance"
     New -> "new"
     Hot -> "hot"

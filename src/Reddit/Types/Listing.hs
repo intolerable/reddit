@@ -16,7 +16,7 @@ data ListingType = Hot
   deriving (Show, Read, Eq)
 
 instance ToQuery ListingType where
-  toQuery t = Just $ case t of
+  toQuery k t = return $ (,) k $ case t of
     Hot -> "hot"
     New -> "new"
     Rising -> "rising"

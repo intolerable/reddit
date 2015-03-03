@@ -83,7 +83,7 @@ instance Thing PostID where
   fullName (PostID pID) = mconcat [postPrefix , "_", pID]
 
 instance ToQuery PostID where
-  toQuery = toQuery . fullName
+  toQuery k v = [(k, fullName v)]
 
 type PostListing = Listing PostID Post
 

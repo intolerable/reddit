@@ -21,7 +21,7 @@ instance FromJSON BanID where
   parseJSON _ = mempty
 
 instance ToQuery BanID where
-  toQuery = toQuery . fullName
+  toQuery k v = [(k, fullName v)]
 
 instance Thing BanID where
   fullName (BanID b) = mconcat [banPrefix, "_", b]

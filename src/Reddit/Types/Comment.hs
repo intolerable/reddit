@@ -31,7 +31,7 @@ instance Thing CommentID where
   fullName (CommentID cID) = Text.concat [commentPrefix, "_", cID]
 
 instance ToQuery CommentID where
-  toQuery = toQuery . fullName
+  toQuery k v = [(k, fullName v)]
 
 instance FromJSON (POSTWrapped CommentID) where
   parseJSON (Object o) = do
