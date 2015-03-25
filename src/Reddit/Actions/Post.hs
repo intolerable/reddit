@@ -2,6 +2,7 @@ module Reddit.Actions.Post
   ( getPosts
   , getPosts'
   , getPostComments
+  , getPostSubComments
   , Reddit.Actions.Post.getComments
   , getPostInfo
   , getPostsInfo
