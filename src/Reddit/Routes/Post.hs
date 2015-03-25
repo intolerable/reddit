@@ -1,6 +1,7 @@
 module Reddit.Routes.Post where
 
 import Reddit.Types.Options
+import Reddit.Types.Comment (CommentID(..))
 import Reddit.Types.Post (PostID(..))
 import Reddit.Types.Subreddit (SubredditName(..))
 import Reddit.Types.Thing
@@ -67,10 +68,11 @@ submitSelfPost (R name) title text iden captcha =
         , "captcha" =. captcha]
         "POST"
 
-getComments :: PostID -> Route
-getComments (PostID p) = Route [ "comments", p ]
-                               [ ]
-                               "GET"
+getComments :: PostID -> Maybe CommentID -> Route
+getComments (PostID p) c = Route [ "comments", p ]
+                                 [ "comment" =. fmap f c ]
+                                 "GET"
+  where f (CommentID x) = x
 
 sendReplies :: Bool -> PostID -> Route
 sendReplies setting p = Route [ "api", "sendreplies" ]

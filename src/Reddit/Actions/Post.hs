@@ -108,7 +108,10 @@ editPost :: MonadIO m => PostID -> Text -> RedditT m ()
 editPost thing text = nothing $ runRoute $ Route.edit thing text
 
 getPostComments :: MonadIO m => PostID -> RedditT m PostComments
-getPostComments = runRoute . Route.getComments
+getPostComments p = runRoute $ Route.getComments p Nothing
+
+getPostSubComments :: MonadIO m => PostID -> CommentID -> RedditT m PostComments
+getPostSubComments p c = runRoute $ Route.getComments p (Just c)
 
 getComments :: MonadIO m => PostID -> RedditT m [CommentReference]
 getComments p = do
