@@ -16,6 +16,11 @@ spec =
     aboutMeExample <- runIO $ ByteString.readFile "test/data/aboutMe_example.json"
     getUserInfoExample <- runIO $ ByteString.readFile "test/data/getUserInfo_example.json"
 
+    it "should be able to compare usernames for equality" $ do
+      Username "Intolerable" `shouldBe` Username "intolerable"
+      Username "Intolerable" `shouldBe` Username "Intolerable"
+      Username "INTOLERABLE" `shouldBe` Username "intolerable"
+
     it "can read the examples" $ do
       aboutMeExample `shouldSatisfy` not . ByteString.null
       getUserInfoExample `shouldSatisfy` not . ByteString.null
