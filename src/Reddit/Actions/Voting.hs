@@ -35,8 +35,8 @@ upvoteComment = vote 1
 
 -- | Downvote a comment.
 downvoteComment :: MonadIO m => CommentID -> RedditT m ()
-downvoteComment = vote 0
+downvoteComment = vote (-1)
 
 -- | Remove a previously-cast vote from a comment.
 unvoteComment :: MonadIO m => CommentID -> RedditT m ()
-unvoteComment = vote (-1)
+unvoteComment = vote 0
