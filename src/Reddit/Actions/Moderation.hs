@@ -12,9 +12,13 @@ import Reddit.Types.User
 
 import Network.API.Builder.Error
 
+-- | Get a list of existing bans on a subreddit.
+--   User must be a moderator of the subreddit.
 bans :: Options BanID -> SubredditName -> Reddit (Listing BanID Ban)
 bans opts r = runRoute $ bansListing opts r
 
+-- | Check to see if a user is banned from a subreddit. Logged-in user must
+--   be a moderator of the subreddit
 lookupBan :: Username -> SubredditName -> Reddit (Maybe Ban)
 lookupBan u r = do
   Listing _ _ bs <- runRoute $ banLookup u r :: Reddit (Listing BanID Ban)

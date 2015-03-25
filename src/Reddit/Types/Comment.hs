@@ -62,10 +62,12 @@ instance FromJSON (POSTWrapped [CommentReference]) where
     POSTWrapped <$> parseJSON cs
   parseJSON _ = mempty
 
+-- | @isReference c@ returns is true if @c@ is an actual comment, false otherwise
 isActual :: CommentReference -> Bool
 isActual (Actual _) = True
 isActual _ = False
 
+-- | @isReference c@ returns is true if @c@ is a reference, false otherwise
 isReference :: CommentReference -> Bool
 isReference (Reference _ _) = True
 isReference _ = False

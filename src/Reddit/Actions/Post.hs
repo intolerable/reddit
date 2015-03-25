@@ -73,9 +73,11 @@ getPosts' :: MonadIO m => Options PostID -> ListingType -> Maybe SubredditName -
 getPosts' o l r = runRoute $ Route.postsListing o r (Text.pack $ lower $ show l)
   where lower = map Char.toLower
 
+-- | Save a post.
 savePost :: MonadIO m => PostID -> RedditT m ()
 savePost = nothing . runRoute . Route.savePost
 
+-- | Remove a saved post from your "saved posts" list.
 unsavePost :: MonadIO m => PostID -> RedditT m ()
 unsavePost = nothing . runRoute . Route.unsavePost
 
@@ -105,6 +107,7 @@ deletePost = nothing . runRoute . Route.delete
 setPostFlair :: MonadIO m => SubredditName -> PostID -> Text -> Text -> RedditT m ()
 setPostFlair r p text css = nothing $ runRoute $ Route.postFlair r p text css
 
+-- | Edit the text of a self-post.
 editPost :: MonadIO m => PostID -> Text -> RedditT m ()
 editPost thing text = nothing $ runRoute $ Route.edit thing text
 

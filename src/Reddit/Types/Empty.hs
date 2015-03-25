@@ -6,6 +6,7 @@ import Data.Aeson.Types
 import Data.Monoid (mempty)
 import qualified Data.HashMap.Strict as Hash
 
+-- | More specific @void@ for forcing a @Empty@ @FromJSON@ instance
 nothing :: Functor m => m Empty -> m ()
 nothing = void
 

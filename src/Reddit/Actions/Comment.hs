@@ -37,7 +37,12 @@ getNewComments = getNewComments' def
 getNewComments' :: MonadIO m => Options CommentID -> Maybe SubredditName -> RedditT m CommentListing
 getNewComments' opts r = runRoute $ Route.newComments opts r
 
-getMoreChildren :: MonadIO m => PostID -> [CommentID] -> RedditT m [CommentReference]
+-- | Expand children comments that weren't fetched on initial load.
+--   Equivalent to the web UI's "load more comments" button.
+getMoreChildren :: MonadIO m
+                => PostID -- ^ @PostID@ for the top-level
+                -> [CommentID] -- ^ List of @CommentID@s to expand
+                -> RedditT m [CommentReference]
 getMoreChildren _ [] = return []
 getMoreChildren p cs = do
   let (now, next) = splitAt 20 cs

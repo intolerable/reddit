@@ -1,3 +1,4 @@
+-- | All the actions that the library can perform.
 module Reddit.Actions
   ( module Actions ) where
 

@@ -30,9 +30,10 @@ getUnread = runRoute Route.unread
 markRead :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
 markRead = nothing . runRoute . Route.readMessage
 
--- | Send a privatemessage to another user.
+-- | Send a private message to another user.
 sendMessage :: MonadIO m => Username -> Text -> Text -> RedditT m ()
 sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b Nothing Nothing
 
+-- | Send a private message (with a captcha).
 sendMessageWithCaptcha :: MonadIO m => Username -> Text -> Text -> Text -> Text -> RedditT m ()
 sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b (Just i) (Just c)

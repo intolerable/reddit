@@ -12,13 +12,26 @@ import qualified Reddit.Routes.Thing as Route
 import Control.Monad.IO.Class
 import Data.Text (Text)
 
-reply :: (MonadIO m, Thing a) => a -> Text -> RedditT m CommentID
+-- | Reply to a something (a post \/ comment \/ message)
+reply :: (MonadIO m, Thing a)
+      => a -- ^ Thing to reply to
+      -> Text -- ^ Response contents
+      -> RedditT m CommentID
 reply t b = do
   POSTWrapped res <- runRoute $ Route.reply t b
   return res
 
-delete :: (MonadIO m, Thing a) => a -> RedditT m ()
+-- | Delete something you created. Note that this is different to removing
+--   a post / comment as a moderator action. Deleting something you don't
+--   own won't error (but naturally won't delete anything either).
+delete :: (MonadIO m, Thing a)
+       => a -- ^ Thing to delete
+       -> RedditT m ()
 delete = nothing . runRoute . Route.delete
 
-report :: (MonadIO m, Thing a) => a -> Text -> RedditT m ()
+-- | Report something.
+report :: (MonadIO m, Thing a)
+       => a -- ^ Thing to report
+       -> Text -- ^ Reason for reporting
+       -> RedditT m ()
 report t r = nothing $ runRoute $ Route.report t r
