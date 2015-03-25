@@ -113,7 +113,7 @@ editPost thing text = nothing $ runRoute $ Route.edit thing text
 
 -- | Get a post and all its comments.
 getPostComments :: MonadIO m => PostID -> RedditT m PostComments
-getPostComments p = getPostSubComments p Nothing
+getPostComments p = runRoute $ Route.getComments p Nothing
 
 -- | Get a post and a specific sub-tree of comments.
 getPostSubComments :: MonadIO m => PostID -> CommentID -> RedditT m PostComments
