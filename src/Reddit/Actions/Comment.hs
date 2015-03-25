@@ -74,8 +74,10 @@ getCommentsInfo cs =
 editComment :: MonadIO m
             => CommentID -- ^ Comment to edit
             -> Text -- ^ New comment text
-            -> RedditT m ()
-editComment thing text = nothing $ runRoute $ Route.edit thing text
+            -> RedditT m Comment
+editComment thing text = do
+  POSTWrapped res <- runRoute $ Route.edit thing text
+  return res
 
 -- | Deletes one of your own comments. Note that this is different from
 --   removing a comment as a moderator action.

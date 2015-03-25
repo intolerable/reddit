@@ -117,6 +117,14 @@ instance FromJSON Comment where
             CommentID <$> Text.stripPrefix (commentPrefix <> "_") s
   parseJSON _ = mempty
 
+instance FromJSON (POSTWrapped Comment) where
+  parseJSON (Object o) = do
+    ts <- (o .: "json") >>= (.: "data") >>= (.: "things")
+    case Vector.toList ts of
+      [c] -> POSTWrapped <$> parseJSON c
+      _ -> mempty
+  parseJSON _ = mempty
+
 flattenComments :: CommentReference -> [CommentReference]
 flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing _ _ cs) -> cs) $ replies c)
 flattenComments (Reference _ rs) = map (\r -> Reference 1 [r]) rs
