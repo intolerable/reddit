@@ -4,6 +4,7 @@ module Reddit.Actions.Comment
   , getMoreChildren
   , getCommentInfo
   , getCommentsInfo
+  , editComment
   , deleteComment
   , removeComment ) where
 
@@ -20,6 +21,7 @@ import qualified Reddit.Routes as Route
 
 import Control.Monad.IO.Class
 import Data.Default
+import Data.Text (Text)
 import Network.API.Builder (APIError(..))
 
 -- | Get a 'CommentListing' for the most recent comments on the site overall.
@@ -67,6 +69,13 @@ getCommentsInfo cs =
     sameLength (_:xs) (_:ys) = sameLength xs ys
     sameLength [] [] = True
     sameLength _ _ = False
+
+-- | Edit a comment.
+editComment :: MonadIO m
+            => CommentID -- ^ Comment to edit
+            -> Text -- ^ New comment text
+            -> RedditT m ()
+editComment thing text = nothing $ runRoute $ Route.edit thing text
 
 -- | Deletes one of your own comments. Note that this is different from
 --   removing a comment as a moderator action.
