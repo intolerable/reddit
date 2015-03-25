@@ -21,3 +21,9 @@ edit t newText = Route [ "api", "editusertext" ]
                        [ "thing_id" =. fullName t
                        , "text" =. newText ]
                        "POST"
+
+report :: Thing a => a -> Text -> Route
+report t r = Route [ "api", "report" ]
+                   [ "thing_id" =. fullName t
+                   , "reason" =. r ]
+                   "POST"

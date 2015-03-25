@@ -1,6 +1,7 @@
 module Reddit.Actions.Thing
   ( Reddit.Actions.Thing.reply
-  , Reddit.Actions.Thing.delete ) where
+  , Reddit.Actions.Thing.delete
+  , Reddit.Actions.Thing.report ) where
 
 import Reddit.Routes.Run
 import Reddit.Types
@@ -18,3 +19,6 @@ reply t b = do
 
 delete :: (MonadIO m, Thing a) => a -> RedditT m ()
 delete = nothing . runRoute . Route.delete
+
+report :: (MonadIO m, Thing a) => a -> Text -> RedditT m ()
+report t r = nothing $ runRoute $ Route.report t r
