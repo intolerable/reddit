@@ -19,7 +19,9 @@ module Reddit.Actions.Post
   , Reddit.Actions.Post.removePost
   , markPostSpam
   , Reddit.Actions.Post.stickyPost
-  , unstickyPost ) where
+  , unstickyPost
+  , enableContestMode
+  , disableContestMode ) where
 
 import Reddit.Routes as Route
 import Reddit.Routes.Run
@@ -131,3 +133,8 @@ stickyPost = nothing . runRoute . Route.stickyPost True
 unstickyPost :: MonadIO m => PostID -> RedditT m ()
 unstickyPost = nothing . runRoute . Route.stickyPost False
 
+enableContestMode :: MonadIO m => PostID -> RedditT m ()
+enableContestMode = nothing . runRoute . Route.setContestMode True
+
+disableContestMode :: MonadIO m => PostID -> RedditT m ()
+disableContestMode = nothing . runRoute . Route.setContestMode False

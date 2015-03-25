@@ -90,6 +90,12 @@ stickyPost on p = Route [ "api", "set_subreddit_sticky" ]
                         , "state" =. on ]
                         "POST"
 
+setContestMode :: Bool -> PostID -> Route
+setContestMode on p = Route [ "api", "set_contest_mode" ]
+                            [ "id" =. p
+                            , "state" =. on ]
+                            "POST"
+
 postFlair :: SubredditName -> PostID -> Text -> Text -> Route
 postFlair (R sub) p text css =
   Route [ "r", sub, "api", "flair" ]
