@@ -1,4 +1,5 @@
-module Reddit.Types.SearchOptions where
+module Reddit.Types.SearchOptions
+  ( Order(..) ) where
 
 import Network.API.Builder.Query
 

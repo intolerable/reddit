@@ -1,4 +1,5 @@
-module Reddit.Types.SubredditSettings where
+module Reddit.Types.SubredditSettings
+  ( SubredditSettings(..) ) where
 
 import Reddit.Parser
 import Reddit.Utilities

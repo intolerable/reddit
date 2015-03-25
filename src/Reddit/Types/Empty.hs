@@ -1,4 +1,4 @@
-module Reddit.Types.Empty where
+module Reddit.Types.Empty ( nothing ) where
 
 import Control.Monad (void)
 import Data.Aeson

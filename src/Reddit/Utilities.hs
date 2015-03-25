@@ -1,5 +1,6 @@
-module Reddit.Utilities where
 -- | Miscellaneous utilities for various parts of the library
+module Reddit.Utilities
+  ( unescape ) where
 
 import Data.Text (Text)
 import qualified Data.Text as Text
