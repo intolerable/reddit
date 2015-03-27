@@ -122,7 +122,7 @@ addAPIType :: Route -> Route
 addAPIType (Route fs ps m) = Route fs ("api_type" =. ("json" :: Text) : ps) m
 
 mainBaseURL :: Text
-mainBaseURL = "http://api.reddit.com"
+mainBaseURL = "https://api.reddit.com"
 
 loginBaseURL :: Text
 loginBaseURL = "https://ssl.reddit.com"
