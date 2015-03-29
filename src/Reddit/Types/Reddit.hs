@@ -34,6 +34,7 @@ import Network.HTTP.Types
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.DateTime as DateTime
+import qualified Data.Text as Text
 
 type Reddit a = RedditT IO a
 
@@ -49,6 +50,7 @@ instance Monad m => Applicative (RedditT m) where
 instance Monad m => Monad (RedditT m) where
   return a = RedditT (return a)
   (RedditT a) >>= f = RedditT (a >>= unRedditT . f)
+  fail = failWith . APIError . FailError . Text.pack
 
 instance MonadIO m => MonadIO (RedditT m) where
   liftIO a = RedditT (liftIO a)

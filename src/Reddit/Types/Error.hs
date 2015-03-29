@@ -10,6 +10,7 @@ import Network.API.Builder.Receive
 import qualified Data.Vector as V
 
 data RedditError = RedditError Object
+                 | FailError Text
                  | InvalidResponseError
                  | CaptchaError Text
                  | CredentialsError
