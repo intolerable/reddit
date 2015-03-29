@@ -14,7 +14,6 @@ import Data.Aeson.Types (Parser)
 import Data.DateTime as DateTime
 import Data.Monoid
 import Data.Text (Text)
-import Data.Vector ((!?))
 import Network.API.Builder.Query
 import qualified Data.Text as Text
 import qualified Data.Vector as Vector
@@ -36,9 +35,9 @@ instance ToQuery CommentID where
 instance FromJSON (POSTWrapped CommentID) where
   parseJSON (Object o) = do
     ts <- (o .: "json") >>= (.: "data") >>= (.: "things")
-    case ts !? 0 of
-      Just v -> POSTWrapped <$> (v .: "data" >>= (.: "id"))
-      Nothing -> mempty
+    case Vector.toList ts of
+      [v] -> POSTWrapped <$> (v .: "data" >>= (.: "id"))
+      _ -> mempty
   parseJSON _ = mempty
 
 data CommentReference = Reference Integer [CommentID]
