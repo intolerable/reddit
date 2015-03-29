@@ -67,7 +67,7 @@ nest (RedditT a) = do
     liftState $ put rl'
   return res
 
-failWith :: MonadIO m => APIError RedditError -> RedditT m a
+failWith :: Monad m => APIError RedditError -> RedditT m a
 failWith = RedditT . EitherT . return . Left
 
 newtype Modhash = Modhash Text
