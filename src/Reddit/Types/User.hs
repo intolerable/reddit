@@ -10,6 +10,7 @@ import Data.Monoid (mconcat, mempty)
 import Data.Text (Text)
 import Network.API.Builder.Query
 import qualified Data.Text as Text
+import qualified Data.Vector as Vector
 
 newtype Username = Username Text
   deriving (Show, Read)
@@ -68,6 +69,37 @@ instance FromJSON User where
          <*> d .: "is_gold"
          <*> d .: "has_verified_email"
   parseJSON _ = mempty
+
+newtype UserList = UserList [Relationship]
+  deriving (Show, Read, Eq)
+
+instance FromJSON UserList where
+  parseJSON (Object o) = do
+    o `ensureKind` "UserList"
+    UserList <$> ((o .: "data") >>= (.: "children"))
+  parseJSON (Array a) = do
+    case Vector.toList a of
+      [o] -> parseJSON o
+      [o, _] -> parseJSON o
+      _ -> mempty
+  parseJSON _ = fail "wat"
+
+data Relationship =
+  Relationship { relationUsername :: Username
+               , relationUserID :: UserID
+               , relationSince :: DateTime
+               , relationNote :: Maybe Text }
+  deriving (Show, Read, Eq)
+
+instance FromJSON Relationship where
+  parseJSON (Object o) =
+    Relationship <$> o .: "name"
+                 <*> o .: "id"
+                 <*> (fromSeconds <$> o .: "date")
+                 <*> (f <$> o .:? "note")
+    where f (Just "") = Nothing
+          f x = x
+  parseJSON _ = fail "Relationship should be an object"
 
 userPrefix :: Text
 userPrefix = "t2"

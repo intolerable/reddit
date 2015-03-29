@@ -3,7 +3,9 @@ module Reddit.Actions.User
   , aboutMe
   , getUserComments
   , getUserComments'
-  , isUsernameAvailable ) where
+  , isUsernameAvailable
+  , getBlockedUsers
+  , getFriends ) where
 
 import Reddit.Routes.Run
 import Reddit.Types.User
@@ -29,3 +31,13 @@ isUsernameAvailable = runRoute . Route.usernameAvailable
 
 aboutMe :: MonadIO m => RedditT m User
 aboutMe = runRoute Route.aboutMe
+
+getBlockedUsers :: MonadIO m => RedditT m [Relationship]
+getBlockedUsers = do
+  UserList rs <- runRoute Route.blocked
+  return rs
+
+getFriends :: MonadIO m => RedditT m [Relationship]
+getFriends = do
+  UserList rs <- runRoute Route.friends
+  return rs

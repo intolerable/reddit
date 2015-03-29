@@ -29,3 +29,12 @@ usernameAvailable user = Route [ "api", "username_available.json" ]
                                [ "user" =. user]
                                "GET"
 
+blocked :: Route
+blocked = Route [ "prefs", "blocked" ]
+                [ ]
+                "GET"
+
+friends :: Route
+friends = Route [ "prefs", "friends" ]
+                [ ]
+                "GET"
