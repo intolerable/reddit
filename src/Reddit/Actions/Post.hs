@@ -27,6 +27,7 @@ module Reddit.Actions.Post
 import Reddit.Routes as Route
 import Reddit.Routes.Run
 import Reddit.Types
+import Reddit.Types.Captcha
 import Reddit.Types.Comment
 import Reddit.Types.Empty
 import Reddit.Types.Error
@@ -83,22 +84,22 @@ unsavePost = nothing . runRoute . Route.unsavePost
 
 submitLink :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
 submitLink r title url = do
-  POSTWrapped res <- runRoute $ Route.submitLink r title url Nothing Nothing
+  POSTWrapped res <- runRoute $ Route.submitLink r title url
   return res
 
-submitLinkWithCaptcha :: MonadIO m => SubredditName -> Text -> Text -> Text -> Text -> RedditT m PostID
+submitLinkWithCaptcha :: MonadIO m => SubredditName -> Text -> Text -> CaptchaID -> Text -> RedditT m PostID
 submitLinkWithCaptcha r title url iden captcha = do
-  POSTWrapped res <- runRoute $ Route.submitLink r title url (Just iden) (Just captcha)
+  POSTWrapped res <- runRoute $ Route.submitLink r title url `withCaptcha` (iden, captcha)
   return res
 
 submitSelfPost :: MonadIO m => SubredditName -> Text -> Text -> RedditT m PostID
 submitSelfPost r title postBody = do
-  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody Nothing Nothing
+  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody
   return res
 
-submitSelfPostWithCaptcha :: MonadIO m => SubredditName -> Text -> Text -> Text -> Text -> RedditT m PostID
+submitSelfPostWithCaptcha :: MonadIO m => SubredditName -> Text -> Text -> CaptchaID -> Text -> RedditT m PostID
 submitSelfPostWithCaptcha r title postBody iden captcha = do
-  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody (Just iden) (Just captcha)
+  POSTWrapped res <- runRoute $ Route.submitSelfPost r title postBody `withCaptcha` (iden, captcha)
   return res
 
 deletePost :: MonadIO m => PostID -> RedditT m ()

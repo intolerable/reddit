@@ -21,12 +21,10 @@ readMessage m = Route [ "api", "read_message" ]
                       [ "id" =. fullName m ]
                       "POST"
 
-sendMessage :: Username -> Text -> Text -> Maybe Text -> Maybe Text -> Route
-sendMessage (Username u) subject body iden captcha =
+sendMessage :: Username -> Text -> Text -> Route
+sendMessage (Username u) subject body =
   Route [ "api", "compose" ]
         [ "to" =. u
         , "subject" =. subject
-        , "text" =. body
-        , "iden" =. iden
-        , "captcha" =. captcha ]
+        , "text" =. body ]
         "POST"

@@ -6,6 +6,7 @@ module Reddit.Actions.Message
   , sendMessageWithCaptcha ) where
 
 import Reddit.Routes.Run
+import Reddit.Types.Captcha
 import Reddit.Types.Empty
 import Reddit.Types.Listing
 import Reddit.Types.Message
@@ -32,8 +33,8 @@ markRead = nothing . runRoute . Route.readMessage
 
 -- | Send a private message to another user.
 sendMessage :: MonadIO m => Username -> Text -> Text -> RedditT m ()
-sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b Nothing Nothing
+sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b
 
 -- | Send a private message (with a captcha).
-sendMessageWithCaptcha :: MonadIO m => Username -> Text -> Text -> Text -> Text -> RedditT m ()
-sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b (Just i) (Just c)
+sendMessageWithCaptcha :: MonadIO m => Username -> Text -> Text -> CaptchaID -> Text -> RedditT m ()
+sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b `withCaptcha` (i, c)

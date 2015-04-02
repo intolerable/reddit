@@ -36,8 +36,8 @@ unsavePost p = Route [ "api", "unsave" ]
                      [ "id" =. p ]
                      "POST"
 
-submitLink :: SubredditName -> Text -> Text -> Maybe Text -> Maybe Text -> Route
-submitLink (R name) title url iden captcha =
+submitLink :: SubredditName -> Text -> Text -> Route
+submitLink (R name) title url =
   Route [ "api", "submit" ]
         [ "extension" =. ("json" :: Text)
         , "kind" =. ("link" :: Text)
@@ -47,13 +47,11 @@ submitLink (R name) title url iden captcha =
         , "then" =. ("tb" :: Text)
         , "title" =. title
         , "url" =. url
-        , "sr" =. name
-        , "iden" =. iden
-        , "captcha" =. captcha]
+        , "sr" =. name]
         "POST"
 
-submitSelfPost :: SubredditName -> Text -> Text -> Maybe Text -> Maybe Text -> Route
-submitSelfPost (R name) title text iden captcha =
+submitSelfPost :: SubredditName -> Text -> Text -> Route
+submitSelfPost (R name) title text =
   Route [ "api", "submit" ]
         [ "extension" =. ("json" :: Text)
         , "kind" =. ("self" :: Text)
@@ -63,9 +61,7 @@ submitSelfPost (R name) title text iden captcha =
         , "then" =. ("tb" :: Text)
         , "title" =. title
         , "text" =. text
-        , "sr" =. name
-        , "iden" =. iden
-        , "captcha" =. captcha]
+        , "sr" =. name]
         "POST"
 
 getComments :: PostID -> Maybe CommentID -> Route
