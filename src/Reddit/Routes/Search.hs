@@ -9,14 +9,14 @@ import Data.Maybe
 import Data.Text (Text)
 import Network.API.Builder.Routes
 
-searchRoute :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Route
-searchRoute r opts sorder q =
+searchRoute :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Text -> Route
+searchRoute r opts sorder engine q =
   Route (path r)
         [ "after" =. after opts
         , "before" =. before opts
         , "restrict_sr" =. isJust r
         , "sort" =. sorder
-        , "syntax" =. ("cloudsearch" :: Text)
+        , "syntax" =. engine
         , "q" =. Just q ]
         "GET"
   where

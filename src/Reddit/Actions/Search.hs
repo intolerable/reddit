@@ -12,4 +12,12 @@ import Data.Text (Text)
 
 search :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Reddit PostListing
 search sub opts order query =
-  runRoute $ searchRoute sub opts order query
+  runRoute $ searchRoute sub opts order "plain" query
+
+luceneSearch :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Reddit PostListing
+luceneSearch sub opts order query =
+  runRoute $ searchRoute sub opts order "lucene" query
+
+cloudSearch :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Reddit PostListing
+cloudSearch sub opts order query =
+  runRoute $ searchRoute sub opts order "cloudsearch" query
