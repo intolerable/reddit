@@ -10,10 +10,12 @@ import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
-import Data.DateTime as DateTime
+import Data.Time.Clock
+import Data.Time.Clock.POSIX
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
+import Prelude
 
 newtype PostID = PostID Text
   deriving (Show, Read, Eq, Ord)
@@ -33,7 +35,7 @@ data Post = Post { postID :: PostID
                  , permalink :: Text
                  , author :: Username
                  , score :: Integer
-                 , created :: DateTime
+                 , created :: UTCTime
                  , content :: PostContent
                  , liked :: Maybe Bool
                  , flairText :: Maybe Text
@@ -53,7 +55,7 @@ instance FromJSON Post where
          <*> d .: "permalink"
          <*> d .: "author"
          <*> d .: "score"
-         <*> (DateTime.fromSeconds <$> d .: "created_utc")
+         <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
          <*> (buildContent <$> d .: "is_self" <*> d .:? "selftext" <*> d .:? "selftext_html" <*> d .: "url")
          <*> d .:? "likes"
          <*> d .:? "link_flair_text"

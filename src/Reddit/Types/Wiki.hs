@@ -6,17 +6,18 @@ import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
-import Data.DateTime (DateTime)
 import Data.Monoid (mempty)
 import Data.Text (Text)
-import qualified Data.DateTime as DateTime
+import Data.Time.Clock
+import Data.Time.Clock.POSIX
+import Prelude hiding (mempty)
 
 newtype RevisionID = RevisionID Text
   deriving (Show, Read, Eq)
 
 data WikiPage = WikiPage { contentHTML :: Maybe Text
                          , contentMarkdown :: Text
-                         , revisionDate :: DateTime
+                         , revisionDate :: UTCTime
                          , revisedBy :: Username
                          , canRevise :: Bool }
   deriving (Show, Read, Eq)
@@ -27,7 +28,7 @@ instance FromJSON WikiPage where
     d <- o .: "data"
     WikiPage <$> (fmap unescape <$> d .:? "content_html")
              <*> (unescape <$> d .: "content_md")
-             <*> (DateTime.fromSeconds <$> d .: "revision_date")
+             <*> (posixSecondsToUTCTime . fromInteger <$> d .: "revision_date")
              <*> ((d .: "revision_by") >>= (.: "data") >>= (.: "name"))
              <*> d .: "may_revise"
   parseJSON _ = mempty

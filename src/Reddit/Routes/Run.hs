@@ -12,11 +12,10 @@ import Control.Monad.Trans.Either (hoistEither)
 import Control.Monad.Trans.State
 import Data.Aeson (FromJSON(..))
 import Data.ByteString.Lazy (ByteString)
-import Data.DateTime (DateTime)
+import Data.Time.Clock
 import Network.API.Builder.Routes (Route)
 import Network.HTTP.Conduit
 import Network.HTTP.Types
-import qualified Data.DateTime as DateTime
 import qualified Network.API.Builder as API
 
 runRoute :: (MonadIO m, FromJSON a) => Route -> RedditT m a
@@ -51,7 +50,7 @@ decodeFromResponse = RedditT . hoistEither . fmap API.unwrapJSON . API.receive
 
 updateRateLimitInfo :: MonadIO m => ResponseHeaders -> RedditT m ()
 updateRateLimitInfo hs = do
-  time <- liftIO DateTime.getCurrentTime
+  time <- liftIO getCurrentTime
   case headersToRateLimitInfo hs time of
     Just rli ->
       RedditT $ do
@@ -61,16 +60,16 @@ updateRateLimitInfo hs = do
 
 updateFromZero :: MonadIO m => Integer -> RedditT m ()
 updateFromZero resetIn = do
-  time <- liftIO DateTime.getCurrentTime
-  let resetAt = DateTime.addSeconds resetIn time
+  time <- liftIO getCurrentTime
+  let resetAt = addUTCTime (fromInteger resetIn) time
   RedditT $ do
     r <- API.liftState get
     liftIO $ atomically $ modifyTVar r (\(RateLimits b _) -> RateLimits b $ Just $ RateLimitInfo 0 0 resetAt)
 
-waitForReset :: MonadIO m => DateTime -> RedditT m ()
+waitForReset :: MonadIO m => UTCTime -> RedditT m ()
 waitForReset dt = do
-  time <- liftIO DateTime.getCurrentTime
-  let wait = fromIntegral $ DateTime.diffSeconds dt time
+  time <- liftIO getCurrentTime
+  let wait = floor $ diffUTCTime dt time
   liftIO $ threadDelay $ (wait + 5) * 1000000 -- wait five extra seconds to account for timing differences
 
 needsReset :: RateLimitInfo -> Bool

@@ -6,6 +6,7 @@ import Control.Applicative
 import Data.Aeson
 import Data.Monoid
 import Data.Text (Text)
+import Prelude
 
 data Flair = Flair { user :: Username
                    , text :: Maybe Text

@@ -7,6 +7,7 @@ import Control.Monad (guard)
 import Data.Aeson.Types (Parser, Object, (.:))
 import Data.Monoid
 import Data.Text (Text)
+import Prelude
 import qualified Data.Text as Text
 
 -- | Fail to parse unless the @Object@'s kind is what it should be.

@@ -5,10 +5,12 @@ import Reddit.Types.Thing
 
 import Control.Applicative
 import Data.Aeson
-import Data.DateTime
 import Data.Monoid (mconcat, mempty)
 import Data.Text (Text)
+import Data.Time.Clock
+import Data.Time.Clock.POSIX
 import Network.API.Builder.Query
+import Prelude hiding (mconcat, mempty)
 import qualified Data.Text as Text
 import qualified Data.Vector as Vector
 
@@ -41,7 +43,7 @@ instance ToQuery UserID where
 
 data User = User { userID :: Text
                  , userName :: Username
-                 , userCreated :: DateTime
+                 , userCreated :: UTCTime
                  , linkKarma :: Integer
                  , commentKarma :: Integer
                  , hasMail :: Maybe Bool
@@ -58,7 +60,7 @@ instance FromJSON User where
     d <- o .: "data"
     User <$> d .: "id"
          <*> d .: "name"
-         <*> (fromSeconds <$> d .: "created_utc")
+         <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
          <*> d .: "link_karma"
          <*> d .: "comment_karma"
          <*> d .:? "has_mail"
@@ -87,7 +89,7 @@ instance FromJSON UserList where
 data Relationship =
   Relationship { relationUsername :: Username
                , relationUserID :: UserID
-               , relationSince :: DateTime
+               , relationSince :: UTCTime
                , relationNote :: Maybe Text }
   deriving (Show, Read, Eq)
 
@@ -95,7 +97,7 @@ instance FromJSON Relationship where
   parseJSON (Object o) =
     Relationship <$> o .: "name"
                  <*> o .: "id"
-                 <*> (fromSeconds <$> o .: "date")
+                 <*> (posixSecondsToUTCTime . fromInteger <$> o .: "date")
                  <*> (f <$> o .:? "note")
     where f (Just "") = Nothing
           f x = x

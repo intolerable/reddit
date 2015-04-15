@@ -6,11 +6,12 @@ import Reddit.Types.Thing
 
 import Control.Applicative
 import Data.Aeson
-import Data.DateTime (DateTime)
+import Data.Time.Clock
+import Data.Time.Clock.POSIX
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
-import qualified Data.DateTime as DateTime
+import Prelude
 
 newtype BanID = BanID Text
   deriving (Show, Read, Eq, Ord)
@@ -29,7 +30,7 @@ instance Thing BanID where
 data Ban = Ban { username :: Username
                , userID :: UserID
                , note :: Text
-               , since :: DateTime }
+               , since :: UTCTime }
   deriving (Show, Read, Eq)
 
 instance FromJSON Ban where
@@ -37,7 +38,7 @@ instance FromJSON Ban where
     Ban <$> o .: "name"
         <*> o .: "id"
         <*> o .: "note"
-        <*> (DateTime.fromSeconds <$> o .: "date")
+        <*> (posixSecondsToUTCTime . fromInteger <$> o .: "date")
   parseJSON _ = mempty
 
 banPrefix :: Text

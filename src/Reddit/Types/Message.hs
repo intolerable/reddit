@@ -11,6 +11,7 @@ import Data.Aeson
 import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
+import Prelude
 
 data Message = Message { messageID :: MessageKind
                        , new :: Bool

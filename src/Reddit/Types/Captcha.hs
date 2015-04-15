@@ -7,6 +7,7 @@ import Data.Aeson
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder
+import Prelude
 
 newtype CaptchaID = CaptchaID Text
   deriving (Read, Show, Eq, Ord)

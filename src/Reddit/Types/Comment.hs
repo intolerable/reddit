@@ -11,10 +11,12 @@ import Reddit.Types.User
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Types (Parser)
-import Data.DateTime as DateTime
+import Data.Time.Clock
+import Data.Time.Clock.POSIX
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
+import Prelude
 import qualified Data.Text as Text
 import qualified Data.Vector as Vector
 
@@ -83,8 +85,8 @@ data Comment = Comment { commentID :: CommentID
                        , body :: Text
                        , bodyHTML :: Text
                        , replies :: Listing CommentID CommentReference
-                       , created :: DateTime
-                       , edited :: Maybe DateTime
+                       , created :: UTCTime
+                       , edited :: Maybe UTCTime
                        , parentLink :: PostID
                        , inReplyTo :: Maybe CommentID }
   deriving (Show, Read, Eq)
@@ -105,12 +107,12 @@ instance FromJSON Comment where
             <*> d .: "body"
             <*> d .: "body_html"
             <*> d .: "replies"
-            <*> (DateTime.fromSeconds <$> d .: "created")
+            <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created")
             <*> (getDate <$> d .: "edited")
             <*> (parsePostID =<< d .: "link_id")
             <*> ((>>= parseCommentID) <$> d .:? "parent_id")
     where getDate (Number i) =
-            Just $ DateTime.fromSeconds $ round i
+            Just $ posixSecondsToUTCTime $ fromInteger $ round i
           getDate _ = Nothing
           parsePostID s =
             maybe mempty (return . PostID) $ Text.stripPrefix (postPrefix <> "_") s

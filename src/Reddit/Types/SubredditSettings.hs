@@ -7,9 +7,10 @@ import Reddit.Utilities
 import Control.Applicative
 import Data.Aeson
 import Data.Default
-import Data.Monoid (mempty)
+import Data.Monoid hiding (Any(..))
 import Data.Text (Text)
 import Network.API.Builder.Query
+import Prelude
 
 data SubredditSettings = SubredditSettings { sidebarText :: Text
                                            , descriptionText :: Text

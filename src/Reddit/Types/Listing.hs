@@ -4,9 +4,10 @@ import Reddit.Parser
 
 import Control.Applicative
 import Data.Aeson
+import Data.Traversable
 import Data.Monoid
-import Data.Traversable (traverse)
 import Network.API.Builder.Query
+import Prelude
 
 data ListingType = Hot
                  | New

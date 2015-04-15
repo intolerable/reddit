@@ -8,6 +8,7 @@ import Data.Aeson
 import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
+import Prelude
 import qualified Data.Text as Text
 
 newtype SubredditName = R Text

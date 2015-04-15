@@ -7,6 +7,7 @@ import Data.Monoid (mempty)
 import Data.Text (Text)
 import Data.Vector ((!?))
 import Network.API.Builder.Receive
+import Prelude hiding (mempty)
 import qualified Data.Vector as V
 
 data RedditError = RedditError Object

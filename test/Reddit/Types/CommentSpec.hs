@@ -7,9 +7,9 @@ import Reddit.Types.User
 
 import Control.Monad
 import Data.ByteString.Lazy (ByteString)
-import Data.DateTime
 import Data.Either
 import Data.Maybe
+import Data.Time.Clock
 import Network.API.Builder
 import Test.Hspec
 import qualified Data.ByteString.Lazy.Char8 as ByteString

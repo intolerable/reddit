@@ -65,18 +65,18 @@ library
   default-language: Haskell2010
   hs-source-dirs: src/
   build-depends:
-    base == 4.*,
+    base >= 4.6 && < 4.9,
     aeson,
     api-builder == 0.6.*,
     bytestring,
     data-default,
-    datetime,
     either,
     http-conduit,
     http-types,
     network,
     stm,
     text,
+    time,
     transformers,
     unordered-containers,
     vector
@@ -93,10 +93,10 @@ test-suite test
     Cabal >= 1.16.0,
     api-builder,
     bytestring,
-    datetime,
     reddit,
     hspec,
     text,
+    time,
     transformers
   GHC-options: -Wall -Werror
 
@@ -113,9 +113,9 @@ test-suite test-io
     Cabal >= 1.16.0,
     api-builder,
     bytestring,
-    datetime,
     reddit,
     hspec,
     text,
+    time,
     transformers
   GHC-options: -Wall -Werror

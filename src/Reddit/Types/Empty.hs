@@ -4,6 +4,7 @@ import Control.Monad (void)
 import Data.Aeson
 import Data.Aeson.Types
 import Data.Monoid (mempty)
+import Prelude hiding (mempty)
 import qualified Data.HashMap.Strict as Hash
 
 -- | More specific @void@ for forcing a @Empty@ @FromJSON@ instance

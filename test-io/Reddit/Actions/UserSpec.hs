@@ -8,9 +8,9 @@ import Reddit.Types.User
 
 import ConfigLoad
 import Control.Monad
-import Data.DateTime
 import Data.Either
 import Data.Maybe
+import Data.Time.Clock
 import Test.Hspec
 
 main :: IO ()

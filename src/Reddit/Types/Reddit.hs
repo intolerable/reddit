@@ -25,15 +25,15 @@ import Control.Monad.Trans.Either
 import Control.Monad.Trans.Reader (ask)
 import Control.Monad.Trans.State (get, put)
 import Data.Aeson
-import Data.DateTime (DateTime)
 import Data.Monoid (mempty)
 import Data.Text (Text)
+import Data.Time.Clock
 import Network.API.Builder
 import Network.HTTP.Conduit hiding (path)
 import Network.HTTP.Types
+import Prelude hiding (mempty)
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Char8 as BS
-import qualified Data.DateTime as DateTime
 import qualified Data.Text as Text
 
 type Reddit a = RedditT IO a
@@ -98,15 +98,15 @@ type ShouldRateLimit = Bool
 
 data RateLimitInfo = RateLimitInfo { used :: Integer
                                    , remaining :: Integer
-                                   , resetTime :: DateTime }
+                                   , resetTime :: UTCTime }
   deriving (Show, Read, Eq)
 
-headersToRateLimitInfo :: ResponseHeaders -> DateTime -> Maybe RateLimitInfo
+headersToRateLimitInfo :: ResponseHeaders -> UTCTime -> Maybe RateLimitInfo
 headersToRateLimitInfo hs now =
   RateLimitInfo <$> rlUsed <*> rlRemaining <*> rlResetTime'
   where (rlUsed, rlRemaining, rlResetTime) =
           trimap extract ("x-ratelimit-used", "x-ratelimit-remaining", "x-ratelimit-reset")
-        rlResetTime' = fmap (`DateTime.addSeconds` now) rlResetTime
+        rlResetTime' = fmap (\s -> addUTCTime (fromIntegral s) now) $ rlResetTime
         extract s = lookup s hs >>= readMaybe . BS.unpack
         trimap f (a, b, c) = (f a, f b, f c)
 
