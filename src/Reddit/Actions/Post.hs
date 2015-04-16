@@ -51,6 +51,7 @@ getPostInfo p = do
 
 getPostsInfo :: MonadIO m => [PostID] -> RedditT m PostListing
 getPostsInfo ps =
+  -- we can only get 100 posts at a time or the api shits itself
   if null $ drop 100 ps
     then do
       res <- runRoute $ Route.aboutPosts ps
