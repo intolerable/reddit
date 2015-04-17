@@ -1,20 +1,30 @@
 module Reddit.Routes.Message where
 
+import Reddit.Types.Options
+import Reddit.Types.Message
 import Reddit.Types.Thing
 import Reddit.Types.User
 
 import Data.Text (Text)
 import Network.API.Builder.Routes
 
-inbox :: Route
-inbox = Route [ "message", "inbox" ]
-              []
-              "GET"
+inbox :: Bool -> Options MessageKind -> Route
+inbox shouldMark opts =
+  Route [ "message", "inbox" ]
+        [ "mark" =. shouldMark
+        , "before" =. before opts
+        , "after" =. after opts
+        , "limit" =. limit opts ]
+        "GET"
 
-unread :: Route
-unread = Route [ "message", "unread" ]
-               []
-               "GET"
+unread :: Bool -> Options MessageKind -> Route
+unread shouldMark opts =
+  Route [ "message", "unread" ]
+        [ "mark" =. shouldMark
+        , "before" =. before opts
+        , "after" =. after opts
+        , "limit" =. limit opts ]
+        "GET"
 
 readMessage :: Thing a => a -> Route
 readMessage m = Route [ "api", "read_message" ]
