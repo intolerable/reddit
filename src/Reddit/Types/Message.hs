@@ -41,6 +41,18 @@ instance FromJSON Message where
 instance Thing Message where
   fullName m = fullName $ messageID m
 
+isPrivateMessage :: Message -> Bool
+isPrivateMessage m =
+  case messageID m of
+    PrivateMessage _ -> True
+    _ -> False
+
+isCommentReply :: Message -> Bool
+isCommentReply m =
+  case messageID m of
+    CommentMessage _ -> True
+    _ -> False
+
 data MessageID = MessageID Text
   deriving (Show, Read, Eq)
 
