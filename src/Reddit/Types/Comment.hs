@@ -15,6 +15,7 @@ import Data.Time.Clock
 import Data.Time.Clock.POSIX
 import Data.Monoid
 import Data.Text (Text)
+import Data.Traversable
 import Network.API.Builder.Query
 import Prelude
 import qualified Data.Text as Text
@@ -108,16 +109,9 @@ instance FromJSON Comment where
             <*> d .: "body_html"
             <*> d .: "replies"
             <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
-            <*> (getDate <$> d .: "edited")
-            <*> (parsePostID =<< d .: "link_id")
-            <*> ((>>= parseCommentID) <$> d .:? "parent_id")
-    where getDate (Number i) =
-            Just $ posixSecondsToUTCTime $ fromInteger $ round i
-          getDate _ = Nothing
-          parsePostID s =
-            maybe mempty (return . PostID) $ Text.stripPrefix (postPrefix <> "_") s
-          parseCommentID s =
-            CommentID <$> Text.stripPrefix (commentPrefix <> "_") s
+            <*> ((fmap (posixSecondsToUTCTime . fromInteger) <$> d .: "edited") <|> (pure Nothing))
+            <*> (parseJSON =<< d .: "link_id")
+            <*> (d .:? "parent_id" >>= \v -> traverse parseJSON v <|> pure Nothing)
   parseJSON _ = mempty
 
 instance FromJSON (POSTWrapped Comment) where
