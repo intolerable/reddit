@@ -107,7 +107,7 @@ instance FromJSON Comment where
             <*> d .: "body"
             <*> d .: "body_html"
             <*> d .: "replies"
-            <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created")
+            <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
             <*> (getDate <$> d .: "edited")
             <*> (parsePostID =<< d .: "link_id")
             <*> ((>>= parseCommentID) <$> d .:? "parent_id")
