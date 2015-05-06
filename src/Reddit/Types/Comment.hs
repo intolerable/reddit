@@ -7,6 +7,7 @@ import Reddit.Types.Reddit
 import Reddit.Types.Subreddit
 import Reddit.Types.Thing
 import Reddit.Types.User
+import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
@@ -105,7 +106,7 @@ instance FromJSON Comment where
             <*> d .: "author"
             <*> d .:? "author_flair_css_class"
             <*> d .:? "author_flair_text"
-            <*> d .: "body"
+            <*> (unescape <$> d .: "body")
             <*> d .: "body_html"
             <*> d .: "replies"
             <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
