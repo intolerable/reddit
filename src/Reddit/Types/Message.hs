@@ -32,7 +32,7 @@ instance FromJSON Message where
             <*> d .: "new"
             <*> d .: "dest"
             <*> d .: "author"
-            <*> d .: "subject"
+            <*> (d .: "link_title" <|> d .: "subject")
             <*> (unescape <$> d .: "body")
             <*> (unescape <$> d .: "body_html")
             <*> (fromMaybe (Listing Nothing Nothing []) <$> d .:? "replies")
