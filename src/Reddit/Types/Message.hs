@@ -41,6 +41,9 @@ instance FromJSON Message where
 instance Thing Message where
   fullName m = fullName $ messageID m
 
+instance ToQuery Message where
+  toQuery k v = [(k, fullName v)]
+
 isPrivateMessage :: Message -> Bool
 isPrivateMessage m =
   case messageID m of
