@@ -12,7 +12,7 @@ import Prelude
 import qualified Data.Text as Text
 
 newtype SubredditName = R Text
-  deriving (Show, Read)
+  deriving (Show, Read, Ord)
 
 instance Eq SubredditName where
   R x == R y = Text.toLower x == Text.toLower y
@@ -24,7 +24,7 @@ instance FromJSON SubredditName where
   parseJSON j = R <$> parseJSON j
 
 newtype SubredditID = SubredditID Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord)
 
 instance FromJSON SubredditID where
   parseJSON (String s) =

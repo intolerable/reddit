@@ -15,7 +15,7 @@ import qualified Data.Text as Text
 import qualified Data.Vector as Vector
 
 newtype Username = Username Text
-  deriving (Show, Read)
+  deriving (Show, Read, Ord)
 
 instance Eq Username where
   Username x == Username y = Text.toLower x == Text.toLower y
@@ -28,7 +28,7 @@ instance ToQuery Username where
   toQuery k (Username user) = [(k, user)]
 
 newtype UserID = UserID Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord)
 
 instance FromJSON UserID where
   parseJSON (String s) =
