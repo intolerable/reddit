@@ -32,9 +32,9 @@ readMessage m = Route [ "api", "read_message" ]
                       "POST"
 
 sendMessage :: Username -> Text -> Text -> Route
-sendMessage (Username u) subject body =
+sendMessage (Username u) s b =
   Route [ "api", "compose" ]
         [ "to" =. u
-        , "subject" =. subject
-        , "text" =. body ]
+        , "subject" =. s
+        , "text" =. b ]
         "POST"
