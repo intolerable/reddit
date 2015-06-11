@@ -12,10 +12,13 @@ import Prelude
 import qualified Data.Text as Text
 
 newtype SubredditName = R Text
-  deriving (Show, Read, Ord)
+  deriving (Show, Read)
 
 instance Eq SubredditName where
-  R x == R y = Text.toLower x == Text.toLower y
+  R x == R y = Text.toCaseFold x == Text.toCaseFold y
+
+instance Ord SubredditName where
+  compare (R x) (R y) = compare (Text.toCaseFold x) (Text.toCaseFold y)
 
 instance ToQuery SubredditName where
   toQuery k (R sub) = [(k, sub)]
