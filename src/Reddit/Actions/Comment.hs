@@ -59,7 +59,8 @@ getCommentInfo c = do
     _ -> failWith $ APIError InvalidResponseError
 
 -- | Given a list of 'CommentID's, 'getCommentsInfo' will return another list containing
---   the full details for all the comments.
+--   the full details for all the comments. Note that Reddit's
+--   API imposes a limitation of 100 comments per request, so this function will fail immediately if given a list of more than 100 IDs.
 getCommentsInfo :: MonadIO m => [CommentID] -> RedditT m CommentListing
 getCommentsInfo cs =
   if null $ drop 100 cs
