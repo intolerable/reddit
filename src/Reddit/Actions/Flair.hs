@@ -1,9 +1,11 @@
 module Reddit.Actions.Flair
   ( getFlairList
-  , getFlairList' ) where
+  , getFlairList'
+  , addLinkFlair ) where
 
 import Reddit.Routes.Flair
 import Reddit.Routes.Run
+import Reddit.Types.Empty
 import Reddit.Types.Flair
 import Reddit.Types.Options
 import Reddit.Types.Reddit
@@ -12,6 +14,7 @@ import Reddit.Types.User
 
 import Control.Monad.IO.Class
 import Data.Default
+import Data.Text (Text)
 
 -- | Get the flair list for a subreddit. Requires moderator privileges on
 --   the subreddit.
@@ -22,3 +25,7 @@ getFlairList = getFlairList' def
 --   privileges on the subreddit.
 getFlairList' :: MonadIO m => Options UserID -> SubredditName -> RedditT m FlairList
 getFlairList' opts r = runRoute $ flairList opts r
+
+addLinkFlair :: MonadIO m => SubredditName -> Text -> Text -> Bool -> RedditT m ()
+addLinkFlair r c l e = do
+  nothing $ runRoute $ addLinkFlairTemplate r c l e
