@@ -93,6 +93,9 @@ data Comment = Comment { commentID :: CommentID
                        , inReplyTo :: Maybe CommentID }
   deriving (Show, Read, Eq)
 
+instance Thing Comment where
+  fullName c = fullName (commentID c)
+
 instance FromJSON Comment where
   parseJSON (Object o) = do
     o `ensureKind` commentPrefix
@@ -123,9 +126,9 @@ instance FromJSON (POSTWrapped Comment) where
       _ -> mempty
   parseJSON _ = mempty
 
-flattenComments :: CommentReference -> [CommentReference]
-flattenComments a@(Actual c) = a : concatMap flattenComments ((\(Listing _ _ cs) -> cs) $ replies c)
-flattenComments (Reference _ rs) = map (\r -> Reference 1 [r]) rs
+treeSubComments :: CommentReference -> [CommentReference]
+treeSubComments a@(Actual c) = a : concatMap treeSubComments ((\(Listing _ _ cs) -> cs) $ replies c)
+treeSubComments (Reference _ rs) = map (\r -> Reference 1 [r]) rs
 
 isDeleted :: Comment -> Bool
 isDeleted = (== Username "[deleted]") . author
