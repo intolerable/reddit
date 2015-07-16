@@ -29,7 +29,7 @@ getFlairList' :: MonadIO m => Options UserID -> SubredditName -> RedditT m Flair
 getFlairList' opts r = runRoute $ flairList opts r
 
 addLinkFlair :: MonadIO m => SubredditName -> Text -> Text -> Bool -> RedditT m ()
-addLinkFlair r c l e = do
+addLinkFlair r c l e =
   nothing $ runRoute $ addLinkFlairTemplate r c l e
 
 flairCSV :: MonadIO m => SubredditName -> [(Username, Text, Text)] -> RedditT m Value

@@ -79,7 +79,7 @@ instance FromJSON UserList where
   parseJSON (Object o) = do
     o `ensureKind` "UserList"
     UserList <$> ((o .: "data") >>= (.: "children"))
-  parseJSON (Array a) = do
+  parseJSON (Array a) =
     case Vector.toList a of
       [o] -> parseJSON o
       [o, _] -> parseJSON o

@@ -106,7 +106,7 @@ headersToRateLimitInfo hs now =
   RateLimitInfo <$> rlUsed <*> rlRemaining <*> rlResetTime'
   where (rlUsed, rlRemaining, rlResetTime) =
           trimap extract ("x-ratelimit-used", "x-ratelimit-remaining", "x-ratelimit-reset")
-        rlResetTime' = fmap (\s -> addUTCTime (fromIntegral s) now) $ rlResetTime
+        rlResetTime' = fmap (\s -> addUTCTime (fromIntegral s) now) rlResetTime
         extract s = lookup s hs >>= readMaybe . BS.unpack
         trimap f (a, b, c) = (f a, f b, f c)
 

@@ -55,7 +55,7 @@ lookupUserFlair :: MonadIO m => SubredditName -> Username -> RedditT m Flair
 lookupUserFlair r u = do
   res <- runRoute $ Route.lookupUserFlair r u
   case res of
-    FlairList (f:[]) _ _ -> return f
+    FlairList [f] _ _ -> return f
     _ -> failWith $ APIError InvalidResponseError
 
 setUserFlair :: MonadIO m => SubredditName -> Username -> Text -> Text -> RedditT m ()

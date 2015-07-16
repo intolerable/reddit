@@ -113,7 +113,7 @@ instance FromJSON Comment where
             <*> d .: "body_html"
             <*> d .: "replies"
             <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
-            <*> ((fmap (posixSecondsToUTCTime . fromInteger) <$> d .: "edited") <|> (pure Nothing))
+            <*> ((fmap (posixSecondsToUTCTime . fromInteger) <$> d .: "edited") <|> pure Nothing)
             <*> (parseJSON =<< d .: "link_id")
             <*> (d .:? "parent_id" >>= \v -> traverse parseJSON v <|> pure Nothing)
   parseJSON _ = mempty
