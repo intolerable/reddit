@@ -4,8 +4,8 @@ import Reddit.Types.Options
 import Reddit.Types.Subreddit
 import Reddit.Types.User
 
-import Network.API.Builder.Routes
 import Data.Text (Text)
+import Network.API.Builder.Routes
 import qualified Data.Text as Text
 
 flairList :: Options UserID -> SubredditName -> Route
@@ -17,7 +17,7 @@ flairList opts (R r) =
         "GET"
 
 addLinkFlairTemplate :: SubredditName -> Text -> Text -> Bool -> Route
-addLinkFlairTemplate (R sub) css label editable = do
+addLinkFlairTemplate (R sub) css label editable =
   Route [ "r", sub, "api", "flairtemplate" ]
         [ "css_class" =. css
         , "flair_type" =. ("LINK_FLAIR" :: Text)
