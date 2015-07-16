@@ -18,7 +18,7 @@ import Prelude
 data Message = Message { messageID :: MessageKind
                        , new :: Bool
                        , to :: Username
-                       , from :: Username
+                       , from :: Maybe Username
                        , subject :: Text
                        , body :: Text
                        , bodyHTML :: Text
@@ -31,7 +31,7 @@ instance FromJSON Message where
     Message <$> d .: "name"
             <*> d .: "new"
             <*> d .: "dest"
-            <*> d .: "author"
+            <*> d .:? "author"
             <*> (d .: "link_title" <|> d .: "subject")
             <*> (unescape <$> d .: "body")
             <*> (unescape <$> d .: "body_html")
