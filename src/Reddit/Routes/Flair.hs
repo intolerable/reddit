@@ -6,6 +6,7 @@ import Reddit.Types.User
 
 import Network.API.Builder.Routes
 import Data.Text (Text)
+import qualified Data.Text as Text
 
 flairList :: Options UserID -> SubredditName -> Route
 flairList opts (R r) =
@@ -23,3 +24,13 @@ addLinkFlairTemplate (R sub) css label editable = do
         , "text" =. label
         , "text_editable" =. editable ]
         "POST"
+
+flairCSVRoute :: SubredditName -> [(Username, Text, Text)] -> Route
+flairCSVRoute (R sub) sets =
+  Route [ "r", sub, "api", "flaircsv" ]
+        [ "flair_csv" =. Text.unlines (map f sets) ]
+        "POST"
+  where
+    f (Username u, t, c) =
+      Text.intercalate "," $ map (Text.pack . show) [u,t,c]
+
