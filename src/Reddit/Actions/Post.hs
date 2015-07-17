@@ -138,11 +138,11 @@ removePost = nothing . runRoute . Route.removePost False
 markPostSpam :: MonadIO m => PostID -> RedditT m ()
 markPostSpam = nothing . runRoute . Route.removePost True
 
-stickyPost :: MonadIO m => PostID -> RedditT m ()
-stickyPost = nothing . runRoute . Route.stickyPost True
+stickyPost :: MonadIO m => PostID -> Maybe Integer -> RedditT m ()
+stickyPost p n = nothing $ runRoute $ Route.stickyPost True p n
 
-unstickyPost :: MonadIO m => PostID -> RedditT m ()
-unstickyPost = nothing . runRoute . Route.stickyPost False
+unstickyPost :: MonadIO m => PostID -> Maybe Integer -> RedditT m ()
+unstickyPost p n = nothing $ runRoute $ Route.stickyPost False p n
 
 enableContestMode :: MonadIO m => PostID -> RedditT m ()
 enableContestMode = nothing . runRoute . Route.setContestMode True

@@ -82,11 +82,13 @@ removePost isSpam p = Route [ "api", "remove" ]
                             , "spam" =. isSpam ]
                             "POST"
 
-stickyPost :: Bool -> PostID -> Route
-stickyPost on p = Route [ "api", "set_subreddit_sticky" ]
-                        [ "id" =. p
-                        , "state" =. on ]
-                        "POST"
+stickyPost :: Bool -> PostID -> Maybe Integer -> Route
+stickyPost on p n =
+  Route [ "api", "set_subreddit_sticky" ]
+        [ "id" =. p
+        , "state" =. on
+        , "num" =. n ]
+        "POST"
 
 setContestMode :: Bool -> PostID -> Route
 setContestMode on p = Route [ "api", "set_contest_mode" ]
