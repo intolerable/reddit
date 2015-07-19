@@ -18,7 +18,7 @@ instance Eq SubredditName where
   R x == R y = Text.toCaseFold x == Text.toCaseFold y
 
 instance Ord SubredditName where
-  compare (R x) (R y) = compare (Text.toCaseFold x) (Text.toCaseFold y)
+  R x `compare` R y = Text.toCaseFold x `compare` Text.toCaseFold y
 
 instance ToQuery SubredditName where
   toQuery k (R sub) = [(k, sub)]
