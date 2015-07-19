@@ -15,7 +15,7 @@ loadConfig = do
   file <- Text.readFile "test.cfg"
   case Text.lines file of
     user : pass : sub : [] ->
-      return ( RunReddit $ runRedditWithRateLimiting user pass
+      return ( RunReddit $ runReddit user pass
              , Username user
              , R sub)
     _ -> do
