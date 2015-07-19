@@ -23,6 +23,7 @@ library
     Reddit.Actions.User
     Reddit.Actions.Voting
     Reddit.Actions.Wiki
+    Reddit.Login
     Reddit.Types
     Reddit.Types.Captcha
     Reddit.Types.Comment
@@ -41,7 +42,6 @@ library
     Reddit.Types.User
     Reddit.Types.Wiki
   other-modules:
-    Reddit.Login
     Reddit.Parser
     Reddit.Routes
     Reddit.Routes.Captcha
