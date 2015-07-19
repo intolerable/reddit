@@ -5,11 +5,11 @@ A Haskell library for interacting with the [Reddit API](http://reddit.com/api). 
 
 ### Basic usage
 
-Almost everything is inside the `Reddit` monad, which handles errors and rate limiting (if you use `runRedditWithRateLimiting`) for you seamlessly – you can run the `Reddit` monad with `runReddit user pass`, which logs you in, grabs a token and starts running your actions.
+Almost everything is inside the `Reddit` monad, which handles errors and rate limiting for you seamlessly – you can run the `Reddit` monad with `runReddit user pass`, which logs you in, grabs a token and starts running your actions.
 
-Most of the time you can get away with importing `Reddit.API` and `Reddit.API.Types` and most of the stuff is available from there.
+Most of the time you can get away with importing `Reddit` and `Reddit.Types` and most of the stuff is available from there.
 
-Here are some examples of functions that are useful:
+Here are some examples of functions that are useful (types are simplified for the more limited `Reddit` monad):
 
 ```
 getPostInfo :: PostID -> Reddit Post
