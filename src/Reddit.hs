@@ -1,7 +1,8 @@
 module Reddit
   ( module Export
   , runReddit
-  , runRedditWithRateLimiting ) where
+  , runRedditWithRateLimiting
+  , runWithManager ) where
 
 import Reddit.Actions as Export
 import Reddit.Login
@@ -32,3 +33,15 @@ run user pass shouldRateLimit (RedditT reddit) = do
       addHeader r { cookieJar = Just cj
                   , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
     reddit
+
+runWithManager :: MonadIO m => Text -> Text -> Bool -> Manager -> RedditT m a -> m (Either (APIError RedditError) a)
+runWithManager user pass shouldRateLimit manager (RedditT reddit) = do
+  rli <- liftIO $ newTVarIO $ RateLimits shouldRateLimit Nothing
+  (res, _, _) <- runAPI builder manager rli $ do
+    customizeRequest addHeader
+    LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
+    customizeRequest $ \r ->
+      addHeader r { cookieJar = Just cj
+                  , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
+    reddit
+  return res
