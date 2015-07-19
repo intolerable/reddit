@@ -1,5 +1,6 @@
 module Reddit.Types.Flair where
 
+import Reddit.Types.Listing
 import Reddit.Types.User
 
 import Control.Applicative
@@ -7,6 +8,7 @@ import Data.Aeson
 import Data.Monoid
 import Data.Text (Text)
 import Prelude
+
 
 data Flair = Flair { user :: Username
                    , text :: Maybe Text
@@ -20,14 +22,17 @@ instance FromJSON Flair where
           <*> o .:? "flair_css_class"
   parseJSON _ = mempty
 
-data FlairList = FlairList { flairs :: [Flair]
-                           , next :: Maybe UserID
-                           , previous :: Maybe UserID }
+data FList = FList [Flair] (Maybe UserID) (Maybe UserID)
   deriving (Show, Read, Eq)
 
-instance FromJSON FlairList where
+instance FromJSON FList where
   parseJSON (Object o) =
-    FlairList <$> o .: "users"
-              <*> o .:? "next"
-              <*> o .:? "prev"
+    FList <$> o .: "users"
+          <*> o .:? "next"
+          <*> o .:? "prev"
   parseJSON _ = mempty
+
+type FlairListing = Listing UserID Flair
+
+flistToListing :: FList -> FlairListing
+flistToListing (FList f b a) = Listing b a f

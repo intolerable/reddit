@@ -14,6 +14,7 @@ import Reddit.Types.Comment
 import Reddit.Types.Empty
 import Reddit.Types.Flair hiding (user)
 import Reddit.Types.Error
+import Reddit.Types.Listing
 import Reddit.Types.Options
 import Reddit.Types.Reddit
 import Reddit.Types.Subreddit
@@ -53,9 +54,9 @@ getFriends = do
 
 lookupUserFlair :: MonadIO m => SubredditName -> Username -> RedditT m Flair
 lookupUserFlair r u = do
-  res <- runRoute $ Route.lookupUserFlair r u
+  res <- flistToListing <$> runRoute (Route.lookupUserFlair r u)
   case res of
-    FlairList [f] _ _ -> return f
+    Listing _ _ [f] -> return f
     _ -> failWith $ APIError InvalidResponseError
 
 setUserFlair :: MonadIO m => SubredditName -> Username -> Text -> Text -> RedditT m ()

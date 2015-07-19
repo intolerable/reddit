@@ -20,13 +20,13 @@ import Data.Text (Text)
 
 -- | Get the flair list for a subreddit. Requires moderator privileges on
 --   the subreddit.
-getFlairList :: MonadIO m => SubredditName -> RedditT m FlairList
+getFlairList :: MonadIO m => SubredditName -> RedditT m FlairListing
 getFlairList = getFlairList' def
 
 -- | Get the flair list for a subreddit (with 'Options'). Requires moderator
 --   privileges on the subreddit.
-getFlairList' :: MonadIO m => Options UserID -> SubredditName -> RedditT m FlairList
-getFlairList' opts r = runRoute $ flairList opts r
+getFlairList' :: MonadIO m => Options UserID -> SubredditName -> RedditT m FlairListing
+getFlairList' opts r = flistToListing <$> runRoute (flairList opts r)
 
 addLinkFlair :: MonadIO m => SubredditName -> Text -> Text -> Bool -> RedditT m ()
 addLinkFlair r c l e =
