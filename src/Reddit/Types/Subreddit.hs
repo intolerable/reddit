@@ -40,11 +40,13 @@ instance Thing SubredditID where
 instance ToQuery SubredditID where
   toQuery k (SubredditID v) = [(k, v)]
 
-data Subreddit = Subreddit { subredditID :: SubredditID
-                           , name :: SubredditName
-                           , title :: Text
-                           , subscribers :: Integer
-                           , userIsBanned :: Bool } deriving (Show, Eq)
+data Subreddit =
+  Subreddit { subredditID :: SubredditID
+            , name :: SubredditName
+            , title :: Text
+            , subscribers :: Integer
+            , userIsBanned :: Maybe Bool }
+  deriving (Show, Eq)
 
 instance FromJSON Subreddit where
   parseJSON (Object o) = do
