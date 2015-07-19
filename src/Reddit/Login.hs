@@ -35,7 +35,12 @@ getLoginDetails user pass = do
     Left x -> RedditT $ hoistEither $ Left x
     Right modhash -> return $ LoginDetails modhash cj
 
-login :: MonadIO m => Text -> Text -> RedditT m LoginDetails
+
+-- | Make a login request with the given username and password.
+login :: MonadIO m
+      => Text -- ^ Username to login with
+      -> Text -- ^ Password to login with
+      -> RedditT m LoginDetails
 login user pass = do
   RedditT $ baseURL loginBaseURL
   d <- getLoginDetails user pass
