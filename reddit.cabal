@@ -76,7 +76,7 @@ library
     stm,
     text,
     time,
-    transformers,
+    transformers == 0.4.*,
     unordered-containers,
     vector
   GHC-options: -Wall

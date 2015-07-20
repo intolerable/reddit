@@ -13,6 +13,7 @@ import Reddit.Types.Reddit
 import Reddit.Types.Subreddit
 import Reddit.Types.User
 
+import Control.Monad
 import Control.Monad.IO.Class
 import Data.Aeson
 import Data.Default
@@ -26,7 +27,7 @@ getFlairList = getFlairList' def
 -- | Get the flair list for a subreddit (with 'Options'). Requires moderator
 --   privileges on the subreddit.
 getFlairList' :: MonadIO m => Options UserID -> SubredditName -> RedditT m FlairListing
-getFlairList' opts r = flistToListing <$> runRoute (flairList opts r)
+getFlairList' opts r = liftM flistToListing $ runRoute (flairList opts r)
 
 addLinkFlair :: MonadIO m => SubredditName -> Text -> Text -> Bool -> RedditT m ()
 addLinkFlair r c l e =

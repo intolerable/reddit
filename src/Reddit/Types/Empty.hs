@@ -1,15 +1,15 @@
 module Reddit.Types.Empty ( nothing ) where
 
-import Control.Monad (void)
+import Control.Monad (liftM)
 import Data.Aeson
 import Data.Aeson.Types
-import Data.Monoid (mempty)
-import Prelude hiding (mempty)
+import Data.Monoid
+import Prelude
 import qualified Data.HashMap.Strict as Hash
 
 -- | More specific @void@ for forcing a @Empty@ @FromJSON@ instance
-nothing :: Functor m => m Empty -> m ()
-nothing = void
+nothing :: Monad m => m Empty -> m ()
+nothing = liftM $ const ()
 
 data Empty = Empty
   deriving (Show, Read, Eq)

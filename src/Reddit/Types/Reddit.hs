@@ -25,13 +25,13 @@ import Control.Monad.Trans.Except
 import Control.Monad.Trans.Reader (ask)
 import Control.Monad.Trans.State (get, put)
 import Data.Aeson
-import Data.Monoid (mempty)
+import Data.Monoid
 import Data.Text (Text)
 import Data.Time.Clock
 import Network.API.Builder
 import Network.HTTP.Conduit hiding (path)
 import Network.HTTP.Types
-import Prelude hiding (mempty)
+import Prelude
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.Text as Text
@@ -40,10 +40,10 @@ type Reddit a = RedditT IO a
 
 newtype RedditT m a = RedditT { unRedditT :: APIT (TVar RateLimits) RedditError m a }
 
-instance Monad m => Functor (RedditT m) where
+instance Functor m => Functor (RedditT m) where
   fmap f (RedditT a) = RedditT (fmap f a)
 
-instance Monad m => Applicative (RedditT m) where
+instance (Functor m, Monad m) => Applicative (RedditT m) where
   pure a = RedditT (pure a)
   (RedditT f) <*> (RedditT a) = RedditT (f <*> a)
 

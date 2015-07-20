@@ -3,11 +3,11 @@ module Reddit.Types.Error
 
 import Control.Applicative
 import Data.Aeson
-import Data.Monoid (mempty)
+import Data.Monoid
 import Data.Text (Text)
 import Data.Vector ((!?))
 import Network.API.Builder.Receive
-import Prelude hiding (mempty)
+import Prelude
 import qualified Data.Vector as V
 
 data RedditError = RedditError Object

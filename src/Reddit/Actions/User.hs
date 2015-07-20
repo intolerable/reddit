@@ -21,6 +21,7 @@ import Reddit.Types.Subreddit
 import Reddit.Types.User
 import qualified Reddit.Routes.User as Route
 
+import Control.Monad
 import Control.Monad.IO.Class
 import Data.Default
 import Data.Text (Text)
@@ -54,7 +55,7 @@ getFriends = do
 
 lookupUserFlair :: MonadIO m => SubredditName -> Username -> RedditT m Flair
 lookupUserFlair r u = do
-  res <- flistToListing <$> runRoute (Route.lookupUserFlair r u)
+  res <- liftM flistToListing $ runRoute (Route.lookupUserFlair r u)
   case res of
     Listing _ _ [f] -> return f
     _ -> failWith $ APIError InvalidResponseError

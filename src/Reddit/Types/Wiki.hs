@@ -6,11 +6,11 @@ import Reddit.Utilities
 
 import Control.Applicative
 import Data.Aeson
-import Data.Monoid (mempty)
+import Data.Monoid
 import Data.Text (Text)
 import Data.Time.Clock
 import Data.Time.Clock.POSIX
-import Prelude hiding (mempty)
+import Prelude
 
 newtype RevisionID = RevisionID Text
   deriving (Show, Read, Eq)

@@ -6,7 +6,7 @@ import Reddit.Types.Reddit
 
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM
-import Control.Monad (when)
+import Control.Monad (liftM, when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Except
 import Control.Monad.Trans.State
@@ -23,7 +23,7 @@ runRoute route = do
   RateLimits limiting _ <- RedditT $ API.liftState get >>= liftIO . readTVarIO
   if limiting
     then runRouteWithLimiting route
-    else RedditT $ API.unwrapJSON `fmap` API.runRoute route
+    else RedditT $ API.unwrapJSON `liftM` API.runRoute route
 
 runRouteWithLimiting :: (MonadIO m, FromJSON a) => Route -> RedditT m a
 runRouteWithLimiting route = do
