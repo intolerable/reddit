@@ -15,7 +15,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.Post" $ do
-  (reddit, _, _) <- runIO loadConfig
+  (reddit, _, _, _) <- runIO loadConfig
 
   it "should be able to get info for a post" $ do
     res <- run reddit $ getPostInfo (PostID "z1c9z")

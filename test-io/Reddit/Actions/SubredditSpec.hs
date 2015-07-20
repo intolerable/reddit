@@ -12,7 +12,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.Subreddit" $ do
-  (reddit, _, subreddit) <- runIO loadConfig
+  (reddit, anon, _, subreddit) <- runIO loadConfig
 
   it "should be able to get the info for a subreddit" $ do
     let sub = R "gaming"
@@ -24,6 +24,18 @@ spec = describe "Reddit.Actions.Subreddit" $ do
         name info `shouldBe` sub
         subredditID info `shouldBe` SubredditID "2qh03"
         subscribers info `shouldSatisfy` (> 0)
+
+  it "should be able to get the info for a subreddit anonymously" $ do
+    let sub = R "gaming"
+    res <- run anon $ getSubredditInfo sub
+    res `shouldSatisfy` isRight
+    case res of
+      Left _ -> expectationFailure "json parse failed"
+      Right info -> do
+        name info `shouldBe` sub
+        subredditID info `shouldBe` SubredditID "2qh03"
+        subscribers info `shouldSatisfy` (> 0)
+        userIsBanned info `shouldBe` Nothing
 
   it "should be able to get the settings for a moderated subreddit" $ do
     res <- run reddit $ getSubredditSettings subreddit

@@ -11,7 +11,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.Captcha" $ do
-  (reddit, _, _) <- runIO loadConfig
+  (reddit, _, _, _) <- runIO loadConfig
 
   it "should be able to get a new captcha" $ do
     res <- run reddit newCaptcha

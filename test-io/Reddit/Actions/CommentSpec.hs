@@ -13,7 +13,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.Comment" $ do
-  (reddit, _, _) <- runIO loadConfig
+  (reddit, _, _, _) <- runIO loadConfig
 
   it "should be able to get info for a comment" $ do
     res <- run reddit $ getCommentInfo (CommentID "c60o0iw")

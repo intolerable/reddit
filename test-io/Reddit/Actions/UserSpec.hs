@@ -18,7 +18,7 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.User" $ do
-  (reddit, username, _) <- runIO loadConfig
+  (reddit, anon, username, _) <- runIO loadConfig
   time <- runIO getCurrentTime
 
   it "should be able to get the user's most recent comments" $ do
@@ -55,6 +55,10 @@ spec = describe "Reddit.Actions.User" $ do
         userCreated user `shouldSatisfy` (< time)
         hasMail user `shouldSatisfy` isJust
         isFriend user `shouldBe` False
+
+  it "shouldn't be able to get about me info for an anonymous user" $ do
+    res <- run anon aboutMe
+    res `shouldSatisfy` isLeft
 
   it "should be able to get the user info for a user" $ do
     res <- run reddit $ getUserInfo username
