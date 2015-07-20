@@ -120,3 +120,23 @@ test-suite test-io
     time,
     transformers
   GHC-options: -Wall
+
+test-suite test-anon
+  hs-source-dirs: test-anon
+  main-is: Spec.hs
+  default-extensions:
+    OverloadedStrings
+    Rank2Types
+  default-language: Haskell2010
+  type: exitcode-stdio-1.0
+  build-depends:
+    base == 4.*,
+    Cabal >= 1.16.0,
+    api-builder,
+    http-conduit,
+    reddit,
+    hspec,
+    text,
+    time,
+    transformers
+  GHC-options: -Wall

@@ -12,7 +12,7 @@ import qualified Data.Text.IO as Text
 newtype RunReddit = RunReddit
   { run :: forall a. Reddit a -> IO (Either (APIError RedditError) a) }
 
-loadConfig :: IO (RunReddit, RunReddit, Username, SubredditName)
+loadConfig :: IO (RunReddit, Username, SubredditName)
 loadConfig = do
   file <- Text.readFile "test.cfg"
   case Text.lines file of
@@ -23,7 +23,6 @@ loadConfig = do
         Left _ -> exitFailure
         Right details ->
           return ( RunReddit $ runRedditWith $ RedditOptions True (Just manager) (StoredDetails details) Nothing
-                 , RunReddit $ runRedditWith $ RedditOptions True (Just manager) Anonymous Nothing
                  , Username user
                  , R sub)
     _ -> do

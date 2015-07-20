@@ -1,8 +1,7 @@
 module Reddit.Actions.CaptchaSpec where
 
-import Reddit.Actions.Captcha
+import Reddit
 
-import ConfigLoad
 import Data.Either
 import Test.Hspec
 
@@ -11,12 +10,11 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.Captcha" $ do
-  (reddit, _, _) <- runIO loadConfig
 
   it "should be able to get a new captcha" $ do
-    res <- run reddit newCaptcha
+    res <- runRedditAnon newCaptcha
     res `shouldSatisfy` isRight
 
   it "should be able to check if we need captchas" $ do
-    res <- run reddit needsCaptcha
+    res <- runRedditAnon needsCaptcha
     res `shouldSatisfy` isRight

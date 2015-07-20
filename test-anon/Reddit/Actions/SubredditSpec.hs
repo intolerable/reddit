@@ -1,9 +1,8 @@
 module Reddit.Actions.SubredditSpec where
 
-import Reddit.Actions.Subreddit
+import Reddit
 import Reddit.Types.Subreddit
 
-import ConfigLoad
 import Data.Either
 import Test.Hspec
 
@@ -12,11 +11,10 @@ main = hspec spec
 
 spec :: Spec
 spec = describe "Reddit.Actions.Subreddit" $ do
-  (reddit, _, subreddit) <- runIO loadConfig
 
-  it "should be able to get the info for a subreddit" $ do
+  it "should be able to get the info for a subreddit anonymously" $ do
     let sub = R "gaming"
-    res <- run reddit $ getSubredditInfo sub
+    res <- runRedditAnon $ getSubredditInfo sub
     res `shouldSatisfy` isRight
     case res of
       Left _ -> expectationFailure "json parse failed"
@@ -24,7 +22,9 @@ spec = describe "Reddit.Actions.Subreddit" $ do
         name info `shouldBe` sub
         subredditID info `shouldBe` SubredditID "2qh03"
         subscribers info `shouldSatisfy` (> 0)
+        userIsBanned info `shouldBe` Nothing
 
-  it "should be able to get the settings for a moderated subreddit" $ do
-    res <- run reddit $ getSubredditSettings subreddit
-    res `shouldSatisfy` isRight
+  it "shouldn't be able to anonymously get the settings for the moderated subreddit" $ do
+    res <- runRedditAnon $ getSubredditSettings $ R "gaming"
+    res `shouldSatisfy` isLeft
+
