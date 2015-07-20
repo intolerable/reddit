@@ -9,4 +9,4 @@ notifications:
   email: false
 
 script:
-  - cabal configure --enable-tests && cabal build && cabal test test test-anon
+  - cabal configure --enable-tests && cabal build && cabal test test
