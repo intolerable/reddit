@@ -22,15 +22,16 @@ spec = describe "Reddit.Actions.User" $ do
   time <- runIO getCurrentTime
 
   it "should be able to get the user's most recent comments" $ do
-    res <- run reddit $ getUserComments username
-    res `shouldSatisfy` isRight
-    case res of
-      Left _ -> expectationFailure "something failed"
-      Right (Listing _ _ cs) ->
-        forM_ cs $ \c -> do
-          author c `shouldBe` username
-          replies c `shouldSatisfy` (\(Listing _ _ x) -> null x)
-          created c `shouldSatisfy` (< time)
+    forM_ [reddit, anon] $ \acc -> do
+      res <- run acc $ getUserComments username
+      res `shouldSatisfy` isRight
+      case res of
+        Left _ -> expectationFailure "something failed"
+        Right (Listing _ _ cs) ->
+          forM_ cs $ \c -> do
+            author c `shouldBe` username
+            replies c `shouldSatisfy` (\(Listing _ _ x) -> null x)
+            created c `shouldSatisfy` (< time)
 
   it "should be able to get multiple pages of user comments" $ do
     res <- run reddit $ getUserComments' (Options Nothing (Just 1)) username
@@ -64,8 +65,19 @@ spec = describe "Reddit.Actions.User" $ do
     res <- run reddit $ getUserInfo username
     res `shouldSatisfy` isRight
 
+  it "should be able to anonymously get the user info for a user" $ do
+    res <- run anon $ getUserInfo username
+    res `shouldSatisfy` isRight
+
   it "should be able to check if a username is available" $ do
     res <- run reddit $ isUsernameAvailable username
+    res `shouldSatisfy` isRight
+    case res of
+      Left _ -> return ()
+      Right avail -> avail `shouldBe` False
+
+  it "should be able to anonymously check if a username is available" $ do
+    res <- run anon $ isUsernameAvailable username
     res `shouldSatisfy` isRight
     case res of
       Left _ -> return ()

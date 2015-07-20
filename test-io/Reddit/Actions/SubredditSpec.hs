@@ -40,3 +40,8 @@ spec = describe "Reddit.Actions.Subreddit" $ do
   it "should be able to get the settings for a moderated subreddit" $ do
     res <- run reddit $ getSubredditSettings subreddit
     res `shouldSatisfy` isRight
+
+  it "shouldn't be able to anonymously get the settings for the moderated subreddit" $ do
+    res <- run anon $ getSubredditSettings subreddit
+    res `shouldSatisfy` isLeft
+
