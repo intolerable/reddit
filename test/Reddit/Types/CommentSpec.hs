@@ -7,13 +7,18 @@ import Reddit.Types.User
 
 import Control.Monad
 import Data.ByteString.Lazy (ByteString)
-import Data.Either
 import Data.Maybe
 import Data.Time.Clock
 import Network.API.Builder
 import Test.Hspec
 import qualified Data.ByteString.Lazy.Char8 as ByteString
 import qualified Data.Text as Text
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec

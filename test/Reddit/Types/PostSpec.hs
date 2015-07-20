@@ -3,9 +3,11 @@ module Reddit.Types.PostSpec where
 import Reddit.Types.Post
 
 import Data.ByteString.Lazy (ByteString)
-import Data.Either
 import Network.API.Builder
 import Test.Hspec
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec

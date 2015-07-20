@@ -2,10 +2,12 @@ module Reddit.Types.UserSpec where
 
 import Reddit.Types.User
 
-import Data.Either
 import Network.API.Builder
 import Test.Hspec
 import qualified Data.ByteString.Lazy.Char8 as ByteString
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
 
 main :: IO ()
 main = hspec spec
