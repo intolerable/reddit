@@ -1,4 +1,4 @@
-reddit for haskell
+reddit for haskell [![Build Status](https://travis-ci.org/intolerable/reddit.svg?branch=master)](https://travis-ci.org/intolerable/reddit)
 ---
 
 A Haskell library for interacting with the [Reddit API](http://reddit.com/api). Requires [`api-builder`](https://github.com/intolerable/api-builder), but you will probably have to install it from the repository, because it needs a newer version than the one that's on Hackage.
