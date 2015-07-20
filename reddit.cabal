@@ -67,10 +67,9 @@ library
   build-depends:
     base >= 4.6 && < 4.9,
     aeson,
-    api-builder >= 0.7.1,
+    api-builder >= 0.9,
     bytestring,
     data-default,
-    either,
     http-conduit,
     http-types,
     network,

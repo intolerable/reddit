@@ -8,7 +8,7 @@ import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM
 import Control.Monad (when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
-import Control.Monad.Trans.Either (hoistEither)
+import Control.Monad.Trans.Except
 import Control.Monad.Trans.State
 import Data.Aeson (FromJSON(..))
 import Data.ByteString.Lazy (ByteString)
@@ -40,13 +40,13 @@ runRouteWithLimiting route = do
         Left (API.APIError (RateLimitError resetIn _)) -> do
           updateFromZero resetIn
           runRouteWithLimiting route
-        Left x -> RedditT $ hoistEither $ Left x
+        Left x -> RedditT $ ExceptT $ return $ Left x
         Right x -> do
           updateRateLimitInfo $ responseHeaders x
           decodeFromResponse x
 
 decodeFromResponse :: (Monad m, FromJSON a) => Response ByteString -> RedditT m a
-decodeFromResponse = RedditT . hoistEither . fmap API.unwrapJSON . API.receive
+decodeFromResponse = RedditT . ExceptT . return . fmap API.unwrapJSON . API.receive
 
 updateRateLimitInfo :: MonadIO m => ResponseHeaders -> RedditT m ()
 updateRateLimitInfo hs = do

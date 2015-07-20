@@ -7,7 +7,7 @@ import Reddit.Types.Reddit
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class (MonadIO, liftIO)
-import Control.Monad.Trans.Either
+import Control.Monad.Trans.Except
 import Control.Monad.Trans.State
 import Data.Text (Text)
 import Network.API.Builder
@@ -31,8 +31,8 @@ getLoginDetails user pass = do
         then do
           liftIO $ threadDelay $ (fromIntegral wait + 5) * 1000000
           getLoginDetails user pass
-        else RedditT $ hoistEither $ Left x
-    Left x -> RedditT $ hoistEither $ Left x
+        else RedditT $ ExceptT $ return $ Left x
+    Left x -> RedditT $ ExceptT $ return $ Left x
     Right modhash -> return $ LoginDetails modhash cj
 
 

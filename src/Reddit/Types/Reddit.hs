@@ -21,7 +21,7 @@ import Control.Applicative
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
-import Control.Monad.Trans.Either
+import Control.Monad.Trans.Except
 import Control.Monad.Trans.Reader (ask)
 import Control.Monad.Trans.State (get, put)
 import Data.Aeson
@@ -70,7 +70,7 @@ nest (RedditT a) = do
   return res
 
 failWith :: Monad m => APIError RedditError -> RedditT m a
-failWith = RedditT . EitherT . return . Left
+failWith = RedditT . throwE
 
 newtype Modhash = Modhash Text
   deriving (Show, Read, Eq)
