@@ -98,7 +98,7 @@ test-suite test
     text,
     time,
     transformers
-  GHC-options: -Wall -Werror
+  GHC-options: -Wall
 
 test-suite test-io
   hs-source-dirs: test-io
@@ -119,4 +119,4 @@ test-suite test-io
     text,
     time,
     transformers
-  GHC-options: -Wall -Werror
+  GHC-options: -Wall
