@@ -1,11 +1,23 @@
 name:                reddit
 version:             0.1.0.0
+synopsis:            Library for interfacing with Reddit's API
+license:             BSD2
+license-file:        LICENSE
+copyright:           (c) Fraser Murray 2013-2015
+maintainer:          fraser.m.murray@gmail.com
+author:              Fraser Murray
+homepage:            https://github.com/intolerable/reddit
+category:            Network
 build-type:          Simple
 cabal-version:       >= 1.10
 extra-source-files:
   test/data/aboutMe_example.json
   test/data/getUserInfo_example.json
   test/data/getUserComments_example.json
+
+source-repository head
+  type: git
+  location: git://github.com/intolerable/reddit.git
 
 library
   exposed-modules:
