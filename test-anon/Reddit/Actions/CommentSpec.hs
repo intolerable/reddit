@@ -4,8 +4,13 @@ import Reddit
 import Reddit.Types.Comment
 import Reddit.Types.Listing
 
-import Data.Either
 import Test.Hspec
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec

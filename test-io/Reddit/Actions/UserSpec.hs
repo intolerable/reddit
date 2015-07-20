@@ -8,10 +8,12 @@ import Reddit.Types.User
 
 import ConfigLoad
 import Control.Monad
-import Data.Either
 import Data.Maybe
 import Data.Time.Clock
 import Test.Hspec
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
 
 main :: IO ()
 main = hspec spec

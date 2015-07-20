@@ -7,8 +7,13 @@ import Reddit.Types.Subreddit (SubredditID(..))
 import Reddit.Types.User
 
 import ConfigLoad
-import Data.Either
 import Test.Hspec
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec

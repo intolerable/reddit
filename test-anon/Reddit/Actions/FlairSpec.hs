@@ -3,8 +3,10 @@ module Reddit.Actions.FlairSpec where
 import Reddit
 import Reddit.Types.Subreddit
 
-import Data.Either
 import Test.Hspec
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec

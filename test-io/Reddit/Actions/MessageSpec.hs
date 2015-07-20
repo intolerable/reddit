@@ -3,8 +3,10 @@ module Reddit.Actions.MessageSpec where
 import Reddit.Actions.Message
 
 import ConfigLoad
-import Data.Either
 import Test.Hspec
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
 
 main :: IO ()
 main = hspec spec

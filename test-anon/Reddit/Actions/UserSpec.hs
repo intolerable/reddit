@@ -7,9 +7,14 @@ import Reddit.Types.Options
 import Reddit.Types.User
 
 import Control.Monad
-import Data.Either
 import Data.Time.Clock
 import Test.Hspec
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec

@@ -3,8 +3,13 @@ module Reddit.Actions.SubredditSpec where
 import Reddit
 import Reddit.Types.Subreddit
 
-import Data.Either
 import Test.Hspec
+
+isRight :: Either a b -> Bool
+isRight = const False `either` const True
+
+isLeft :: Either a b -> Bool
+isLeft = const True `either` const False
 
 main :: IO ()
 main = hspec spec
