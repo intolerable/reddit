@@ -1,0 +1,12 @@
+language: haskell
+ghc:
+  - "7.6"
+  - "7.8"
+  # disabled because travis doesn't yet support it
+  # - "7.10"
+sudo: false
+notifications:
+  email: false
+
+script:
+  - cabal configure --enable-tests && cabal build && cabal test test test-anon
