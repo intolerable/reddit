@@ -30,9 +30,7 @@ import Reddit.Types
 import Reddit.Types.Captcha
 import Reddit.Types.Comment
 import Reddit.Types.Empty
-import Reddit.Types.Error
 import Reddit.Types.Listing
-import Reddit.Types.Options
 import Reddit.Types.Reddit
 
 import Control.Monad.IO.Class

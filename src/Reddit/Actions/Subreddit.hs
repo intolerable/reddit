@@ -6,8 +6,8 @@ module Reddit.Actions.Subreddit
 import Reddit.Routes.Run
 import Reddit.Types
 import Reddit.Types.Empty
-import Reddit.Types.Reddit
 import Reddit.Types.Subreddit
+import Reddit.Types.SubredditSettings
 import qualified Reddit.Routes as Route
 
 import Control.Monad.IO.Class
