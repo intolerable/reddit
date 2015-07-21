@@ -3,10 +3,10 @@ version:             0.1.0.0
 synopsis:            Library for interfacing with Reddit's API
 license:             BSD2
 license-file:        LICENSE
-copyright:           (c) Fraser Murray 2013-2015
-maintainer:          fraser.m.murray@gmail.com
 author:              Fraser Murray
+maintainer:          fraser.m.murray@gmail.com
 homepage:            https://github.com/intolerable/reddit
+copyright:           (c) Fraser Murray 2013-2015
 category:            Network
 build-type:          Simple
 cabal-version:       >= 1.10
