@@ -1,10 +1,8 @@
 module Reddit.Actions.PostSpec where
 
 import Reddit
-import Reddit.Types.Listing
 import Reddit.Types.Post
-import Reddit.Types.Subreddit (SubredditID(..), SubredditName(..))
-import Reddit.Types.User
+import Reddit.Types.Subreddit (SubredditID(..))
 
 import Test.Hspec
 

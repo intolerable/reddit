@@ -1,7 +1,6 @@
 module Reddit.Actions.FlairSpec where
 
 import Reddit
-import Reddit.Types.Subreddit
 
 import Test.Hspec
 

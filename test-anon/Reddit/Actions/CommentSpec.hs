@@ -1,8 +1,6 @@
 module Reddit.Actions.CommentSpec where
 
 import Reddit
-import Reddit.Types.Comment
-import Reddit.Types.Listing
 
 import Test.Hspec
 

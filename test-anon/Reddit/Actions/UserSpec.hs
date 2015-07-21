@@ -2,9 +2,6 @@ module Reddit.Actions.UserSpec where
 
 import Reddit
 import Reddit.Types.Comment
-import Reddit.Types.Listing
-import Reddit.Types.Options
-import Reddit.Types.User
 
 import Control.Monad
 import Data.Time.Clock

@@ -3,8 +3,6 @@ module ConfigLoad where
 import Network.HTTP.Conduit
 import Reddit
 import Reddit.Login
-import Reddit.Types.Subreddit
-import Reddit.Types.User
 import System.Exit
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
