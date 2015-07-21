@@ -23,7 +23,7 @@ main = runRedditAnon $ do
     liftIO $ Text.putStrLn $
        "[" <> tshow (score post) <> "] " <>
        title post <> " (" <> tshow (subreddit post) <> ")"
-       
+
 tshow = Text.pack . show
 ```
 
@@ -38,7 +38,7 @@ import Data.Ord
 
 usersToCheck = ["nikita-volkov", "simonmar", "bos", "roche"]
 
-main = runRedditAnon $
+main = runRedditAnon $ do
     infos <- mapM (getUserInfo . Username) usersToCheck
     return $ maximumBy (comparing linkKarma) infos
 ```
