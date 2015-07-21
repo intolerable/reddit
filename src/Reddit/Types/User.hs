@@ -5,12 +5,12 @@ import Reddit.Types.Thing
 
 import Control.Applicative
 import Data.Aeson
-import Data.Monoid (mconcat, mempty)
+import Data.Monoid
 import Data.Text (Text)
 import Data.Time.Clock
 import Data.Time.Clock.POSIX
 import Network.API.Builder.Query
-import Prelude hiding (mconcat, mempty)
+import Prelude
 import qualified Data.Text as Text
 import qualified Data.Vector as Vector
 
