@@ -3,28 +3,28 @@ module Reddit.Actions.Post
   , getPosts'
   , getPostComments
   , getPostSubComments
-  , Reddit.Actions.Post.getComments
+  , getComments
   , getPostInfo
   , getPostsInfo
-  , Reddit.Actions.Post.submitLink
-  , Reddit.Actions.Post.submitLinkWithCaptcha
-  , Reddit.Actions.Post.submitSelfPost
-  , Reddit.Actions.Post.submitSelfPostWithCaptcha
+  , submitLink
+  , submitLinkWithCaptcha
+  , submitSelfPost
+  , submitSelfPostWithCaptcha
   , enableReplies
   , disableReplies
-  , Reddit.Actions.Post.savePost
-  , Reddit.Actions.Post.unsavePost
-  , Reddit.Actions.Post.editPost
+  , savePost
+  , unsavePost
+  , editPost
   , deletePost
   , setPostFlair
-  , Reddit.Actions.Post.removePost
+  , removePost
   , markPostSpam
-  , Reddit.Actions.Post.stickyPost
+  , stickyPost
   , unstickyPost
   , enableContestMode
   , disableContestMode ) where
 
-import Reddit.Routes as Route
+import qualified Reddit.Routes as Route
 import Reddit.Routes.Run
 import Reddit.Types
 import Reddit.Types.Captcha
