@@ -1,3 +1,9 @@
+-- | This module should be most of what you need to operate the library.
+--   It exports functionality for running built 'RedditT' actions, as well
+--   as re-exporting a few helpful types from around the library. Not every
+--   type is exported, however, due to clashing record fields. It's recommended
+--   to import modules from @Reddit.Types.*@ qualified so that you can use all
+--   the record fields without having to deal with ambiguous functions.
 module Reddit
   ( runReddit
   , runRedditAnon

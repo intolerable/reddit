@@ -1,3 +1,5 @@
+-- | Contains message-related actions, like retrieving your own inbox
+--   and sending other users private messages.
 module Reddit.Actions.Message
   ( getInbox
   , getInbox'
@@ -36,7 +38,11 @@ getInbox' m o = runRoute $ Route.inbox m o
 getUnread :: MonadIO m => RedditT m (Listing MessageKind Message)
 getUnread = runRoute $ Route.unread False def
 
-getUnread' :: MonadIO m => Bool -> Options MessageKind -> RedditT m (Listing MessageKind Message)
+-- | Get unread messages for the current user, with options.
+getUnread' :: MonadIO m
+           => Bool -- ^ Whether the orangered notifier should be marked "off"
+           -> Options MessageKind
+           -> RedditT m (Listing MessageKind Message)
 getUnread' m o = runRoute $ Route.unread m o
 
 -- | Mark a message as read.
@@ -44,9 +50,19 @@ markRead :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
 markRead = nothing . runRoute . Route.readMessage
 
 -- | Send a private message to another user.
-sendMessage :: MonadIO m => Username -> Text -> Text -> RedditT m ()
+sendMessage :: MonadIO m
+            => Username -- ^ The username to send the message to
+            -> Text -- ^ The subject of the message being sent
+            -> Text -- ^ The body of the message being sent
+            -> RedditT m ()
 sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b
 
 -- | Send a private message (with a captcha).
-sendMessageWithCaptcha :: MonadIO m => Username -> Text -> Text -> CaptchaID -> Text -> RedditT m ()
+sendMessageWithCaptcha :: MonadIO m
+                       => Username -- ^ The username to send the message to
+                       -> Text -- ^ The subject of the message being sent
+                       -> Text -- ^ The body of the message being sent
+                       -> CaptchaID -- ^ The identifier of the captcha being answered
+                       -> Text -- ^ The answer to the specified captcha
+                       -> RedditT m ()
 sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b `withCaptcha` (i, c)

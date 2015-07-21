@@ -1,3 +1,8 @@
+-- | Contains Captcha-related actions. Reddit sometimes requests Captchas in order
+--   to prevent spambots, and you can use this module to get more info on them.
+--   Unfortunately the library doesn't yet support answering Captchas on a widespread
+--   scale, and you have to use slightly modified variants of other functions to
+--   convince Reddit that you aren't a robot.
 module Reddit.Actions.Captcha
   ( needsCaptcha
   , newCaptcha ) where

@@ -1,3 +1,11 @@
+-- | Contains actions for voting on posts and comments. There are functions
+--   for upvoting ('upvotePost', 'upvoteComment'), downvoting ('downvotePost',
+--   'downVoteComment') as well as removing votes that have already been cast
+--   ('unvotePost', 'unvoteComment').
+--
+--   Please note that automated voting (i.e. by a bot, as opposed to being
+--   specifically ordered to by a person) is strictly against the Reddit rules,
+--   and is a very effective way of getting your bot shadowbanned.
 module Reddit.Actions.Voting
   ( upvotePost
   , downvotePost

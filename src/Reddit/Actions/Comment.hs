@@ -1,3 +1,5 @@
+-- | Contains comment-related actions, like editing comments
+--   and performing moderator actions on posts.
 module Reddit.Actions.Comment
   ( getNewComments
   , getNewComments'

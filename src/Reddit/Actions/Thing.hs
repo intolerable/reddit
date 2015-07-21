@@ -1,3 +1,5 @@
+-- | Contains actions which are applicable to both Posts and Comments,
+--   like replying, deleting and reporting.
 module Reddit.Actions.Thing
   ( Reddit.Actions.Thing.reply
   , Reddit.Actions.Thing.delete

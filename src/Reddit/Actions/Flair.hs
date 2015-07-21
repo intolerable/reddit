@@ -1,3 +1,4 @@
+-- | Contains actions for handling flair on a subreddit-wise basis.
 module Reddit.Actions.Flair
   ( getFlairList
   , getFlairList'
@@ -29,7 +30,14 @@ getFlairList = getFlairList' def
 getFlairList' :: MonadIO m => Options UserID -> SubredditName -> RedditT m FlairListing
 getFlairList' opts r = liftM flistToListing $ runRoute (flairList opts r)
 
-addLinkFlair :: MonadIO m => SubredditName -> Text -> Text -> Bool -> RedditT m ()
+-- | Add link flair to the subreddit-wide template for a subreddit that you moderate.
+--   Requires moderator privileges on the subreddit.
+addLinkFlair :: MonadIO m
+             => SubredditName -- ^ The subreddit whose template you want to modify
+             -> Text -- ^ The intended CSS class of the new link flair
+             -> Text -- ^ The intended text label of the new link flair
+             -> Bool -- ^ Whether the flair should be editable by users
+             -> RedditT m ()
 addLinkFlair r c l e =
   nothing $ runRoute $ addLinkFlairTemplate r c l e
 
