@@ -43,6 +43,7 @@ data Post = Post { postID :: PostID
                  , domain :: Text
                  , gilded :: Integer
                  , nsfw :: Bool
+                 , subreddit :: SubredditName
                  , subredditID :: SubredditID }
   deriving (Show, Read, Eq)
 
@@ -63,6 +64,7 @@ instance FromJSON Post where
          <*> d .: "domain"
          <*> d .: "gilded"
          <*> d .: "over_18"
+         <*> d .: "subreddit"
          <*> d .: "subreddit_id"
   parseJSON _ = mempty
 

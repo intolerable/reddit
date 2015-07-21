@@ -3,7 +3,7 @@ module Reddit.Actions.PostSpec where
 import Reddit.Actions.Post
 import Reddit.Types.Listing
 import Reddit.Types.Post
-import Reddit.Types.Subreddit (SubredditID(..))
+import Reddit.Types.Subreddit (SubredditID(..), SubredditName(..))
 import Reddit.Types.User
 
 import ConfigLoad
@@ -31,6 +31,7 @@ spec = describe "Reddit.Actions.Post" $ do
         author post `shouldBe` Username "PresidentObama"
         title post `shouldBe` "I am Barack Obama, President of the United States -- AMA"
         subredditID post `shouldBe` SubredditID "2qzb6"
+        subreddit post `shouldBe` R "IAMA"
         nsfw post `shouldBe` False
 
   it "should be able to get info for multiple posts" $ do
