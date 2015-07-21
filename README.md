@@ -27,7 +27,7 @@ main = runRedditAnon $ do
 tshow = Text.pack . show
 ```
 
-Let's check to see which of a group of has the highest link karma:
+Let's check to see which of a group of users has the highest link karma:
 
 ```haskell
 import Reddit
