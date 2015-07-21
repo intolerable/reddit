@@ -41,18 +41,20 @@ instance Thing UserID where
 instance ToQuery UserID where
   toQuery k v = [(k, fullName v)]
 
-data User = User { userID :: Text
-                 , userName :: Username
-                 , userCreated :: UTCTime
-                 , linkKarma :: Integer
-                 , commentKarma :: Integer
-                 , hasMail :: Maybe Bool
-                 , hasModMail :: Maybe Bool
-                 , isFriend :: Bool
-                 , userIsOver18 :: Maybe Bool
-                 , isMod :: Bool
-                 , hasGold :: Bool
-                 , hasVerifiedEmail :: Bool } deriving (Show, Eq)
+data User =
+  User { userID :: Text
+       , userName :: Username
+       , userCreated :: UTCTime
+       , linkKarma :: Integer
+       , commentKarma :: Integer
+       , hasMail :: Maybe Bool
+       , hasModMail :: Maybe Bool
+       , isFriend :: Bool
+       , userIsOver18 :: Maybe Bool
+       , isMod :: Bool
+       , hasGold :: Bool
+       , hasVerifiedEmail :: Maybe Bool }
+  deriving (Show, Eq)
 
 instance FromJSON User where
   parseJSON (Object o) = do
@@ -69,7 +71,7 @@ instance FromJSON User where
          <*> d .:? "over_18"
          <*> d .: "is_mod"
          <*> d .: "is_gold"
-         <*> d .: "has_verified_email"
+         <*> d .:? "has_verified_email"
   parseJSON _ = mempty
 
 newtype UserList = UserList [Relationship]

@@ -44,7 +44,7 @@ spec =
           userIsOver18 user `shouldBe` Just True
           isMod user `shouldBe` True
           hasGold user `shouldBe` False
-          hasVerifiedEmail user `shouldBe` True
+          hasVerifiedEmail user `shouldBe` Just True
 
     it "can parse another reddit user from json" $ do
       let decoded = eitherDecode getUserInfoExample :: Either String User
@@ -63,4 +63,4 @@ spec =
           userIsOver18 user `shouldBe` Nothing
           isMod user `shouldBe` False
           hasGold user `shouldBe` False
-          hasVerifiedEmail user `shouldBe` True
+          hasVerifiedEmail user `shouldBe` Just True
