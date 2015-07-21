@@ -26,7 +26,7 @@ import Reddit.Types.Reddit hiding (info, should)
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
 import Data.ByteString.Char8 (ByteString)
-import Data.Default
+import Data.Default.Class
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.API.Builder

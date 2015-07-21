@@ -25,7 +25,7 @@ import qualified Reddit.Routes.User as Route
 
 import Control.Monad
 import Control.Monad.IO.Class
-import Data.Default
+import Data.Default.Class
 import Data.Text (Text)
 import Network.API.Builder.Error
 import qualified Data.Text as Text

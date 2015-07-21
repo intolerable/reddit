@@ -8,7 +8,7 @@ description:
   Supports most user-facing Reddit API functions, as well as some
   moderator endpoints.
 
-  Check out the readme at https://github.com/intolerable/reddit.
+  Check out the readme at <https://github.com/intolerable/reddit>.
   Contributions are welcome.
 
 license:             BSD2
@@ -92,7 +92,7 @@ library
     aeson,
     api-builder >= 0.9,
     bytestring,
-    data-default,
+    data-default-class,
     http-conduit,
     http-types,
     network,

@@ -22,7 +22,7 @@ import Reddit.Types.Subreddit
 import qualified Reddit.Routes as Route
 
 import Control.Monad.IO.Class
-import Data.Default
+import Data.Default.Class
 import Data.Text (Text)
 import Network.API.Builder (APIError(..))
 

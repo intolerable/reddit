@@ -21,7 +21,7 @@ import Reddit.Types.User
 import qualified Reddit.Routes.Message as Route
 
 import Control.Monad.IO.Class
-import Data.Default
+import Data.Default.Class
 import Data.Text (Text)
 import Network.API.Builder.Query
 

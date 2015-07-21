@@ -17,7 +17,7 @@ import Reddit.Types.User
 import Control.Monad
 import Control.Monad.IO.Class
 import Data.Aeson
-import Data.Default
+import Data.Default.Class
 import Data.Text (Text)
 
 -- | Get the flair list for a subreddit. Requires moderator privileges on

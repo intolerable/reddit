@@ -1,6 +1,6 @@
 module Reddit.Types.Options where
 
-import Data.Default
+import Data.Default.Class
 
 data PaginationOption a = Before a
                         | After a
