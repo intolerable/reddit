@@ -1,18 +1,20 @@
 module Reddit
   ( runReddit
   , runRedditAnon
+  , runRedditWith
   , RedditOptions(..)
   , LoginMethod(..)
-  , runRedditWith
-  -- | Re-exports
+  -- * Re-exports
   , APIError(..)
   , module Reddit.Actions
+  , module Reddit.Types
   , module Reddit.Types.Error
-  , module Reddit.Types.Reddit) where
+  , module Reddit.Types.Reddit ) where
 
 import Reddit.Actions
 import Reddit.Login
 import Reddit.Types.Error
+import Reddit.Types
 import Reddit.Types.Reddit hiding (info, should)
 
 import Control.Concurrent.STM.TVar
