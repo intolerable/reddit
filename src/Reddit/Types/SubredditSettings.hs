@@ -1,5 +1,9 @@
 module Reddit.Types.SubredditSettings
-  ( SubredditSettings(..) ) where
+  ( SubredditSettings(..)
+  , ContentOptions(..)
+  , SpamFilterStrength(..)
+  , SubredditType(..)
+  , WikiEditMode(..) ) where
 
 import Reddit.Parser
 import Reddit.Utilities

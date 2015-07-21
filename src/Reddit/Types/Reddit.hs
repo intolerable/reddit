@@ -6,6 +6,7 @@ module Reddit.Types.Reddit
   , Modhash(..)
   , LoginDetails(..)
   , POSTWrapped(..)
+  , ShouldRateLimit
   , RateLimits(RateLimits, should, info)
   , RateLimitInfo(..)
   , headersToRateLimitInfo
