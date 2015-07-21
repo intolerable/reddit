@@ -18,7 +18,7 @@ newtype Username = Username Text
   deriving (Show, Read, Ord)
 
 instance Eq Username where
-  Username x == Username y = Text.toLower x == Text.toLower y
+  Username x == Username y = Text.toCaseFold x == Text.toCaseFold y
 
 instance FromJSON Username where
   parseJSON (String s) = return $ Username s
