@@ -2,7 +2,7 @@ module Reddit.Types.SubredditSpec where
 
 import Reddit.Types.Subreddit
 
-import Data.Aeson
+import Data.Aeson (eitherDecode)
 import Data.ByteString.Lazy (ByteString)
 import Test.Hspec
 

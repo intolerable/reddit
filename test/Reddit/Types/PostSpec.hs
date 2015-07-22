@@ -2,7 +2,7 @@ module Reddit.Types.PostSpec where
 
 import Reddit.Types.Post
 
-import Data.Aeson
+import Data.Aeson (eitherDecode)
 import Data.ByteString.Lazy (ByteString)
 import Test.Hspec
 
