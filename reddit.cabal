@@ -100,7 +100,7 @@ library
     text == 1.*,
     time == 1.5.*,
     transformers == 0.4.*,
-    unordered-containers == 2.5.*,
+    unordered-containers == 0.2.5.*,
     vector >= 0.10 && < 0.12
   ghc-options: -Wall
 
