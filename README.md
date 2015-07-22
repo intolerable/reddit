@@ -39,8 +39,8 @@ import Data.Ord
 usersToCheck = ["nikita-volkov", "simonmar", "bos", "roche"]
 
 main = runRedditAnon $ do
-    infos <- mapM (getUserInfo . Username) usersToCheck
-    return $ maximumBy (comparing linkKarma) infos
+  infos <- mapM (getUserInfo . Username) usersToCheck
+  return $ maximumBy (comparing linkKarma) infos
 ```
 
 Testing
