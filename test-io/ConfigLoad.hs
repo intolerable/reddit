@@ -1,6 +1,7 @@
 module ConfigLoad where
 
-import Network.HTTP.Conduit
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
 import Reddit
 import Reddit.Login
 import System.Exit
@@ -15,7 +16,7 @@ loadConfig = do
   file <- Text.readFile "test.cfg"
   case Text.lines file of
     [user, pass, sub] -> do
-      manager <- newManager conduitManagerSettings
+      manager <- newManager tlsManagerSettings
       res <- runRedditAnon $ login user pass
       case res of
         Left _ -> exitFailure
