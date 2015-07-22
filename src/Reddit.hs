@@ -54,6 +54,7 @@ data RedditOptions =
 instance Default RedditOptions where
   def = RedditOptions True Nothing Anonymous Nothing
 
+-- | The default set of options
 defaultRedditOptions :: RedditOptions
 defaultRedditOptions = def
 
