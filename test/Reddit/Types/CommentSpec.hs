@@ -9,7 +9,7 @@ import Control.Monad
 import Data.ByteString.Lazy (ByteString)
 import Data.Maybe
 import Data.Time.Clock
-import Network.API.Builder
+import Data.Aeson
 import Test.Hspec
 import qualified Data.ByteString.Lazy.Char8 as ByteString
 import qualified Data.Text as Text

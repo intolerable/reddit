@@ -4,6 +4,7 @@ import Reddit.Types.Comment
 import Reddit.Types.Listing
 
 import Control.Monad
+import Data.Aeson (eitherDecode)
 import Network.API.Builder
 import Test.Hspec
 import Test.Hspec.QuickCheck

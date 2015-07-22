@@ -2,7 +2,7 @@ module Reddit.Types.UserSpec where
 
 import Reddit.Types.User
 
-import Network.API.Builder
+import Data.Aeson (eitherDecode)
 import Test.Hspec
 import qualified Data.ByteString.Lazy.Char8 as ByteString
 

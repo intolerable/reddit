@@ -2,8 +2,8 @@ module Reddit.Types.SubredditSpec where
 
 import Reddit.Types.Subreddit
 
+import Data.Aeson
 import Data.ByteString.Lazy (ByteString)
-import Network.API.Builder
 import Test.Hspec
 
 isLeft :: Either a b -> Bool
