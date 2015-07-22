@@ -9,6 +9,7 @@ module Reddit
   , runRedditAnon
   , runRedditWith
   , RedditOptions(..)
+  , defaultRedditOptions
   , LoginMethod(..)
   -- * Re-exports
   , APIError(..)
@@ -52,6 +53,9 @@ data RedditOptions =
 
 instance Default RedditOptions where
   def = RedditOptions True Nothing Anonymous Nothing
+
+defaultRedditOptions :: RedditOptions
+defaultRedditOptions = def
 
 -- | Should we log in to Reddit? If so, should we use a stored set of credentials
 --   or get a new fresh set?
