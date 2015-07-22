@@ -11,7 +11,7 @@ import Control.Monad.Trans.Except
 import Control.Monad.Trans.State
 import Data.Text (Text)
 import Network.API.Builder
-import Network.HTTP.Conduit
+import Network.HTTP.Client
 
 loginRoute :: Text -> Text -> Route
 loginRoute user pass = Route [ "api", "login" ]

@@ -31,7 +31,8 @@ import Data.Default.Class
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.API.Builder
-import Network.HTTP.Conduit
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
 
 -- | Options for how we should run the 'Reddit' action.
 --
@@ -91,7 +92,7 @@ runRedditWith (RedditOptions rl man lm ua) (RedditT reddit) = do
   rli <- liftIO $ newTVarIO $ RateLimits rl Nothing
   manager <- case man of
     Just m -> return m
-    Nothing -> liftIO $ newManager conduitManagerSettings
+    Nothing -> liftIO $ newManager tlsManagerSettings
   (res, _, _) <- runAPI builder manager rli $ do
     customizeRequest $ addHeader ua
     case lm of

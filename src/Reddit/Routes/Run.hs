@@ -14,7 +14,7 @@ import Data.Aeson (FromJSON(..))
 import Data.ByteString.Lazy (ByteString)
 import Data.Time.Clock
 import Network.API.Builder.Routes (Route)
-import Network.HTTP.Conduit
+import Network.HTTP.Client
 import Network.HTTP.Types
 import qualified Network.API.Builder as API
 

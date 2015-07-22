@@ -30,7 +30,7 @@ import Data.Monoid
 import Data.Text (Text)
 import Data.Time.Clock
 import Network.API.Builder
-import Network.HTTP.Conduit hiding (path)
+import Network.HTTP.Client hiding (path)
 import Network.HTTP.Types
 import Prelude
 import Text.Read (readMaybe)
