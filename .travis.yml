@@ -10,3 +10,6 @@ notifications:
 
 script:
   - cabal configure --enable-tests && cabal build && cabal test test
+
+install:
+  - cabal install --only-dependencies --enable-tests --reorder-goals --max-backjumps=-1
