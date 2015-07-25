@@ -26,8 +26,8 @@ import Reddit.Types.Error
 import Reddit.Types
 import Reddit.Types.Reddit hiding (info, should)
 
-import Control.Applicative
 import Control.Concurrent.STM.TVar
+import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
 import Data.ByteString.Char8 (ByteString)
@@ -38,7 +38,6 @@ import Network.API.Builder as API
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
 import Network.HTTP.Types
-import Prelude
 
 -- | Options for how we should run the 'Reddit' action.
 --
@@ -94,7 +93,7 @@ runRedditAnon = runRedditWith def
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
 --   use a custom user agent string.
 runRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError) a)
-runRedditWith opts reddit = dropResume <$> runResumeRedditWith opts reddit
+runRedditWith opts reddit = liftM dropResume $ runResumeRedditWith opts reddit
 
 -- | Run a 'Reddit' or 'RedditT' action with custom settings. You probably won't need this function for
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
@@ -108,7 +107,7 @@ runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
   loginCreds <- case lm of
     Anonymous -> return $ Right Nothing -- nothing to do!
     StoredDetails _ -> return $ Right Nothing -- set up headers
-    Credentials user pass -> fmap (fmap Just) $ interpretIO (RedditState loginBaseURL rli manager [] Nothing) $ login user pass
+    Credentials user pass -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rli manager [] Nothing) $ login user pass
   case loginCreds of
     Left (err, _) -> return $ Left (err, Nothing)
     Right lds ->
