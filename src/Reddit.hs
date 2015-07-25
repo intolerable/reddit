@@ -26,6 +26,7 @@ import Reddit.Types.Error
 import Reddit.Types
 import Reddit.Types.Reddit hiding (info, should)
 
+import Control.Applicative
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
@@ -37,6 +38,7 @@ import Network.API.Builder as API
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
 import Network.HTTP.Types
+import Prelude
 
 -- | Options for how we should run the 'Reddit' action.
 --
