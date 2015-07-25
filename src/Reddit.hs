@@ -29,7 +29,6 @@ import Reddit.Types.Reddit hiding (info, should)
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
-import Data.Bifunctor
 import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class
 import Data.Text (Text)
@@ -93,7 +92,7 @@ runRedditAnon = runRedditWith def
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
 --   use a custom user agent string.
 runRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError) a)
-runRedditWith opts reddit = first fst <$> runResumeRedditWith opts reddit
+runRedditWith opts reddit = dropResume <$> runResumeRedditWith opts reddit
 
 -- | Run a 'Reddit' or 'RedditT' action with custom settings. You probably won't need this function for
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
@@ -126,7 +125,7 @@ interpretIO rstate (RedditT r) =
         Right res -> interpretIO rstate $ RedditT $ n res
     Free (FailWith x) -> return $ Left (x, Nothing)
     Free (Nest x n) ->
-      interpretIO rstate $ RedditT $ wrap $ NestResuming x (n . first fst)
+      interpretIO rstate $ RedditT $ wrap $ NestResuming x (n . dropResume)
     Free (NestResuming x n) -> do
       res <- interpretIO rstate x
       interpretIO rstate $ RedditT $ n res
@@ -136,6 +135,10 @@ interpretIO rstate (RedditT r) =
       handleReceive route rstate >>= \case
         Left err -> return $ Left (err, Just $ RedditT $ wrap $ ReceiveRoute route n)
         Right x -> interpretIO rstate $ RedditT $ n x
+
+dropResume :: Either (APIError RedditError, Maybe (RedditT m a)) a -> Either (APIError RedditError) a
+dropResume (Left (x, _)) = Left x
+dropResume (Right x) = Right x
 
 handleReceive :: (MonadIO m, Receivable a) => Route -> RedditState -> m (Either (APIError RedditError) a)
 handleReceive r rstate = do
