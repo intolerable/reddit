@@ -8,6 +8,7 @@ module Reddit
   ( runReddit
   , runRedditAnon
   , runRedditWith
+  , runResumeRedditWith
   , interpretIO
   , RedditOptions(..)
   , defaultRedditOptions
@@ -92,7 +93,13 @@ runRedditAnon = runRedditWith def
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
 --   use a custom user agent string.
 runRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError) a)
-runRedditWith (RedditOptions rl man lm _ua) reddit = do
+runRedditWith opts reddit = first fst <$> runResumeRedditWith opts reddit
+
+-- | Run a 'Reddit' or 'RedditT' action with custom settings. You probably won't need this function for
+--   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
+--   use a custom user agent string.
+runResumeRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
+runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
   manager <- case man of
     Just m -> return m
     Nothing -> liftIO $ newManager tlsManagerSettings
@@ -102,9 +109,9 @@ runRedditWith (RedditOptions rl man lm _ua) reddit = do
     StoredDetails _ -> return $ Right Nothing -- set up headers
     Credentials user pass -> fmap (fmap Just) $ interpretIO (RedditState loginBaseURL rli manager [] Nothing) $ login user pass
   case loginCreds of
-    Left (err, _) -> return $ Left err
+    Left (err, _) -> return $ Left (err, Nothing)
     Right lds ->
-      fmap (first fst) $ interpretIO
+      interpretIO
         (RedditState mainBaseURL rli manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
 
 interpretIO :: MonadIO m => RedditState -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
@@ -127,7 +134,7 @@ interpretIO rstate (RedditT r) =
       interpretIO rstate $ RedditT $ wrap $ ReceiveRoute route (n . unwrapJSON)
     Free (ReceiveRoute route n) ->
       handleReceive route rstate >>= \case
-        Left err -> return $ Left (err, Nothing)
+        Left err -> return $ Left (err, Just $ RedditT $ wrap $ ReceiveRoute route n)
         Right x -> interpretIO rstate $ RedditT $ n x
 
 handleReceive :: (MonadIO m, Receivable a) => Route -> RedditState -> m (Either (APIError RedditError) a)
