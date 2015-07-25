@@ -26,7 +26,6 @@ module Reddit.Actions.Post
   , setContestMode ) where
 
 import qualified Reddit.Routes as Route
-import Reddit.Routes.Run
 import Reddit.Types
 import Reddit.Types.Captcha
 import Reddit.Types.Comment

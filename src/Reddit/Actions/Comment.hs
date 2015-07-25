@@ -10,7 +10,6 @@ module Reddit.Actions.Comment
   , deleteComment
   , removeComment ) where
 
-import Reddit.Routes.Run
 import Reddit.Types.Comment
 import Reddit.Types.Empty
 import Reddit.Types.Error

@@ -5,7 +5,6 @@ module Reddit.Actions.Thing
   , Reddit.Actions.Thing.delete
   , Reddit.Actions.Thing.report ) where
 
-import Reddit.Routes.Run
 import Reddit.Types
 import Reddit.Types.Empty
 import Reddit.Types.Reddit

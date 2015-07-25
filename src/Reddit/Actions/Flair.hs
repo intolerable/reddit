@@ -6,7 +6,6 @@ module Reddit.Actions.Flair
   , flairCSV ) where
 
 import Reddit.Routes.Flair
-import Reddit.Routes.Run
 import Reddit.Types.Empty
 import Reddit.Types.Flair
 import Reddit.Types.Options

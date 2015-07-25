@@ -1,6 +1,5 @@
 module Reddit.Actions.Search where
 
-import Reddit.Routes.Run
 import Reddit.Routes.Search
 import Reddit.Types.Options
 import Reddit.Types.Post

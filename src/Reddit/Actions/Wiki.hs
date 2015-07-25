@@ -3,7 +3,6 @@ module Reddit.Actions.Wiki
   ( getWikiPage
   , editWikiPage ) where
 
-import Reddit.Routes.Run
 import Reddit.Types.Empty
 import Reddit.Types.Reddit
 import Reddit.Types.Subreddit

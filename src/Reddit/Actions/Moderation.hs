@@ -1,7 +1,6 @@
 module Reddit.Actions.Moderation where
 
 import Reddit.Routes.Moderation
-import Reddit.Routes.Run
 import Reddit.Types.Error
 import Reddit.Types.Listing
 import Reddit.Types.Moderation

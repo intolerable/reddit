@@ -73,7 +73,6 @@ library
     Reddit.Routes.Message
     Reddit.Routes.Moderation
     Reddit.Routes.Post
-    Reddit.Routes.Run
     Reddit.Routes.Search
     Reddit.Routes.Subreddit
     Reddit.Routes.Thing
@@ -83,7 +82,10 @@ library
     Reddit.Types.Empty
     Reddit.Utilities
   default-extensions:
-    FlexibleInstances,
+    FlexibleInstances
+    GADTs
+    GeneralizedNewtypeDeriving
+    LambdaCase
     OverloadedStrings
   default-language: Haskell2010
   hs-source-dirs: src/
@@ -93,6 +95,7 @@ library
     api-builder == 0.10.*,
     bytestring == 0.10.*,
     data-default-class == 0.0.1,
+    free,
     http-client,
     http-client-tls,
     http-types == 0.8.*,

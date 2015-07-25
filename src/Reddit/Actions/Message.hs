@@ -9,7 +9,6 @@ module Reddit.Actions.Message
   , sendMessage
   , sendMessageWithCaptcha ) where
 
-import Reddit.Routes.Run
 import Reddit.Types.Captcha
 import Reddit.Types.Empty
 import Reddit.Types.Listing

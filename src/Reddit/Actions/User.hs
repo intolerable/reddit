@@ -11,7 +11,6 @@ module Reddit.Actions.User
   , lookupUserFlair
   , setUserFlair ) where
 
-import Reddit.Routes.Run
 import Reddit.Types.Comment
 import Reddit.Types.Empty
 import Reddit.Types.Flair hiding (user)

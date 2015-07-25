@@ -7,7 +7,6 @@ module Reddit.Actions.Captcha
   ( needsCaptcha
   , newCaptcha ) where
 
-import Reddit.Routes.Run
 import Reddit.Types.Captcha
 import Reddit.Types.Reddit
 import qualified Reddit.Routes.Captcha as Route

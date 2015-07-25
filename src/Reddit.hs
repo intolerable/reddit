@@ -8,6 +8,7 @@ module Reddit
   ( runReddit
   , runRedditAnon
   , runRedditWith
+  , interpretIO
   , RedditOptions(..)
   , defaultRedditOptions
   , LoginMethod(..)
@@ -26,13 +27,16 @@ import Reddit.Types.Reddit hiding (info, should)
 
 import Control.Concurrent.STM.TVar
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Free
+import Data.Bifunctor
 import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
-import Network.API.Builder
+import Network.API.Builder as API
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
+import Network.HTTP.Types
 
 -- | Options for how we should run the 'Reddit' action.
 --
@@ -88,23 +92,63 @@ runRedditAnon = runRedditWith def
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
 --   use a custom user agent string.
 runRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError) a)
-runRedditWith (RedditOptions rl man lm ua) (RedditT reddit) = do
-  rli <- liftIO $ newTVarIO $ RateLimits rl Nothing
+runRedditWith (RedditOptions rl man lm _ua) reddit = do
   manager <- case man of
     Just m -> return m
     Nothing -> liftIO $ newManager tlsManagerSettings
-  (res, _, _) <- runAPI builder manager rli $ do
-    customizeRequest $ addHeader ua
-    case lm of
-      StoredDetails (LoginDetails (Modhash mh) cj) ->
-        customizeRequest $ \r ->
-          addHeader ua r { cookieJar = Just cj
-                         , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
-      Credentials user pass -> do
-        LoginDetails (Modhash mh) cj <- unRedditT $ login user pass
-        customizeRequest $ \r ->
-          addHeader ua r { cookieJar = Just cj
-                         , requestHeaders = ("X-Modhash", encodeUtf8 mh):requestHeaders r }
-      Anonymous -> return ()
-    reddit
+  rli <- liftIO $ newTVarIO $ RateLimits rl Nothing
+  loginCreds <- case lm of
+    Anonymous -> return $ Right Nothing -- nothing to do!
+    StoredDetails _ -> return $ Right Nothing -- set up headers
+    Credentials user pass -> fmap (fmap Just) $ interpretIO (RedditState loginBaseURL rli manager [] Nothing) $ login user pass
+  case loginCreds of
+    Left (err, _) -> return $ Left err
+    Right lds ->
+      fmap (first fst) $ interpretIO
+        (RedditState mainBaseURL rli manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
+
+interpretIO :: MonadIO m => RedditState -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
+interpretIO rstate (RedditT r) =
+  runFreeT r >>= \case
+    Pure x -> return $ Right x
+    Free (WithBaseURL u x n) ->
+      interpretIO (rstate { currentBaseURL = u }) x >>= \case
+        Left (err, Just resume) ->
+          return $ Left (err, Just $ resume >>= RedditT . n)
+        Left (err, Nothing) -> return $ Left (err, Nothing)
+        Right res -> interpretIO rstate $ RedditT $ n res
+    Free (FailWith x) -> return $ Left (x, Nothing)
+    Free (Nest x n) ->
+      interpretIO rstate $ RedditT $ wrap $ NestResuming x (n . first fst)
+    Free (NestResuming x n) -> do
+      res <- interpretIO rstate x
+      interpretIO rstate $ RedditT $ n res
+    Free (RunRoute route n) ->
+      interpretIO rstate $ RedditT $ wrap $ ReceiveRoute route (n . unwrapJSON)
+    Free (ReceiveRoute route n) ->
+      handleReceive route rstate >>= \case
+        Left err -> return $ Left (err, Nothing)
+        Right x -> interpretIO rstate $ RedditT $ n x
+
+handleReceive :: (MonadIO m, Receivable a) => Route -> RedditState -> m (Either (APIError RedditError) a)
+handleReceive r rstate = do
+  (res, _, _) <- runAPI (builderFromState rstate) (connMgr rstate) () $
+    API.runRoute r
   return res
+
+builderFromState :: RedditState -> Builder
+builderFromState (RedditState burl _ _ x (Just (LoginDetails (Modhash mh) cj))) =
+  Builder "Reddit" burl addAPIType $
+    \req -> addHeaders (("X-Modhash", encodeUtf8 mh):x) req { cookieJar = Just cj }
+builderFromState (RedditState burl _ _ x Nothing) =
+  Builder "Reddit" burl addAPIType (addHeaders x)
+
+addHeaders :: [Header] -> Request -> Request
+addHeaders xs req = req { requestHeaders = requestHeaders req ++ xs }
+
+data RedditState =
+  RedditState { currentBaseURL :: Text
+              , _ratelimits :: TVar RateLimits
+              , connMgr :: Manager
+              , _extraHeaders :: [Header]
+              , _creds :: Maybe LoginDetails }

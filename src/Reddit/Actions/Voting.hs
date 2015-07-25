@@ -14,10 +14,10 @@ module Reddit.Actions.Voting
   , downvoteComment
   , unvoteComment ) where
 
-import Reddit.Routes.Run
 import Reddit.Routes.Vote (VoteDirection(..))
 import Reddit.Types
 import Reddit.Types.Empty
+import Reddit.Types.Reddit
 import qualified Reddit.Routes as Route
 
 import Control.Monad.IO.Class
