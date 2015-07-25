@@ -105,8 +105,8 @@ runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
     Nothing -> liftIO $ newManager tlsManagerSettings
   rli <- liftIO $ newTVarIO $ RateLimits rl Nothing
   loginCreds <- case lm of
-    Anonymous -> return $ Right Nothing -- nothing to do!
-    StoredDetails _ -> return $ Right Nothing -- set up headers
+    Anonymous -> return $ Right Nothing
+    StoredDetails ld -> return $ Right $ Just ld
     Credentials user pass -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rli manager [] Nothing) $ login user pass
   case loginCreds of
     Left (err, _) -> return $ Left (err, Nothing)
