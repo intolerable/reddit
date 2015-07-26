@@ -109,7 +109,7 @@ runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
     StoredDetails ld -> return $ Right $ Just ld
     Credentials user pass -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rli manager [] Nothing) $ login user pass
   case loginCreds of
-    Left (err, _) -> return $ Left (err, Nothing)
+    Left (err, _) -> return $ Left (err, Just reddit)
     Right lds ->
       interpretIO
         (RedditState mainBaseURL rli manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
