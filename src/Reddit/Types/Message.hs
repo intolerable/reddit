@@ -57,7 +57,7 @@ isCommentReply m =
     _ -> False
 
 data MessageID = MessageID Text
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord)
 
 instance FromJSON MessageID where
   parseJSON (String s) =
@@ -75,7 +75,7 @@ messagePrefix = "t4"
 
 data MessageKind = CommentMessage CommentID
                  | PrivateMessage MessageID
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord)
 
 instance FromJSON MessageKind where
   parseJSON s =
