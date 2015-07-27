@@ -7,7 +7,8 @@ module Reddit.Actions.Message
   , getUnread'
   , markRead
   , sendMessage
-  , sendMessageWithCaptcha ) where
+  , sendMessageWithCaptcha
+  , replyMessage ) where
 
 import Reddit.Types.Captcha
 import Reddit.Types.Empty
@@ -18,6 +19,7 @@ import Reddit.Types.Reddit
 import Reddit.Types.Thing
 import Reddit.Types.User
 import qualified Reddit.Routes.Message as Route
+import qualified Reddit.Routes.Thing as Route
 
 import Control.Monad.IO.Class
 import Data.Default.Class
@@ -65,3 +67,12 @@ sendMessageWithCaptcha :: MonadIO m
                        -> Text -- ^ The answer to the specified captcha
                        -> RedditT m ()
 sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b `withCaptcha` (i, c)
+
+-- | Reply to a message
+replyMessage :: (MonadIO m, Thing a)
+             => a -- ^ Thing to reply to
+             -> Text -- ^ Response contents
+             -> RedditT m MessageID
+replyMessage t b = do
+  POSTWrapped res <- runRoute $ Route.reply t b
+  return res

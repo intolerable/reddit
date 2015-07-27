@@ -3,6 +3,7 @@ module Reddit.Types.Message where
 import Reddit.Parser
 import Reddit.Types.Comment
 import Reddit.Types.Listing
+import Reddit.Types.Reddit
 import Reddit.Types.Thing
 import Reddit.Types.User
 import Reddit.Utilities
@@ -14,6 +15,7 @@ import Data.Monoid
 import Data.Text (Text)
 import Network.API.Builder.Query
 import Prelude
+import qualified Data.Vector as Vector
 
 data Message = Message { messageID :: MessageKind
                        , new :: Bool
@@ -69,6 +71,14 @@ instance Thing MessageID where
 
 instance ToQuery MessageID where
   toQuery k m = toQuery k (fullName m)
+
+instance FromJSON (POSTWrapped MessageID) where
+  parseJSON (Object o) = do
+    ms <- (o .: "json") >>= (.: "data") >>= (.: "things")
+    case Vector.toList ms of
+      [v] -> POSTWrapped <$> (v .: "data" >>= (.: "id"))
+      _ -> mempty
+  parseJSON _ = mempty
 
 messagePrefix :: Text
 messagePrefix = "t4"
