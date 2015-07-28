@@ -2,6 +2,7 @@ module Reddit.Routes.User where
 
 import Reddit.Types.Comment (CommentID)
 import Reddit.Types.Options
+import Reddit.Types.Post
 import Reddit.Types.Subreddit
 import Reddit.Types.User
 
@@ -25,6 +26,15 @@ userComments opts (Username user) =
         , "before" =. before opts
         , "after" =. after opts ]
         "GET"
+
+userPosts :: Options PostID -> Username -> Route
+userPosts opts (Username user) = 
+  Route [ "user", user, "submitted" ]
+        [ "limit" =. limit opts 
+        , "before" =. before opts
+        , "after" =. after opts ]
+        "GET"
+
 
 usernameAvailable :: Username -> Route
 usernameAvailable user = Route [ "api", "username_available.json" ]

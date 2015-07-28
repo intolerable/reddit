@@ -5,6 +5,8 @@ module Reddit.Actions.User
   , aboutMe
   , getUserComments
   , getUserComments'
+  , getUserPosts
+  , getUserPosts'
   , isUsernameAvailable
   , getBlockedUsers
   , getFriends
@@ -17,6 +19,7 @@ import Reddit.Types.Flair hiding (user)
 import Reddit.Types.Error
 import Reddit.Types.Listing
 import Reddit.Types.Options
+import Reddit.Types.Post
 import Reddit.Types.Reddit
 import Reddit.Types.Subreddit
 import Reddit.Types.User
@@ -40,6 +43,14 @@ getUserComments = getUserComments' def
 -- | Get the listing of comments authored by the specified user, with Options.
 getUserComments' :: MonadIO m => Options CommentID -> Username -> RedditT m CommentListing
 getUserComments' opts user = runRoute $ Route.userComments opts user
+
+-- | Get the listing of posts authored by the specified user.
+getUserPosts :: MonadIO m => Username -> RedditT m PostListing
+getUserPosts = getUserPosts' def
+
+-- | Get the listing of posts authored by the specified user, with Options.
+getUserPosts' :: MonadIO m => Options PostID -> Username -> RedditT m PostListing
+getUserPosts' opts user = runRoute $ Route.userPosts opts user
 
 -- | Check whether the specified username is still available or has been taken.
 isUsernameAvailable :: MonadIO m => Username -> RedditT m Bool
