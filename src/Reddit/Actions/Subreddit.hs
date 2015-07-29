@@ -11,17 +11,15 @@ import Reddit.Types.Subreddit
 import Reddit.Types.SubredditSettings
 import qualified Reddit.Routes as Route
 
-import Control.Monad.IO.Class
-
 -- | Get the info for a specific subreddit. This info includes things like
 --   sidebar contents, description and ID.
-getSubredditInfo :: MonadIO m => SubredditName -> RedditT m Subreddit
+getSubredditInfo :: Monad m => SubredditName -> RedditT m Subreddit
 getSubredditInfo = runRoute . Route.aboutSubreddit
 
 -- | Get the settings for a subreddit that you moderate.
-getSubredditSettings :: MonadIO m => SubredditName -> RedditT m SubredditSettings
+getSubredditSettings :: Monad m => SubredditName -> RedditT m SubredditSettings
 getSubredditSettings = runRoute . Route.subredditSettings
 
 -- | Modify the settings for a subreddit that you moderate.
-setSubredditSettings :: MonadIO m => SubredditID -> SubredditSettings -> RedditT m ()
+setSubredditSettings :: Monad m => SubredditID -> SubredditSettings -> RedditT m ()
 setSubredditSettings r s = nothing $ runRoute (Route.setSubredditSettings r s)

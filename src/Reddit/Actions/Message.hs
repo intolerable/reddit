@@ -21,37 +21,36 @@ import Reddit.Types.User
 import qualified Reddit.Routes.Message as Route
 import qualified Reddit.Routes.Thing as Route
 
-import Control.Monad.IO.Class
 import Data.Default.Class
 import Data.Text (Text)
 import Network.API.Builder.Query
 
 -- | Get the message inbox for the current user.
-getInbox :: MonadIO m => RedditT m (Listing MessageKind Message)
+getInbox :: Monad m => RedditT m (Listing MessageKind Message)
 getInbox = runRoute $ Route.inbox False def
 
 -- | Don't use this for watching for new messages, Reddit's ordering on
 -- |   inbox messages is odd and not likely to work how you expect.
-getInbox' :: MonadIO m => Bool -> Options MessageKind -> RedditT m (Listing MessageKind Message)
+getInbox' :: Monad m => Bool -> Options MessageKind -> RedditT m (Listing MessageKind Message)
 getInbox' m o = runRoute $ Route.inbox m o
 
 -- | Get any unread messages for the current user.
-getUnread :: MonadIO m => RedditT m (Listing MessageKind Message)
+getUnread :: Monad m => RedditT m (Listing MessageKind Message)
 getUnread = runRoute $ Route.unread False def
 
 -- | Get unread messages for the current user, with options.
-getUnread' :: MonadIO m
+getUnread' :: Monad m
            => Bool -- ^ Whether the orangered notifier should be marked "off"
            -> Options MessageKind
            -> RedditT m (Listing MessageKind Message)
 getUnread' m o = runRoute $ Route.unread m o
 
 -- | Mark a message as read.
-markRead :: (ToQuery a, Thing a, MonadIO m) => a -> RedditT m ()
+markRead :: (ToQuery a, Thing a, Monad m) => a -> RedditT m ()
 markRead = nothing . runRoute . Route.readMessage
 
 -- | Send a private message to another user.
-sendMessage :: MonadIO m
+sendMessage :: Monad m
             => Username -- ^ The username to send the message to
             -> Text -- ^ The subject of the message being sent
             -> Text -- ^ The body of the message being sent
@@ -59,7 +58,7 @@ sendMessage :: MonadIO m
 sendMessage u s b = nothing $ runRoute $ Route.sendMessage u s b
 
 -- | Send a private message (with a captcha).
-sendMessageWithCaptcha :: MonadIO m
+sendMessageWithCaptcha :: Monad m
                        => Username -- ^ The username to send the message to
                        -> Text -- ^ The subject of the message being sent
                        -> Text -- ^ The body of the message being sent
@@ -69,7 +68,7 @@ sendMessageWithCaptcha :: MonadIO m
 sendMessageWithCaptcha u s b i c = nothing $ runRoute $ Route.sendMessage u s b `withCaptcha` (i, c)
 
 -- | Reply to a message
-replyMessage :: (MonadIO m, Thing a)
+replyMessage :: (Monad m, Thing a)
              => a -- ^ Thing to reply to
              -> Text -- ^ Response contents
              -> RedditT m MessageID

@@ -9,14 +9,14 @@ import qualified Reddit.Types.SearchOptions as Search
 
 import Data.Text (Text)
 
-search :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Reddit PostListing
+search :: Monad m => Maybe SubredditName -> Options PostID -> Search.Order -> Text -> RedditT m PostListing
 search sub opts order query =
   runRoute $ searchRoute sub opts order "plain" query
 
-luceneSearch :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Reddit PostListing
+luceneSearch :: Monad m => Maybe SubredditName -> Options PostID -> Search.Order -> Text -> RedditT m PostListing
 luceneSearch sub opts order query =
   runRoute $ searchRoute sub opts order "lucene" query
 
-cloudSearch :: Maybe SubredditName -> Options PostID -> Search.Order -> Text -> Reddit PostListing
+cloudSearch :: Monad m => Maybe SubredditName -> Options PostID -> Search.Order -> Text -> RedditT m PostListing
 cloudSearch sub opts order query =
   runRoute $ searchRoute sub opts order "cloudsearch" query
