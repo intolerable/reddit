@@ -42,8 +42,14 @@ runRouteWithLimiting route = do
           runRouteWithLimiting route
         Left x -> RedditT $ ExceptT $ return $ Left x
         Right x -> do
-          updateRateLimitInfo $ responseHeaders x
-          decodeFromResponse x
+          case API.unwrapJSON <$> API.receive x of
+            Left (API.APIError (RateLimitError resetIn _)) -> do
+              updateFromZero resetIn
+              runRouteWithLimiting route
+            Left y -> RedditT $ ExceptT $ return $ Left y
+            Right y -> do
+              updateRateLimitInfo $ responseHeaders x
+              return y
 
 decodeFromResponse :: (Monad m, FromJSON a) => Response ByteString -> RedditT m a
 decodeFromResponse = RedditT . ExceptT . return . fmap API.unwrapJSON . API.receive
