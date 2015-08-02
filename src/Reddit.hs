@@ -27,7 +27,6 @@ import Reddit.Types
 import Reddit.Types.Reddit hiding (info, should)
 
 import Control.Concurrent
-import Control.Concurrent.STM.TVar
 import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
@@ -104,16 +103,15 @@ runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
   manager <- case man of
     Just m -> return m
     Nothing -> liftIO $ newManager tlsManagerSettings
-  rli <- liftIO $ newTVarIO $ RateLimits rl Nothing
   loginCreds <- case lm of
     Anonymous -> return $ Right Nothing
     StoredDetails ld -> return $ Right $ Just ld
-    Credentials user pass -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rl rli manager [] Nothing) $ login user pass
+    Credentials user pass -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rl manager [] Nothing) $ login user pass
   case loginCreds of
     Left (err, _) -> return $ Left (err, Just reddit)
     Right lds ->
       interpretIO
-        (RedditState mainBaseURL rl rli manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
+        (RedditState mainBaseURL rl manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
 
 interpretIO :: MonadIO m => RedditState -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
 interpretIO rstate (RedditT r) =
@@ -155,11 +153,11 @@ handleReceive r rstate = do
   return res
 
 builderFromState :: RedditState -> Builder
-builderFromState (RedditState burl _ _ _ x (Just (LoginDetails (Modhash mh) cj))) =
+builderFromState (RedditState burl _ _ hdrs (Just (LoginDetails (Modhash mh) cj))) =
   Builder "Reddit" burl addAPIType $
-    \req -> addHeaders (("X-Modhash", encodeUtf8 mh):x) req { cookieJar = Just cj }
-builderFromState (RedditState burl _ _ _ x Nothing) =
-  Builder "Reddit" burl addAPIType (addHeaders x)
+    \req -> addHeaders (("X-Modhash", encodeUtf8 mh):hdrs) req { cookieJar = Just cj }
+builderFromState (RedditState burl _ _ hdrs Nothing) =
+  Builder "Reddit" burl addAPIType (addHeaders hdrs)
 
 addHeaders :: [Header] -> Request -> Request
 addHeaders xs req = req { requestHeaders = requestHeaders req ++ xs }
@@ -167,7 +165,6 @@ addHeaders xs req = req { requestHeaders = requestHeaders req ++ xs }
 data RedditState =
   RedditState { currentBaseURL :: Text
               , rateLimit :: Bool
-              , _ratelimits :: TVar RateLimits
               , connMgr :: Manager
               , _extraHeaders :: [Header]
               , _creds :: Maybe LoginDetails }

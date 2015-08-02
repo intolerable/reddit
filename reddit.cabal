@@ -100,7 +100,6 @@ library
     http-client-tls,
     http-types == 0.8.*,
     network == 2.6.*,
-    stm == 2.4.*,
     text == 1.*,
     time == 1.5.*,
     transformers == 0.4.*,
