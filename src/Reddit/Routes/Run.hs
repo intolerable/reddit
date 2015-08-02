@@ -17,6 +17,7 @@ import Data.Time.Clock
 import Network.API.Builder.Routes (Route)
 import Network.HTTP.Conduit
 import Network.HTTP.Types
+import Prelude
 import qualified Network.API.Builder as API
 
 runRoute :: (MonadIO m, FromJSON a) => Route -> RedditT m a
