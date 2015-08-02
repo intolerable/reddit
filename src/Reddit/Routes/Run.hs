@@ -4,6 +4,7 @@ module Reddit.Routes.Run
 import Reddit.Types.Error
 import Reddit.Types.Reddit
 
+import Control.Applicative
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM
 import Control.Monad (liftM, when)
