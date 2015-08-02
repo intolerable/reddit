@@ -53,9 +53,6 @@ runRouteWithLimiting route = do
               updateRateLimitInfo $ responseHeaders x
               return y
 
-decodeFromResponse :: (Monad m, FromJSON a) => Response ByteString -> RedditT m a
-decodeFromResponse = RedditT . ExceptT . return . fmap API.unwrapJSON . API.receive
-
 updateRateLimitInfo :: MonadIO m => ResponseHeaders -> RedditT m ()
 updateRateLimitInfo hs = do
   time <- liftIO getCurrentTime
