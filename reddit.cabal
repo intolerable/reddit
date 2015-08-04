@@ -92,7 +92,7 @@ library
   build-depends:
     base >= 4.6 && < 4.9,
     aeson >= 0.9 && < 0.10,
-    api-builder == 0.10.*,
+    api-builder == 0.11.*,
     bytestring == 0.10.*,
     data-default-class == 0.0.1,
     free,
