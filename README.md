@@ -8,6 +8,7 @@ A Haskell library for interacting with the [Reddit API](http://reddit.com/api).
 Let's get all the posts from the frontpage of Reddit and write a summary of each of them to the console:
 
 ```haskell
+{-# LANGUAGE OverloadedStrings #-}
 import Reddit
 import Reddit.Types.Post
 
@@ -30,6 +31,7 @@ tshow = Text.pack . show
 Let's check to see which of a group of users has the highest link karma:
 
 ```haskell
+{-# LANGUAGE OverloadedStrings #-}
 import Reddit
 import Reddit.Types.User
 
