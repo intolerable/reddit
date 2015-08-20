@@ -40,26 +40,6 @@ import qualified Data.ByteString.Char8 as BS
 
 type Reddit a = RedditT IO a
 
---newtype RedditT m a = RedditT { unRedditT :: APIT (TVar RateLimits) RedditError m a }
-
---instance Functor m => Functor (RedditT m) where
---  fmap f (RedditT a) = RedditT (fmap f a)
-
---instance (Functor m, Monad m) => Applicative (RedditT m) where
---  pure a = RedditT (pure a)
---  (RedditT f) <*> (RedditT a) = RedditT (f <*> a)
-
---instance Monad m => Monad (RedditT m) where
---  return a = RedditT (return a)
---  (RedditT a) >>= f = RedditT (a >>= unRedditT . f)
---  fail = failWith . APIError . FailError . Text.pack
-
---instance MonadIO m => MonadIO (RedditT m) where
---  liftIO a = RedditT (liftIO a)
-
---instance MonadTrans RedditT where
---  lift = RedditT . lift . lift . lift . lift
-
 data RedditF m a where
   FailWith :: APIError RedditError -> RedditF m a
   Nest :: RedditT m b -> (Either (APIError RedditError) b -> a) -> RedditF m a
