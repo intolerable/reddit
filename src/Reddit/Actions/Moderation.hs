@@ -3,6 +3,7 @@ module Reddit.Actions.Moderation where
 import Reddit.Routes.Moderation
 import Reddit.Types.Error
 import Reddit.Types.Listing
+import Reddit.Types.Message
 import Reddit.Types.Moderation
 import Reddit.Types.Options
 import Reddit.Types.Reddit
@@ -27,3 +28,9 @@ lookupBan u r = do
         [b] -> return $ Just b
         [] -> return Nothing
         _-> failWith (APIError InvalidResponseError)
+
+getModmail :: Monad m => RedditT m (Listing MessageID Message)
+getModmail = runRoute $ modmail $ Options Nothing Nothing
+
+getModmail' :: Monad m => Options MessageID -> RedditT m (Listing MessageID Message)
+getModmail' = runRoute . modmail
