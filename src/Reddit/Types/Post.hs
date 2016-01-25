@@ -37,6 +37,7 @@ data Post = Post { postID :: PostID
                  , score :: Integer
                  , created :: UTCTime
                  , content :: PostContent
+                 , num_comments :: Integer
                  , liked :: Maybe Bool
                  , flairText :: Maybe Text
                  , flairClass :: Maybe Text
@@ -58,6 +59,7 @@ instance FromJSON Post where
          <*> d .: "score"
          <*> (posixSecondsToUTCTime . fromInteger <$> d .: "created_utc")
          <*> (buildContent <$> d .: "is_self" <*> d .:? "selftext" <*> d .:? "selftext_html" <*> d .: "url")
+         <*> d .: "num_comments"
          <*> d .:? "likes"
          <*> d .:? "link_flair_text"
          <*> d .:? "link_flair_css_class"
