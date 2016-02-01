@@ -37,7 +37,7 @@ data Post = Post { postID :: PostID
                  , score :: Integer
                  , created :: UTCTime
                  , content :: PostContent
-                 , num_comments :: Integer
+                 , commentCount :: Integer
                  , liked :: Maybe Bool
                  , flairText :: Maybe Text
                  , flairClass :: Maybe Text
