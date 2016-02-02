@@ -23,8 +23,8 @@ data SubredditSettings = SubredditSettings { sidebarText :: Text
                                            , hideScoreMins :: Integer
                                            , submitLinkLabel :: Maybe Text
                                            , submitTextLabel :: Maybe Text
-                                           , domainCSS :: Bool
-                                           , domainSidebar :: Bool
+                                           , domainCSS :: Maybe Bool
+                                           , domainSidebar :: Maybe Bool
                                            , showMedia :: Bool
                                            , over18 :: Bool
                                            , language :: Text
@@ -49,8 +49,8 @@ instance FromJSON SubredditSettings where
                       <*> d .: "comment_score_hide_mins"
                       <*> d .: "submit_link_label"
                       <*> d .: "submit_text_label"
-                      <*> d .: "domain_css"
-                      <*> d .: "domain_sidebar"
+                      <*> d .:? "domain_css"
+                      <*> d .:? "domain_sidebar"
                       <*> d .: "show_media"
                       <*> d .: "over_18"
                       <*> d .: "language"
