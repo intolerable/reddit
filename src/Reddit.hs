@@ -35,8 +35,22 @@ import Data.Default.Class
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Network.API.Builder as API
+
+#ifdef __GHCJS__
+
+import JavaScript.Web.XMLHttpRequest
+import qualified Data.Text.Encoding as TE
+import           Data.JSString.Text
+import qualified Data.JSString as JSS
+import Control.Arrow ((***))
+
+#else
+
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
+
+#endif
+
 import Network.HTTP.Types
 
 -- | Options for how we should run the 'Reddit' action.
@@ -111,7 +125,7 @@ runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
     Left (err, _) -> return $ Left (err, Just reddit)
     Right lds ->
       interpretIO
-        (RedditState mainBaseURL rl manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
+        (RedditState mainBaseURL rl manager defaultHeaders lds) reddit
 
 interpretIO :: MonadIO m => RedditState -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
 interpretIO rstate (RedditT r) =
@@ -152,6 +166,26 @@ handleReceive r rstate = do
     API.runRoute r
   return res
 
+#ifdef __GHCJS__
+
+builderFromState :: RedditState -> Builder
+builderFromState (RedditState burl _ _ hdrs (Just (LoginDetails (Modhash mh) _))) =
+  Builder "Reddit" burl addAPIType $
+    \req -> addHeaders (("X-Modhash", encodeUtf8 mh):hdrs) req
+builderFromState (RedditState burl _ _ hdrs Nothing) =
+  Builder "Reddit" burl addAPIType (addHeaders hdrs)
+
+addHeaders :: [Header] -> Request -> Request
+addHeaders xs req = req { reqHeaders = reqHeaders req ++ (map (JSS.pack . show *** byteStringToJS) xs) }
+
+byteStringToJS :: ByteString -> JSS.JSString
+byteStringToJS = textToJSString . TE.decodeUtf8
+
+defaultHeaders :: [Header]
+defaultHeaders = [] -- browser will not allow to set User-Agent
+
+#else
+
 builderFromState :: RedditState -> Builder
 builderFromState (RedditState burl _ _ hdrs (Just (LoginDetails (Modhash mh) cj))) =
   Builder "Reddit" burl addAPIType $
@@ -162,9 +196,15 @@ builderFromState (RedditState burl _ _ hdrs Nothing) =
 addHeaders :: [Header] -> Request -> Request
 addHeaders xs req = req { requestHeaders = requestHeaders req ++ xs }
 
+defaultHeaders :: [Header]
+defaultHeaders =
+  [("User-Agent", "reddit-haskell dev version")]
+#endif
+
 data RedditState =
   RedditState { currentBaseURL :: Text
               , rateLimit :: Bool
               , connMgr :: Manager
               , _extraHeaders :: [Header]
               , _creds :: Maybe LoginDetails }
+

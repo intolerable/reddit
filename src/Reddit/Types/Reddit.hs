@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Reddit.Types.Reddit
   ( Reddit
   , RedditT(..)
@@ -27,18 +28,42 @@ import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
 import Control.Monad.Trans.Class
 import Data.Aeson
-import Data.ByteString.Lazy (ByteString)
 import Data.Monoid
 import Data.Text (Text)
 import Data.Time.Clock
 import Network.API.Builder hiding (runRoute)
+
+#ifdef __GHCJS__
+
+import JavaScript.Web.XMLHttpRequest
+import Data.ByteString (ByteString)
+import qualified Data.Text.Encoding as TE
+import           Data.JSString.Text
+import qualified Data.JSString as JSS
+
+#else
+
 import Network.HTTP.Client hiding (path)
+import Data.ByteString.Lazy (ByteString)
+
+#endif
+
 import Network.HTTP.Types
 import Prelude
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Char8 as BS
 
 type Reddit a = RedditT IO a
+
+#ifdef __GHCJS__
+
+data CookieJar = CookieJar
+                 deriving (Show, Eq)
+
+responseCookieJar ::  Response a -> CookieJar
+responseCookieJar _ = CookieJar
+
+#endif
 
 data RedditF m a where
   FailWith :: APIError RedditError -> RedditF m a
@@ -129,11 +154,24 @@ builder = Builder "Reddit"
                   addAPIType
                   (addHeader Nothing)
 
+#ifdef __GHCJS__
+
+addHeader :: Maybe BS.ByteString -> Request -> Request
+addHeader Nothing req = req
+addHeader (Just hdr) req = req
+
+byteStringToJS :: ByteString -> JSS.JSString
+byteStringToJS = textToJSString . TE.decodeUtf8
+
+#else
+
 addHeader :: Maybe BS.ByteString -> Request -> Request
 addHeader Nothing req = req { requestHeaders =
   ("User-Agent", "reddit-haskell 0.1.0.0 / intolerable") : requestHeaders req }
 addHeader (Just hdr) req = req { requestHeaders =
   ("User-Agent", hdr) : requestHeaders req }
+
+#endif
 
 addAPIType :: Route -> Route
 addAPIType (Route fs ps m) = Route fs ("api_type" =. ("json" :: Text) : ps) m
