@@ -32,12 +32,23 @@ import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
 import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class
+import Data.Maybe (fromMaybe)
+import Data.Monoid
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
+import Data.Version
 import Network.API.Builder as API
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
 import Network.HTTP.Types
+import qualified Data.ByteString.Char8 as BS
+
+import qualified Paths_reddit
+
+versionString :: ByteString
+versionString =
+  case Paths_reddit.version of
+    Version xs _ -> BS.intercalate "." $ map (BS.pack . show) xs
 
 -- | Options for how we should run the 'Reddit' action.
 --
@@ -99,7 +110,7 @@ runRedditWith opts reddit = liftM dropResume $ runResumeRedditWith opts reddit
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
 --   use a custom user agent string.
 runResumeRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
-runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
+runResumeRedditWith (RedditOptions rl man lm ua) reddit = do
   manager <- case man of
     Just m -> return m
     Nothing -> liftIO $ newManager tlsManagerSettings
@@ -111,7 +122,7 @@ runResumeRedditWith (RedditOptions rl man lm _ua) reddit = do
     Left (err, _) -> return $ Left (err, Just reddit)
     Right lds ->
       interpretIO
-        (RedditState mainBaseURL rl manager [("User-Agent", "reddit-haskell dev version")] lds) reddit
+        (RedditState mainBaseURL rl manager [("User-Agent", fromMaybe ("reddit-haskell " <> versionString) ua)] lds) reddit
 
 interpretIO :: MonadIO m => RedditState -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
 interpretIO rstate (RedditT r) =

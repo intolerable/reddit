@@ -14,10 +14,8 @@ module Reddit.Types.Reddit
   , RateLimits(RateLimits, should, info)
   , RateLimitInfo(..)
   , headersToRateLimitInfo
-  , builder
   , mainBaseURL
   , loginBaseURL
-  , addHeader
   , addAPIType ) where
 
 import Reddit.Types.Error
@@ -122,18 +120,6 @@ headersToRateLimitInfo hs now =
         rlResetTime' = fmap (\s -> addUTCTime (fromIntegral s) now) rlResetTime
         extract s = lookup s hs >>= readMaybe . BS.unpack
         trimap f (a, b, c) = (f a, f b, f c)
-
-builder :: Builder
-builder = Builder "Reddit"
-                  mainBaseURL
-                  addAPIType
-                  (addHeader Nothing)
-
-addHeader :: Maybe BS.ByteString -> Request -> Request
-addHeader Nothing req = req { requestHeaders =
-  ("User-Agent", "reddit-haskell 0.1.0.0 / intolerable") : requestHeaders req }
-addHeader (Just hdr) req = req { requestHeaders =
-  ("User-Agent", hdr) : requestHeaders req }
 
 addAPIType :: Route -> Route
 addAPIType (Route fs ps m) = Route fs ("api_type" =. ("json" :: Text) : ps) m

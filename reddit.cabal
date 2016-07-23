@@ -65,6 +65,7 @@ library
     Reddit.Types.User
     Reddit.Types.Wiki
   other-modules:
+    Paths_reddit
     Reddit.Parser
     Reddit.Routes
     Reddit.Routes.Captcha
