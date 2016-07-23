@@ -32,7 +32,7 @@ import Control.Monad.IO.Class
 import Control.Monad.Trans.Free
 import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, isNothing)
 import Data.Monoid
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
@@ -111,6 +111,7 @@ runRedditWith opts reddit = liftM dropResume $ runResumeRedditWith opts reddit
 --   use a custom user agent string.
 runResumeRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
 runResumeRedditWith (RedditOptions rl man lm ua) reddit = do
+  when (isNothing ua) customUAWarning
   manager <- case man of
     Just m -> return m
     Nothing -> liftIO $ newManager tlsManagerSettings
@@ -179,3 +180,8 @@ data RedditState =
               , connMgr :: Manager
               , _extraHeaders :: [Header]
               , _creds :: Maybe LoginDetails }
+
+customUAWarning :: MonadIO m => m ()
+customUAWarning = liftIO $ do
+  putStrLn "WARNING: You haven't specified a custom Reddit user agent!"
+  putStrLn "           This is against Reddit's terms of service, and you should probably fix it."
