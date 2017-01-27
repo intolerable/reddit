@@ -53,15 +53,16 @@ versionString =
 -- | Options for how we should run the 'Reddit' action.
 --
 -- - 'rateLimitingEnabled': 'True' if the connection should be automatically rate-limited
---   and should pause when we hit the limit, 'False' otherwise.
+--   and should pause when we hit the limit, 'False' otherwise. Default is 'True'.
 --
 -- - 'connectionManager': @'Just' x@ if the connection should use the 'Manager' @x@, 'Nothing'
---   if we should create a new one for the connection.
+--   if we should create a new one for the connection. Default is 'Nothing'.
 --
 -- - 'loginMethod': The method we should use for authentication, described in 'LoginMethod'.
+--   Default is 'Anonymous'.
 --
 -- - 'customUserAgent': @'Just' "string"@ if the connection should use the user agent @"string"@,
---   @'Nothing'@ if it should use the default agent.
+--   @'Nothing'@ if it should use the default agent. Default is 'Nothing'.
 data RedditOptions =
   RedditOptions { rateLimitingEnabled :: Bool
                 , connectionManager :: Maybe Manager
