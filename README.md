@@ -6,6 +6,12 @@ A Haskell library for interacting with the [Reddit API](http://reddit.com/api).
 ### A couple of examples
 
 Let's get all the posts from the frontpage of Reddit and write a summary of each of them to the console:
+Note that you may need the `OverloadedStrings` language pragma to get these examples to work. (Add 
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+``` 
+to your scripts, if needed.) 
+
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
