@@ -92,8 +92,8 @@ library
   hs-source-dirs: src/
   build-depends:
     base >= 4.6 && < 4.10,
-    aeson >= 0.9 && < 0.12,
-    api-builder >= 0.10 && < 0.13,
+    aeson >= 0.9 && < 1.3,
+    api-builder >= 0.10 && < 0.14,
     bytestring == 0.10.*,
     data-default-class >= 0.0.1 && < 0.2,
     free >= 4 && < 5,
@@ -102,10 +102,10 @@ library
     http-types >= 0.8 && < 0.10,
     network == 2.6.*,
     text == 1.*,
-    time >= 1.5 && < 1.7,
+    time >= 1.5 && < 1.9,
     transformers >= 0.4 && < 0.6,
     unordered-containers >= 0.2.5 && < 0.3,
-    vector >= 0.10 && < 0.12
+    vector >= 0.10 && < 0.13
   ghc-options: -Wall
 
 test-suite test
@@ -128,7 +128,7 @@ test-suite test
   ghc-options: -Wall
 
 test-suite test-io
-  hs-source-dirs: test-io
+  hs-source-dirs: test-io, test-utils
   main-is: Spec.hs
   default-extensions:
     OverloadedStrings
@@ -140,6 +140,7 @@ test-suite test-io
     Cabal >= 1.16.0,
     api-builder,
     bytestring,
+    data-default-class,
     http-client,
     http-client-tls,
     reddit,
@@ -150,7 +151,7 @@ test-suite test-io
   ghc-options: -Wall
 
 test-suite test-anon
-  hs-source-dirs: test-anon
+  hs-source-dirs: test-anon, test-utils
   main-is: Spec.hs
   default-extensions:
     OverloadedStrings
@@ -161,6 +162,7 @@ test-suite test-anon
     base == 4.*,
     Cabal >= 1.16.0,
     api-builder,
+    data-default-class,
     reddit,
     hspec,
     text,

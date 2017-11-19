@@ -3,3 +3,5 @@
 cabal.sandbox.config
 dist/
 test.cfg
+stack.yaml
+.stack-work/

@@ -1,6 +1,7 @@
 module Reddit.Actions.FlairSpec where
 
 import Reddit
+import Utils
 
 import Test.Hspec
 
@@ -14,5 +15,5 @@ spec :: Spec
 spec = describe "Reddit.Actions.Flair" $ do
 
   it "shouldn't be able to get the flair list anonymously" $ do
-    res <- runRedditAnon $ getFlairList $ R "gaming"
+    res <- runAnon $ getFlairList $ R "gaming"
     res `shouldSatisfy` isLeft

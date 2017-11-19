@@ -1,6 +1,7 @@
 module Reddit.Actions.MessageSpec where
 
 import Reddit
+import Utils
 
 import Test.Hspec
 
@@ -14,5 +15,5 @@ spec :: Spec
 spec = describe "Reddit.Actions.Message" $ do
 
   it "shouldn't have an inbox for an anonymous user" $ do
-    res <- runRedditAnon getInbox
+    res <- runAnon getInbox
     res `shouldSatisfy` isLeft
