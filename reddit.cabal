@@ -149,6 +149,8 @@ test-suite test-io
     time,
     transformers
   ghc-options: -Wall
+  other-modules:
+    Utils
 
 test-suite test-anon
   hs-source-dirs: test-anon, test-utils
@@ -169,3 +171,5 @@ test-suite test-anon
     time,
     transformers
   ghc-options: -Wall
+  other-modules:
+    Utils
