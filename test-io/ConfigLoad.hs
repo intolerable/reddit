@@ -5,6 +5,7 @@ import Network.HTTP.Client.TLS
 import Reddit
 import Reddit.Login
 import System.Exit
+import Utils
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 
@@ -17,7 +18,7 @@ loadConfig = do
   case Text.lines file of
     [user, pass, sub] -> do
       manager <- newManager tlsManagerSettings
-      res <- runRedditAnon $ login user pass
+      res <- runAnon $ login user pass
       case res of
         Left _ -> exitFailure
         Right details ->
