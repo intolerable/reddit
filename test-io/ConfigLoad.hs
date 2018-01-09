@@ -21,7 +21,7 @@ loadConfig = do
       case res of
         Left _ -> exitFailure
         Right details ->
-          return ( RunReddit $ runRedditWith $ RedditOptions True (Just manager) (StoredDetails details) Nothing
+          return ( RunReddit $ runRedditWith $ RedditOptions True (Just manager) (StoredDetails details) (Just "reddit-haskell test suite")
                  , Username user
                  , R sub)
     _ -> do
