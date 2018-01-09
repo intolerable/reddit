@@ -16,7 +16,7 @@ license-file:        LICENSE
 author:              Fraser Murray
 maintainer:          fraser.m.murray@gmail.com
 homepage:            https://github.com/intolerable/reddit
-copyright:           Copyright (c) Fraser Murray, 2013-2015
+copyright:           Copyright (c) Fraser Murray, 2013-2018
 category:            Network
 build-type:          Simple
 cabal-version:       >= 1.10
@@ -91,15 +91,15 @@ library
   default-language: Haskell2010
   hs-source-dirs: src/
   build-depends:
-    base >= 4.6 && < 4.10,
+    base >= 4.6 && < 4.12,
     aeson >= 0.9 && < 1.3,
-    api-builder >= 0.10 && < 0.14,
+    api-builder >= 0.10 && < 0.15,
     bytestring == 0.10.*,
     data-default-class >= 0.0.1 && < 0.2,
     free >= 4 && < 5,
     http-client >= 0.4.30 && < 0.6,
     http-client-tls >= 0.2 && < 0.4,
-    http-types >= 0.8 && < 0.10,
+    http-types >= 0.8 && < 0.11,
     network == 2.6.*,
     text == 1.*,
     time >= 1.5 && < 1.9,
