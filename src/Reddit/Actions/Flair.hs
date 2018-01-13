@@ -14,7 +14,7 @@ import Reddit.Types.Subreddit
 import Reddit.Types.User
 
 import Control.Monad
-import Data.Aeson
+import Data.Aeson hiding (Options(..))
 import Data.Default.Class
 import Data.Text (Text)
 
