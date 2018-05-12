@@ -20,7 +20,9 @@ loadConfig = do
       manager <- newManager tlsManagerSettings
       res <- runAnon $ login user pass
       case res of
-        Left _ -> exitFailure
+        Left err -> do
+          print err
+          exitFailure
         Right details ->
           return ( RunReddit $ runRedditWith $ RedditOptions True (Just manager) (StoredDetails details) (Just "reddit-haskell test suite")
                  , Username user

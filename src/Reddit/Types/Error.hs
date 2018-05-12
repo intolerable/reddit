@@ -34,6 +34,7 @@ instance FromJSON RedditError where
       Just (Array e) -> case V.toList e of
         String "WRONG_PASSWORD" : _ -> return CredentialsError
         String "USER_REQUIRED" : _ -> return CredentialsError
+        String "INCORRECT_USERNAME_PASSWORD" : _ -> return CredentialsError
         String "RATELIMIT" : String d : _ ->
             RateLimitError <$> ((o .: "json") >>= (.: "ratelimit")) <*> pure d
         String "SUBREDDIT_REQUIRED" : _ -> return NoSubredditSpecified
