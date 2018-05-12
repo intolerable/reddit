@@ -1,4 +1,4 @@
 resolver: lts-11.8
 
 extra-deps:
-  - ../api-builder
+  - api-builder-0.15.0.0
