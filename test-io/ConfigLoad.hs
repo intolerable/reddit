@@ -12,18 +12,25 @@ import Utils
 newtype RunReddit = RunReddit
   { run :: forall a. Reddit a -> IO (Either (APIError RedditError) a) }
 
-data TestConfig =
-  TestConfig { tcUsername :: Text
-             , tcPassword :: Text
-             , tcSubreddit :: Text
-             }
+newtype TestConfig = TestConfig (Maybe Config)
   deriving (Show, Eq, Ord)
 
 instance FromJSON TestConfig where
   parseJSON = withObject "TestConfig" $ \ o ->
-    TestConfig <$> o .: "username"
-               <*> o .: "password"
-               <*> o .: "subreddit"
+    TestConfig <$> o .:? "config"
+
+data Config =
+  Config { tcUsername :: Text
+         , tcPassword :: Text
+         , tcSubreddit :: Text
+         }
+  deriving (Show, Eq, Ord)
+
+instance FromJSON Config where
+  parseJSON = withObject "Config" $ \ o ->
+    Config <$> o .: "username"
+           <*> o .: "password"
+           <*> o .: "subreddit"
 
 loadConfig :: IO (RunReddit, Username, SubredditName)
 loadConfig = do
@@ -31,7 +38,10 @@ loadConfig = do
     Left err -> do
       print err
       exitFailure
-    Right (TestConfig user pass sub) -> do
+    Right (TestConfig Nothing) ->
+      putStrLn "Warning: missing config section, skipping authorized tests"
+      exitSuccess
+    Right (TestConfig (Just (Config user pass sub))) -> do
       manager <- newManager tlsManagerSettings
       res <- runAnon $ login user pass
       case res of
