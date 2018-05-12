@@ -1,15 +1,22 @@
-language: haskell
-ghc:
-  - "7.6"
-  - "7.8"
-  # disabled because travis doesn't yet support it
-  # - "7.10"
 sudo: false
-notifications:
-  email: false
+
+language: generic
+
+# Caching so the next build will be fast too.
+cache:
+  directories:
+  - $HOME/.stack
+
+before_install:
+  # Download and unpack the stack executable
+  - mkdir -p ~/.local/bin
+  - export PATH=$HOME/.local/bin:$PATH
+  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
+matrix:
+  include:
+    - env: STACK_YAML=stack-lts-9.21 # GHC 8.0.2
+    - env: STACK_YAML=stack.yaml     # current
 
 script:
-  - cabal configure --enable-tests && cabal build && cabal test test
-
-install:
-  - cabal install --only-dependencies --enable-tests --reorder-goals --max-backjumps=-1
+  - travis_wait 180 stack --no-terminal --install-ghc --skip-ghc-check test
