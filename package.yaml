@@ -130,6 +130,7 @@ tests:
       - text
       - time
       - transformers
+      - yaml
 
   test:
     main: Spec.hs
