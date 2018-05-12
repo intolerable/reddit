@@ -1,0 +1,4 @@
+resolver: lts-11.8
+
+extra-deps:
+  - ../api-builder

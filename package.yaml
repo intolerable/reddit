@@ -1,0 +1,147 @@
+name: reddit
+version: '0.2.2.2'
+synopsis: Library for interfacing with Reddit's API
+description: >
+  A library for interfacing with Reddit''s API in Haskell. Handles
+  logins, rate-limiting and converting to and from JSON responses.
+  Supports most user-facing Reddit API functions, as well as some
+  moderator endpoints.
+  Check out the readme at <https://github.com/intolerable/reddit>.
+
+  Contributions are welcome.
+
+category: Network
+author: Fraser Murray
+maintainer: fraser.m.murray@gmail.com
+copyright: Copyright (c) Fraser Murray, 2013-2018
+license: BSD2
+github: intolerable/reddit
+
+extra-source-files:
+  - README.md
+  - test/data/aboutMe_example.json
+  - test/data/getUserInfo_example.json
+  - test/data/getUserComments_example.json
+
+default-extensions:
+  - OverloadedStrings
+
+ghc-options:
+  - -Wall
+
+default-extensions:
+  - FlexibleInstances
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - OverloadedStrings
+
+library:
+  source-dirs: src
+  ghc-options:
+    - -fno-warn-dodgy-imports
+  exposed-modules:
+    - Reddit
+    - Reddit.Actions
+    - Reddit.Actions.Captcha
+    - Reddit.Actions.Comment
+    - Reddit.Actions.Flair
+    - Reddit.Actions.Message
+    - Reddit.Actions.Moderation
+    - Reddit.Actions.Post
+    - Reddit.Actions.Search
+    - Reddit.Actions.Subreddit
+    - Reddit.Actions.Thing
+    - Reddit.Actions.User
+    - Reddit.Actions.Voting
+    - Reddit.Actions.Wiki
+    - Reddit.Login
+    - Reddit.Types
+    - Reddit.Types.Captcha
+    - Reddit.Types.Comment
+    - Reddit.Types.Error
+    - Reddit.Types.Flair
+    - Reddit.Types.Listing
+    - Reddit.Types.Message
+    - Reddit.Types.Moderation
+    - Reddit.Types.Options
+    - Reddit.Types.Post
+    - Reddit.Types.Reddit
+    - Reddit.Types.SearchOptions
+    - Reddit.Types.Subreddit
+    - Reddit.Types.SubredditSettings
+    - Reddit.Types.Thing
+    - Reddit.Types.User
+    - Reddit.Types.Wiki
+  dependencies:
+    - base >=4.6 && <4.12
+    - aeson >=0.9 && <1.3
+    - api-builder >=0.10 && <0.15
+    - bytestring ==0.10.*
+    - data-default-class >=0.0.1 && <0.2
+    - free >=4 && <6
+    - http-client >=0.4.30 && <0.6
+    - http-client-tls >=0.2 && <0.4
+    - http-types >=0.8 && <0.13
+    - network ==2.6.*
+    - text ==1.*
+    - time >=1.5 && <1.9
+    - transformers >=0.4 && <0.6
+    - unordered-containers >=0.2.5 && <0.3
+    - vector >=0.10 && <0.13
+
+tests:
+
+  test-anon:
+    main: Spec.hs
+    source-dirs:
+      - test-anon
+      - test-utils
+    default-extensions:
+      - Rank2Types
+    dependencies:
+      - base ==4.*
+      - Cabal >=1.16.0
+      - api-builder
+      - data-default-class
+      - reddit
+      - hspec
+      - text
+      - time
+      - transformers
+
+  test-io:
+    main: Spec.hs
+    source-dirs:
+      - test-io
+      - test-utils
+    default-extensions:
+      - Rank2Types
+    dependencies:
+      - base ==4.*
+      - Cabal >=1.16.0
+      - api-builder
+      - bytestring
+      - data-default-class
+      - http-client
+      - http-client-tls
+      - reddit
+      - hspec
+      - text
+      - time
+      - transformers
+
+  test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - base ==4.*
+      - Cabal >=1.16.0
+      - aeson
+      - api-builder
+      - bytestring
+      - reddit
+      - hspec
+      - text
+      - time
+      - transformers
