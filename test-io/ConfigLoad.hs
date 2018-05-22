@@ -38,7 +38,7 @@ loadConfig = do
     Left err -> do
       print err
       exitFailure
-    Right (TestConfig Nothing) ->
+    Right (TestConfig Nothing) -> do
       putStrLn "Warning: missing config section, skipping authorized tests"
       exitSuccess
     Right (TestConfig (Just (Config user pass sub))) -> do
