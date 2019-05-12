@@ -32,9 +32,11 @@ data Listing t a = Listing { before :: Maybe t
 instance Functor (Listing t) where
   fmap f (Listing b a x) = Listing b a (fmap f x)
 
-instance Ord t => Monoid (Listing t a) where
-  mappend (Listing a b cs) (Listing d e fs) =
+instance Ord t => Semigroup (Listing t a) where
+  Listing a b cs <> Listing d e fs =
     Listing (max a d) (min b e) (cs <> fs)
+
+instance Ord t => Monoid (Listing t a) where
   mempty = Listing Nothing Nothing []
 
 instance (FromJSON t, FromJSON a) => FromJSON (Listing t a) where
