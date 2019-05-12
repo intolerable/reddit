@@ -12,7 +12,7 @@ jobs:
           command: cat $STACK_YAML > stack_yaml_contents
       - restore_cache:
           name: Restore cache
-          key: reddit-{{ checksum "reddit.cabal" }}-{{ checksum "stack_yaml_contents" }}
+          key: reddit-{{ checksum "package.yaml" }}-{{ checksum "stack_yaml_contents" }}
       - run:
           name: Setup
           command: stack setup
@@ -21,7 +21,7 @@ jobs:
           command: stack test
       - restore_cache:
           name: Save cache
-          key: reddit-{{ checksum "reddit.cabal" }}-{{ checksum "stack_yaml_contents" }}
+          key: reddit-{{ checksum "package.yaml" }}-{{ checksum "stack_yaml_contents" }}
           paths:
             - ~/.stack
             - ~/.stack-work
@@ -31,7 +31,7 @@ jobs:
       - checkout
       - restore_cache:
           name: Restore cache
-          key: reddit-nightly-{{ checksum "reddit.cabal" }}-{{ checksum "stack.yaml" }}
+          key: reddit-nightly-{{ checksum "package.yaml" }}-{{ checksum "stack.yaml" }}
       - run:
           name: Set
           command: stack setup --resolver=nightly
@@ -40,7 +40,7 @@ jobs:
           command: stack test --resolver=nightly
       - restore_cache:
           name: Save cache
-          key: reddit-nightly-{{ checksum "reddit.cabal" }}-{{ checksum "stack.yaml" }}
+          key: reddit-nightly-{{ checksum "package.yaml" }}-{{ checksum "stack.yaml" }}
           paths:
             - ~/.stack
             - ~/.stack-work
