@@ -7,6 +7,7 @@ module Reddit.Types.Reddit
   , nest
   , failWith
   , withBaseURL
+  , withHeaders
   , Modhash(..)
   , LoginDetails(..)
   , POSTWrapped(..)
@@ -14,9 +15,12 @@ module Reddit.Types.Reddit
   , RateLimits(RateLimits, should, info)
   , RateLimitInfo(..)
   , headersToRateLimitInfo
+  , ClientParams(..)
+  , mkClientParamsHeader
   , mainBaseURL
   , loginBaseURL
-  , addAPIType ) where
+  , addAPIType
+  ) where
 
 import Reddit.Types.Error
 
@@ -35,6 +39,7 @@ import Network.HTTP.Types
 import Prelude
 import Text.Read (readMaybe)
 import qualified Data.ByteString.Char8 as BS
+import qualified Data.Text.Encoding as Text
 
 type Reddit a = RedditT IO a
 
@@ -45,6 +50,7 @@ data RedditF m a where
   ReceiveRoute :: Receivable b => Route -> (b -> a) -> RedditF m a
   RunRoute :: FromJSON b => Route -> (b -> a) -> RedditF m a
   WithBaseURL :: Text -> RedditT m b -> (b -> a) -> RedditF m a
+  WithHeaders :: ([Header] -> [Header]) -> RedditT m b -> (b -> a) -> RedditF m a
 
 instance Functor (RedditF m) where
   fmap _ (FailWith x) = FailWith x
@@ -53,6 +59,7 @@ instance Functor (RedditF m) where
   fmap f (ReceiveRoute r x) = ReceiveRoute r (fmap f x)
   fmap f (RunRoute r x) = RunRoute r (fmap f x)
   fmap f (WithBaseURL u a x) = WithBaseURL u a (fmap f x)
+  fmap f (WithHeaders hf a x) = WithHeaders hf a (fmap f x)
 
 newtype RedditT m a = RedditT (FreeT (RedditF m) m a)
   deriving (Functor, Applicative, Monad)
@@ -74,6 +81,9 @@ nest f = RedditT $ liftF $ Nest f id
 
 withBaseURL :: Monad m => Text -> RedditT m a -> RedditT m a
 withBaseURL u f = RedditT $ liftF $ WithBaseURL u f id
+
+withHeaders :: Monad m => ([Header] -> [Header]) -> RedditT m a -> RedditT m a
+withHeaders u f = RedditT $ liftF $ WithHeaders u f id
 
 failWith :: Monad m => APIError RedditError -> RedditT m a
 failWith = RedditT . liftF . FailWith
@@ -120,6 +130,12 @@ headersToRateLimitInfo hs now =
         rlResetTime' = fmap (\s -> addUTCTime (fromIntegral s) now) rlResetTime
         extract s = lookup s hs >>= readMaybe . BS.unpack
         trimap f (a, b, c) = (f a, f b, f c)
+
+data ClientParams = ClientParams Text Text
+  deriving (Show, Read, Eq, Ord)
+
+mkClientParamsHeader :: ClientParams -> (HeaderName, BS.ByteString)
+mkClientParamsHeader (ClientParams i s) = ("Authorization", Text.encodeUtf8 $ i <> ":" <> s)
 
 addAPIType :: Route -> Route
 addAPIType (Route fs ps m) = Route fs ("api_type" =. ("json" :: Text) : ps) m

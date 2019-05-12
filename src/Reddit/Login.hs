@@ -13,12 +13,13 @@ loginRoute user pass = Route [ "api", "login" ]
                              , "passwd" =. pass ]
                              "POST"
 
-getLoginDetails :: Monad m => Text -> Text -> RedditT m LoginDetails
-getLoginDetails user pass = receiveRoute $ loginRoute user pass
+getLoginDetails :: Monad m => Text -> Text -> ClientParams -> RedditT m LoginDetails
+getLoginDetails user pass cp = withHeaders (mkClientParamsHeader cp :) $ receiveRoute $ loginRoute user pass
 
 -- | Make a login request with the given username and password.
 login :: Monad m
       => Text -- ^ Username to login with
       -> Text -- ^ Password to login with
+      -> ClientParams
       -> RedditT m LoginDetails
 login = getLoginDetails

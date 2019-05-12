@@ -23,6 +23,8 @@ data Config =
   Config { tcUsername :: Text
          , tcPassword :: Text
          , tcSubreddit :: Text
+         , tcClientId :: Text
+         , tcClientSecret :: Text
          }
   deriving (Show, Eq, Ord)
 
@@ -31,6 +33,8 @@ instance FromJSON Config where
     Config <$> o .: "username"
            <*> o .: "password"
            <*> o .: "subreddit"
+           <*> o .: "client_id"
+           <*> o .: "client_secret"
 
 loadConfig :: IO (RunReddit, Username, SubredditName)
 loadConfig = do
@@ -41,9 +45,9 @@ loadConfig = do
     Right (TestConfig Nothing) -> do
       putStrLn "Warning: missing config section, skipping authorized tests"
       exitSuccess
-    Right (TestConfig (Just (Config user pass sub))) -> do
+    Right (TestConfig (Just (Config user pass sub ci cs))) -> do
       manager <- newManager tlsManagerSettings
-      res <- runAnon $ login user pass
+      res <- runAnon $ login user pass (ClientParams ci cs)
       case res of
         Left err -> do
           print err

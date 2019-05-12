@@ -79,7 +79,7 @@ defaultRedditOptions = def
 -- | Should we log in to Reddit? If so, should we use a stored set of credentials
 --   or get a new fresh set?
 data LoginMethod = Anonymous -- ^ Don't login, instead use an anonymous account
-                 | Credentials Text Text -- ^ Login using the specified username and password
+                 | Credentials Text Text ClientParams-- ^ Login using the specified username and password
                  | StoredDetails LoginDetails -- ^
                  --   Login using a stored set of credentials. Usually the best way to get
                  --   these is to do @'runRedditAnon' $ 'login' user pass@.
@@ -91,8 +91,8 @@ instance Default LoginMethod where def = Anonymous
 --   for 'RedditOptions': rate limiting enabled, default manager, login via username and password, and
 --   the default user-agent. You should change the user agent if you're making anything more complex than
 --   a basic script, since Reddit's API policy says that you should have a uniquely identifiable user agent.
-runReddit :: MonadIO m => Text -> Text -> RedditT m a -> m (Either (APIError RedditError) a)
-runReddit user pass = runRedditWith def { loginMethod = Credentials user pass }
+runReddit :: MonadIO m => Text -> Text -> ClientParams -> RedditT m a -> m (Either (APIError RedditError) a)
+runReddit user pass cp = runRedditWith def { loginMethod = Credentials user pass cp }
 
 -- | Run a 'Reddit' action (or a 'RedditT' transformer action). This uses the default logged-out settings, so
 --   you won't be able to do anything that requires authentication (like checking messages or making a post).
@@ -119,7 +119,7 @@ runResumeRedditWith (RedditOptions rl man lm ua) reddit = do
   loginCreds <- case lm of
     Anonymous -> return $ Right Nothing
     StoredDetails ld -> return $ Right $ Just ld
-    Credentials user pass -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rl manager [] Nothing) $ login user pass
+    Credentials user pass cp -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rl manager [] Nothing) $ login user pass cp
   case loginCreds of
     Left (err, _) -> return $ Left (err, Just reddit)
     Right lds ->
@@ -132,6 +132,12 @@ interpretIO rstate (RedditT r) =
     Pure x -> return $ Right x
     Free (WithBaseURL u x n) ->
       interpretIO (rstate { currentBaseURL = u }) x >>= \case
+        Left (err, Just resume) ->
+          return $ Left (err, Just $ resume >>= RedditT . n)
+        Left (err, Nothing) -> return $ Left (err, Nothing)
+        Right res -> interpretIO rstate $ RedditT $ n res
+    Free (WithHeaders hf x n) -> do
+      interpretIO (rstate { extraHeaders = hf (extraHeaders rstate)}) x >>= \case
         Left (err, Just resume) ->
           return $ Left (err, Just $ resume >>= RedditT . n)
         Left (err, Nothing) -> return $ Left (err, Nothing)
@@ -179,7 +185,7 @@ data RedditState =
   RedditState { currentBaseURL :: Text
               , rateLimit :: Bool
               , connMgr :: Manager
-              , _extraHeaders :: [Header]
+              , extraHeaders :: [Header]
               , _creds :: Maybe LoginDetails }
 
 customUAWarning :: MonadIO m => m ()
