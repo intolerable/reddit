@@ -72,21 +72,21 @@ library:
     - Reddit.Types.User
     - Reddit.Types.Wiki
   dependencies:
-    - base >=4.6 && <4.14
-    - aeson >=0.9 && <1.5
-    - api-builder >=0.10 && <0.17
+    - base >=4.6
+    - aeson >=0.9
+    - api-builder >=0.10
     - bytestring ==0.10.*
-    - data-default-class >=0.0.1 && <0.2
-    - free >=4 && <6
-    - http-client >=0.4.30 && <0.6
-    - http-client-tls >=0.2 && <0.4
-    - http-types >=0.8 && <0.13
-    - network >=2.6 && <3.0
+    - data-default-class >=0.0.1
+    - free >=4
+    - http-client >=0.4.30
+    - http-client-tls >=0.2
+    - http-types >=0.8
+    - network >=2.6
     - text ==1.*
-    - time >=1.5 && <1.9
-    - transformers >=0.4 && <0.6
-    - unordered-containers >=0.2.5 && <0.3
-    - vector >=0.10 && <0.13
+    - time >=1.5
+    - transformers >=0.4
+    - unordered-containers >=0.2.5
+    - vector >=0.10
 
 tests:
 
