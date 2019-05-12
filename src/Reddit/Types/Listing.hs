@@ -5,7 +5,7 @@ import Reddit.Parser
 import Control.Applicative
 import Data.Aeson
 import Data.Traversable
-import Data.Monoid
+import Data.Semigroup
 import Network.API.Builder.Query
 import Prelude
 
@@ -37,6 +37,7 @@ instance Ord t => Semigroup (Listing t a) where
     Listing (max a d) (min b e) (cs <> fs)
 
 instance Ord t => Monoid (Listing t a) where
+  mappend = (<>)
   mempty = Listing Nothing Nothing []
 
 instance (FromJSON t, FromJSON a) => FromJSON (Listing t a) where
