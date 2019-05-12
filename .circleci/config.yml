@@ -1,0 +1,78 @@
+version: 2.1
+jobs:
+  build: &build
+    docker:
+      - image: fpco/stack-build:lts
+    environment:
+      STACK_YAML: stack.yaml
+    steps:
+      - checkout
+      - run:
+          name: Dump STACK_YAML
+          command: cat $STACK_YAML > stack_yaml_contents
+      - restore_cache:
+          name: Restore cache
+          key: reddit-{{ checksum "reddit.cabal" }}-{{ checksum "stack_yaml_contents" }}
+      - run:
+          name: Setup
+          command: stack setup
+      - run:
+          name: Test
+          command: stack test
+      - restore_cache:
+          name: Save cache
+          key: reddit-{{ checksum "reddit.cabal" }}-{{ checksum "stack_yaml_contents" }}
+          paths:
+            - ~/.stack
+            - ~/.stack-work
+  build-nightly:
+    <<: *build
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore cache
+          key: reddit-nightly-{{ checksum "reddit.cabal" }}-{{ checksum "stack.yaml" }}
+      - run:
+          name: Set
+          command: stack setup --resolver=nightly
+      - run:
+          name: Test
+          command: stack test --resolver=nightly
+      - restore_cache:
+          name: Save cache
+          key: reddit-nightly-{{ checksum "reddit.cabal" }}-{{ checksum "stack.yaml" }}
+          paths:
+            - ~/.stack
+            - ~/.stack-work
+  lts-9-21-build:
+    <<: *build
+    environment:
+      STACK_YAML: stack-lts-9.21.yaml
+  lts-11-22-build:
+    <<: *build
+    environment:
+      STACK_YAML: stack-lts-11.22.yaml
+  lts-12-26-build:
+    <<: *build
+    environment:
+      STACK_YAML: stack-lts-12.26.yaml
+
+workflows:
+  version: 2
+  everything:
+    jobs:
+      - build
+      - build-nightly
+      - lts-9-21-build
+      - lts-11-22-build
+      - lts-12-26-build
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 18 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build-nightly

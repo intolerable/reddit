@@ -1,0 +1,4 @@
+resolver: lts-11.22
+
+extra-deps:
+  - api-builder-0.15.0.0
