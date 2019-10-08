@@ -115,12 +115,14 @@ tests:
       - test-utils
     default-extensions:
       - Rank2Types
+      - RecordWildCards
     dependencies:
       - base ==4.*
       - Cabal >=1.16.0
       - api-builder
       - bytestring
       - data-default-class
+      - directory
       - http-client
       - http-client-tls
       - reddit
