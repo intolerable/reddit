@@ -19,6 +19,7 @@ module Reddit.Types.Reddit
   , mkClientParamsHeader
   , mainBaseURL
   , loginBaseURL
+  , oauthBaseURL
   , addAPIType
   ) where
 
@@ -145,3 +146,6 @@ mainBaseURL = "https://api.reddit.com"
 
 loginBaseURL :: Text
 loginBaseURL = "https://ssl.reddit.com"
+
+oauthBaseURL :: Text
+oauthBaseURL = "https://oauth.reddit.com"

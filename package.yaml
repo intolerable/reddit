@@ -46,6 +46,7 @@ library:
     - Reddit.Actions.Flair
     - Reddit.Actions.Message
     - Reddit.Actions.Moderation
+    - Reddit.Actions.OAuth
     - Reddit.Actions.Post
     - Reddit.Actions.Search
     - Reddit.Actions.Subreddit
@@ -63,6 +64,7 @@ library:
     - Reddit.Types.Message
     - Reddit.Types.Moderation
     - Reddit.Types.Options
+    - Reddit.Types.OAuth
     - Reddit.Types.Post
     - Reddit.Types.Reddit
     - Reddit.Types.SearchOptions
@@ -87,6 +89,7 @@ library:
     - transformers >=0.4
     - unordered-containers >=0.2.5
     - vector >=0.10
+    - base64-bytestring
 
 tests:
 
