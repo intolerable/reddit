@@ -2,6 +2,7 @@ module ConfigLoad where
 
 import Control.Applicative
 import Data.List
+import Data.Semigroup (Semigroup(..))
 import Data.Text (Text)
 import Data.Yaml
 import Network.HTTP.Client

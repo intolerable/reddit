@@ -33,7 +33,7 @@ import Control.Monad.Trans.Free
 import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class
 import Data.Maybe (fromMaybe, isNothing)
-import Data.Semigroup
+import Data.Semigroup (Semigroup(..))
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Version
