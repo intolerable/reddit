@@ -1,6 +1,7 @@
 module ConfigLoad where
 
 import Control.Applicative
+import Data.List
 import Data.Text (Text)
 import Data.Yaml
 import Network.HTTP.Client
@@ -64,13 +65,30 @@ data Config =
          }
   deriving (Show, Eq, Ord)
 
-optionsToConfig :: Opts -> Maybe Config
+newtype Validation e a = Validation (Either e a)
+  deriving (Show, Read, Eq, Ord, Functor)
+
+instance Semigroup e => Applicative (Validation e) where
+  pure = Validation . Right
+
+  Validation a <*> Validation b =
+    Validation $ case (a, b) of
+      (Left ea, Left eb) -> Left (ea <> eb)
+      (Left ea, Right _) -> Left ea
+      (Right _, Left eb) -> Left eb
+      (Right f, Right x) -> Right (f x)
+
+optionsToConfig :: Opts -> Validation [String] Config
 optionsToConfig Opts{..} =
-  Config <$> optsUsername
-         <*> optsPassword
-         <*> optsSubreddit
-         <*> optsClientId
-         <*> optsClientSecret
+  Config <$> get "optsUsername was missing" optsUsername
+         <*> get "optsPassword was missing" optsPassword
+         <*> get "optsSubreddit was missing" optsSubreddit
+         <*> get "optsClientId was missing" optsClientId
+         <*> get "optsClientSecret was missing" optsClientSecret
+    where
+      get :: String -> Maybe a -> Validation [String] a
+      get _ (Just x) = pure x
+      get msg Nothing = Validation (Left [msg])
 
 loadConfig :: IO (RunReddit, Username, SubredditName)
 loadConfig = do
@@ -89,9 +107,15 @@ loadConfig = do
   envOpts <- getEnvOpts
 
   case optionsToConfig (jsonOpts <> envOpts) of
-    Nothing ->
-      error $ "Options were missing, got " <> show (jsonOpts <> envOpts)
-    Just (Config user pass sub ci cs) -> do
+    Validation (Left errs) ->
+      error $
+        intercalate "\n" $
+          [ "Options were missing, got:"
+          , "  " <> show (jsonOpts <> envOpts)
+          , "Errors:"
+          , intercalate "\n" $ map ("  " <>) errs
+          ]
+    Validation (Right (Config user pass sub ci cs)) -> do
       manager <- newManager tlsManagerSettings
       res <- runAnon $ login user pass (ClientParams ci cs)
       case res of
