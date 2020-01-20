@@ -3,7 +3,8 @@ reddit for haskell [![CircleCI](https://circleci.com/gh/intolerable/reddit.svg?s
 
 A Haskell library for interacting with the [Reddit API](http://reddit.com/api).
 
-### A couple of examples
+A couple of examples
+---
 
 Let's get all the posts from the frontpage of Reddit and write a summary of each of them to the console:
 
@@ -67,8 +68,14 @@ Full IO tests
 
 `cabal test test-io`
 
-The `test` test suite will run the tests that don't rely on doing any IO, but the `test-io` should be used too to ensure that IO functions do what they're supposed to do. If you want to run the IO suite, add a file `test.cfg` to the `reddit/` directory, containing (one field per line):
+The `test` test suite will run the tests that don't rely on doing any IO, but the `test-io` should be used too to ensure that IO functions do what they're supposed to do. If you want to run the IO suite, add a file `test_config.yaml` to the `reddit/` directory, like this:
 
-- a reddit username
-- a reddit password
-- a subreddit name (the user should be a moderator for the subredit)
+```
+username: my_reddit_username
+password: my_reddit_password
+subreddit: test_subreddit # A subreddit that the user has moderator access to
+client_id: MY_CLIENT_ID # Your reddit app client ID
+client_secret: MY_CLIENT_SECRET # Your reddit app client secret
+```
+
+Your app client and secret can be found in [your reddit preferences](https://reddit.com/prefs/apps/)
