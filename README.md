@@ -1,4 +1,4 @@
-reddit for haskell [![Build Status](https://travis-ci.org/intolerable/reddit.svg?branch=master)](https://travis-ci.org/intolerable/reddit)
+reddit for haskell [![CircleCI](https://circleci.com/gh/intolerable/reddit.svg?style=svg)](https://circleci.com/gh/intolerable/reddit)
 ---
 
 A Haskell library for interacting with the [Reddit API](http://reddit.com/api).
