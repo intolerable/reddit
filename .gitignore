@@ -5,4 +5,4 @@ cabal.sandbox.config
 dist/
 test_config.yaml
 .stack-work/
-stack.yaml.lock
+stack*.yaml.lock
