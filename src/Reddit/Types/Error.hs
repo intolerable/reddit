@@ -25,6 +25,7 @@ data RedditError = RedditError Object
                  | LinkDeleted
                  | BadSubredditName
                  | TooManyRequests
+                 | FlairTooLong
                  deriving (Show, Eq)
 
 instance FromJSON RedditError where

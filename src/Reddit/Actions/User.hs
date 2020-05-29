@@ -85,5 +85,5 @@ lookupUserFlair r u = do
 setUserFlair :: Monad m => SubredditName -> Username -> Text -> Text -> RedditT m ()
 setUserFlair r u txt cls =
   if Text.length txt > 64
-    then fail "Flair text too long!"
+    then failWith $ APIError FlairTooLong
     else nothing $ runRoute $ Route.setUserFlair r u txt cls

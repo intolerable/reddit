@@ -24,7 +24,7 @@ extra-source-files:
   - test/data/getUserComments_example.json
 
 ghc-options:
-  - -Wall
+  - -Wall -Wcompat
 
 default-extensions:
   - FlexibleInstances

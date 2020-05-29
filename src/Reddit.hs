@@ -33,7 +33,7 @@ import Control.Monad.Trans.Free
 import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class
 import Data.Maybe (fromMaybe, isNothing)
-import Data.Semigroup (Semigroup(..))
+import Data.Semigroup ((<>))
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Version
@@ -41,6 +41,7 @@ import Network.API.Builder as API
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
 import Network.HTTP.Types
+import Prelude hiding ((<>))
 import qualified Data.ByteString.Char8 as BS
 
 import qualified Paths_reddit
