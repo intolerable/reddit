@@ -84,6 +84,13 @@ data LoginMethod = Anonymous -- ^ Don't login, instead use an anonymous account
                  | StoredDetails LoginDetails -- ^
                  --   Login using a stored set of credentials. Usually the best way to get
                  --   these is to do @'runRedditAnon' $ 'login' user pass@.
+                 | OAuth Client RefreshToken -- ^
+                 -- Use OAuth for authorization. The Authorization field should have a clientId and secret,
+                 -- which you get get from creating a new application in Reddit. Using this authorization,
+                 -- you have to acquire the necessary access tokens. Make sure to use permanent tokens, so
+                 -- that you don't have to frequently refresh them. Perhaps in the future, this library might
+                 -- offer a way to perform the steps to actually get the one-time code and use it to get the
+                 -- access token, but in the interest of time, this is not done here.
   deriving (Show)
 
 instance Default LoginMethod where def = Anonymous
@@ -111,21 +118,46 @@ runRedditWith opts reddit = liftM dropResume $ runResumeRedditWith opts reddit
 -- | Run a 'Reddit' or 'RedditT' action with custom settings. You probably won't need this function for
 --   most things, but it's handy if you want to persist a connection over multiple 'Reddit' sessions or
 --   use a custom user agent string.
-runResumeRedditWith :: MonadIO m => RedditOptions -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
+runResumeRedditWith ::
+     MonadIO m
+  => RedditOptions
+  -> RedditT m a
+  -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
 runResumeRedditWith (RedditOptions rl man lm ua) reddit = do
   when (isNothing ua) customUAWarning
-  manager <- case man of
-    Just m -> return m
-    Nothing -> liftIO $ newManager tlsManagerSettings
-  loginCreds <- case lm of
-    Anonymous -> return $ Right Nothing
-    StoredDetails ld -> return $ Right $ Just ld
-    Credentials user pass cp -> liftM (fmap Just) $ interpretIO (RedditState loginBaseURL rl manager [] Nothing) $ login user pass cp
+  manager <-
+    case man of
+      Just m -> return m
+      Nothing -> liftIO $ newManager tlsManagerSettings
+  let uaHeader =
+        ("User-Agent", fromMaybe ("reddit-haskell " <> versionString) ua)
+  (loginCreds, baseURL, extraHeaders) <-
+    case lm of
+      Anonymous -> return (Right Nothing, mainBaseURL, [])
+      StoredDetails ld -> return (Right $ Just ld, mainBaseURL, [])
+      Credentials user pass cp -> do
+        loginCreds <-
+          liftM (fmap Just) $
+          interpretIO (RedditState loginBaseURL rl manager [] Nothing) $
+          login user pass cp
+        return (loginCreds, mainBaseURL, [])
+      OAuth client refreshToken ->
+        -- TODO: refresh the token
+        interpretIO
+          (RedditState "https://www.reddit.com" rl manager [uaHeader] Nothing)
+          (accessTokenWithRefreshToken refreshToken client) >>= \case
+          Right AccessToken {accessToken = accessToken} ->
+            return
+              ( Right Nothing
+              , oauthBaseURL
+              , [("Authorization", "bearer " <> encodeUtf8 accessToken)])
+          Left (err, _) -> return (Left (err, Nothing), mainBaseURL, [])
   case loginCreds of
     Left (err, _) -> return $ Left (err, Just reddit)
     Right lds ->
       interpretIO
-        (RedditState mainBaseURL rl manager [("User-Agent", fromMaybe ("reddit-haskell " <> versionString) ua)] lds) reddit
+        (RedditState baseURL rl manager (uaHeader : extraHeaders) lds)
+        reddit
 
 interpretIO :: MonadIO m => RedditState -> RedditT m a -> m (Either (APIError RedditError, Maybe (RedditT m a)) a)
 interpretIO rstate (RedditT r) =

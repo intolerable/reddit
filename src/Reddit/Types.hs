@@ -22,7 +22,8 @@ module Reddit.Types
   , SubredditName(..)
   , Thing
   , User
-  , Username(..) ) where
+  , Username(..)
+  , module Reddit.Types.OAuth) where
 
 import Reddit.Types.Captcha (CaptchaID(..))
 import Reddit.Types.Comment (CommentID(..), Comment, CommentListing)
@@ -35,3 +36,4 @@ import Reddit.Types.Reddit (Reddit, RedditT, Modhash, LoginDetails)
 import Reddit.Types.Subreddit (SubredditName(..), Subreddit)
 import Reddit.Types.Thing (Thing)
 import Reddit.Types.User (Username(..), User)
+import Reddit.Types.OAuth
