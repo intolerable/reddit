@@ -5,7 +5,7 @@ import Data.Aeson
 import Data.Aeson.Types
 import Data.Monoid
 import Prelude
-import qualified Data.HashMap.Strict as Hash
+import qualified Data.Aeson.KeyMap as Hash
 
 -- | More specific @void@ for forcing a @Empty@ @FromJSON@ instance
 nothing :: Monad m => m Empty -> m ()

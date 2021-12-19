@@ -98,7 +98,7 @@ instance FromJSON Modhash where
   parseJSON _ = mempty
 
 data LoginDetails = LoginDetails Modhash CookieJar
-  deriving (Show, Eq)
+  deriving Show
 
 instance Receivable LoginDetails where
   receive x = do

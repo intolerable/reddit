@@ -1,0 +1,178 @@
+cabal-version:      2.4
+name:               reddit
+version:            0.2.3.0
+license:            BSD-2-Clause
+copyright:          Copyright (c) Fraser Murray, 2013-2018
+maintainer:         fraser.m.murray@gmail.com
+author:             Fraser Murray
+category:           Network
+
+-- TODO: Before hackage release.
+-- A short (one-line) description of the package.
+-- synopsis:
+
+-- A longer description of the package.
+description: >
+  A library for interfacing with Reddit''s API in Haskell. Handles
+  logins, rate-limiting and converting to and from JSON responses.
+  Supports most user-facing Reddit API functions, as well as some
+  moderator endpoints.
+  Check out the readme at <https://github.com/intolerable/reddit>.
+
+  Contributions are welcome.
+
+-- A URL where users can report bugs.
+-- bug-reports:
+
+extra-source-files:
+  LICENSE
+  README.md
+
+library
+  build-depends:
+    , base
+    , text
+    , base >=4.6
+    , aeson >=0.9
+    , api-builder >=0.10
+    , bytestring ==0.10.*
+    , data-default-class >=0.0.1
+    , free >=4
+    , http-client >=0.4.30
+    , http-client-tls >=0.2
+    , http-types >=0.8
+    , network >=2.6
+    , text ==1.*
+    , time >=1.5
+    , transformers >=0.4
+    , unordered-containers >=0.2.5
+    , vector >=0.10
+    , base64-bytestring
+
+  exposed-modules:
+      Reddit
+    , Reddit.Actions
+    , Reddit.Actions.Captcha
+    , Reddit.Actions.Comment
+    , Reddit.Actions.Flair
+    , Reddit.Actions.Message
+    , Reddit.Actions.Moderation
+    , Reddit.Actions.OAuth
+    , Reddit.Actions.Post
+    , Reddit.Actions.Search
+    , Reddit.Actions.Subreddit
+    , Reddit.Actions.Thing
+    , Reddit.Actions.User
+    , Reddit.Actions.Voting
+    , Reddit.Actions.Wiki
+    , Reddit.Login
+    , Reddit.Types
+    , Reddit.Types.Captcha
+    , Reddit.Types.Comment
+    , Reddit.Types.Error
+    , Reddit.Types.Flair
+    , Reddit.Types.Listing
+    , Reddit.Types.Message
+    , Reddit.Types.Moderation
+    , Reddit.Types.Options
+    , Reddit.Types.OAuth
+    , Reddit.Types.Post
+    , Reddit.Types.Reddit
+    , Reddit.Types.SearchOptions
+    , Reddit.Types.Subreddit
+    , Reddit.Types.SubredditSettings
+    , Reddit.Types.Thing
+    , Reddit.Types.User
+    , Reddit.Types.Wiki
+
+    , Reddit.Parser
+    , Reddit.Routes
+    , Reddit.Routes.Captcha
+    , Reddit.Routes.Comment
+    , Reddit.Routes.Flair
+    , Reddit.Routes.Message
+    , Reddit.Routes.Moderation
+    , Reddit.Routes.Post
+    , Reddit.Routes.Search
+    , Reddit.Routes.Subreddit
+    , Reddit.Routes.Thing
+    , Reddit.Routes.User
+    , Reddit.Routes.Vote
+    , Reddit.Routes.Wiki
+    , Reddit.Types.Empty
+    , Reddit.Utilities
+
+  other-modules:
+    Paths_reddit
+
+  ghc-options:
+    -Wall -Wcompat -fno-warn-dodgy-imports
+
+  default-extensions:
+    FlexibleInstances
+    GADTs
+    GeneralizedNewtypeDeriving
+    LambdaCase
+    OverloadedStrings
+
+  hs-source-dirs:     src
+  default-language:   Haskell2010
+
+-- tests:
+-- 
+--   test-anon:
+--     main: Spec.hs
+--     source-dirs:
+--       - test-anon
+--       - test-utils
+--     default-extensions:
+--       - Rank2Types
+--     dependencies:
+--       - base ==4.*
+--       - Cabal >=1.16.0
+--       - api-builder
+--       - data-default-class
+--       - reddit
+--       - hspec
+--       - text
+--       - time
+--       - transformers
+-- 
+--   test-io:
+--     main: Spec.hs
+--     source-dirs:
+--       - test-io
+--       - test-utils
+--     default-extensions:
+--       - Rank2Types
+--       - RecordWildCards
+--     dependencies:
+--       - base ==4.*
+--       - Cabal >=1.16.0
+--       - api-builder
+--       - bytestring
+--       - data-default-class
+--       - directory
+--       - http-client
+--       - http-client-tls
+--       - reddit
+--       - hspec
+--       - text
+--       - time
+--       - transformers
+--       - yaml
+-- 
+--   test:
+--     main: Spec.hs
+--     source-dirs: test
+--     dependencies:
+--       - base ==4.*
+--       - Cabal >=1.16.0
+--       - aeson
+--       - api-builder
+--       - bytestring
+--       - reddit
+--       - hspec
+--       - text
+--       - time
+--       - transformers
