@@ -7,3 +7,4 @@ dist-newstyle/
 test_config.yaml
 .stack-work/
 stack*.yaml.lock
+result
