@@ -19,6 +19,7 @@ module Reddit.Types.Reddit
   , mkClientParamsHeader
   , mainBaseURL
   , loginBaseURL
+  , oauthBaseURL
   , addAPIType
   ) where
 
@@ -97,7 +98,7 @@ instance FromJSON Modhash where
   parseJSON _ = mempty
 
 data LoginDetails = LoginDetails Modhash CookieJar
-  deriving (Show, Eq)
+  deriving Show
 
 instance Receivable LoginDetails where
   receive x = do
@@ -145,3 +146,6 @@ mainBaseURL = "https://api.reddit.com"
 
 loginBaseURL :: Text
 loginBaseURL = "https://ssl.reddit.com"
+
+oauthBaseURL :: Text
+oauthBaseURL = "https://oauth.reddit.com"

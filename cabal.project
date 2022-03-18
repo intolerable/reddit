@@ -1,0 +1,7 @@
+packages: *.cabal
+
+source-repository-package
+  type: git
+  location: https://github.com/intolerable/api-builder.git
+  tag: f7440211195da98cfa93b6a97e51892b939919e1
+  --sha256: 0x890cr9wlc7w4g679imm90bd07z03s07g6nhjsy97r1mq76igzh

@@ -5,6 +5,7 @@ module Reddit.Actions
   , module Reddit.Actions.Flair
   , module Reddit.Actions.Message
   , module Reddit.Actions.Moderation
+  , module Reddit.Actions.OAuth
   , module Reddit.Actions.Post
   , module Reddit.Actions.Search
   , module Reddit.Actions.Subreddit
@@ -18,6 +19,7 @@ import Reddit.Actions.Comment
 import Reddit.Actions.Flair
 import Reddit.Actions.Message
 import Reddit.Actions.Moderation
+import Reddit.Actions.OAuth
 import Reddit.Actions.Post
 import Reddit.Actions.Search
 import Reddit.Actions.Subreddit

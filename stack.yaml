@@ -1,5 +1,0 @@
-resolver: lts-14.21
-
-extra-deps:
-  - github: intolerable/api-builder
-    commit: v0.17.0.0

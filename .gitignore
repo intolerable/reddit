@@ -1,8 +1,10 @@
 */.DS_Store
 .cabal-sandbox
 cabal.sandbox.config
-*.cabal
 dist/
+dist-newstyle/
 test_config.yaml
 .stack-work/
 stack*.yaml.lock
+result
+.direnv
