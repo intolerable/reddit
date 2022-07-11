@@ -44,18 +44,10 @@ jobs:
           paths:
             - ~/.stack
             - ~/.stack-work
-  lts-9-21-build:
+  lts-18-28-build:
     <<: *build
     environment:
-      STACK_YAML: stack-lts-9.21.yaml
-  lts-11-22-build:
-    <<: *build
-    environment:
-      STACK_YAML: stack-lts-11.22.yaml
-  lts-12-26-build:
-    <<: *build
-    environment:
-      STACK_YAML: stack-lts-12.26.yaml
+      STACK_YAML: stack-lts-18.28.yaml
 
 workflows:
   version: 2
@@ -63,9 +55,7 @@ workflows:
     jobs:
       - build
       - build-nightly
-      - lts-9-21-build
-      - lts-11-22-build
-      - lts-12-26-build
+      - lts-18-28-build
   nightly:
     triggers:
       - schedule:

@@ -29,11 +29,11 @@ spec = describe "Reddit.Actions.Comment" $ do
       Left _ -> expectationFailure "something failed"
 
   it "should fail if we try to get an invalid comment" $ do
-    res <- runAnon $ getCommentInfo (CommentID "garbage")
+    res <- runAnon $ getCommentInfo (CommentID "!!!!!!!")
     res `shouldSatisfy` isLeft
 
   it "shouldn't be able to get a list of comment IDs where some are invalid" $ do
-    res <- runAnon $ getCommentsInfo [CommentID "c60o0iw", CommentID "garbage"]
+    res <- runAnon $ getCommentsInfo [CommentID "c60o0iw", CommentID "!!!!!!!"]
     res `shouldSatisfy` isLeft
 
   it "should be able to get mass comment IDs" $ do

@@ -73,16 +73,16 @@ library:
     - Reddit.Types.Wiki
   dependencies:
     - base >=4.6
-    - aeson >=0.9
+    - aeson >=2
     - api-builder >=0.10
-    - bytestring ==0.10.*
+    - bytestring >=0.10.8
     - data-default-class >=0.0.1
     - free >=4
     - http-client >=0.4.30
     - http-client-tls >=0.2
     - http-types >=0.8
     - network >=2.6
-    - text ==1.*
+    - text >=1.2
     - time >=1.5
     - transformers >=0.4
     - unordered-containers >=0.2.5

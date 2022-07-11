@@ -5,7 +5,7 @@ import Data.Aeson
 import Data.Aeson.Types
 import Data.Monoid
 import Prelude
-import qualified Data.HashMap.Strict as Hash
+import qualified Data.Aeson.KeyMap as KeyMap
 
 -- | More specific @void@ for forcing a @Empty@ @FromJSON@ instance
 nothing :: Monad m => m Empty -> m ()
@@ -16,7 +16,7 @@ data Empty = Empty
 
 instance FromJSON Empty where
   parseJSON (Object o) =
-    if Hash.null o
+    if KeyMap.null o
       then return Empty
       else do
         errs <- (o .: "json") >>= (.: "errors") :: Parser [Value]
